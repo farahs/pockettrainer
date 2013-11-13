@@ -1,34 +1,18 @@
 package com.example.pockettrainer;
 
-import com.pockettrainer.MainDashboard;
-
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
-	
-	Button myBtn;
-	
+public class TrainingResultActivity extends Activity {
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(new MainDashboard(this));
-		setContentView(R.layout.activity_main);
-		
-		setupView();
-	}
-	
-	private void setupView() {
-		myBtn = (Button) this.findViewById(R.id.main_button);
-		myBtn.setOnClickListener(this);
+		setContentView(R.layout.activity_training_result);
 	}
 
 	@Override
@@ -48,24 +32,8 @@ public class MainActivity extends Activity implements OnClickListener {
 //				return true;
 			}
 		});
-		
-		return super.onCreateOptionsMenu(menu);
-	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {
-			case R.id.main_button:
-				Intent i = new Intent(getApplicationContext(), TrainingResultActivity.class);
-				startActivity(i);
-				break;
-	
-			default:
-				break;
-		}
+		return true;
 	}
-
-	
 
 }
