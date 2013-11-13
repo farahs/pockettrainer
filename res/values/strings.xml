@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PocketTrainer</string>
+    <string name="app_name">Pocket Trainer</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="training_result">Training Result</string>
 
 </resources>
