@@ -7,11 +7,14 @@ import android.app.Activity;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
+	
+	MainDashboard dashboard;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(new MainDashboard(this));
+		dashboard = new MainDashboard(this);
+		setContentView(dashboard);
 	}
 
 	@Override
@@ -20,5 +23,16 @@ public class MainActivity extends Activity {
 		// getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		dashboard.resumeThread();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		dashboard.pauseThread();
+	}
 }
