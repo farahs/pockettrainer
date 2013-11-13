@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Normal Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+   	<color name="grey">#E6E6E6</color>
+    
     <color name="luminate_sea">#0099CC</color>
    	<color name="luminate_undersea">#0099CC</color>
-
+   	<color name="bright_blue">#3268C6</color>
+	
+   	<!-- dari card UI -->
+    <color name="card_stroke">#dddddd</color>
+    <color name="card_text_light">#66000000</color>
+    <color name="card_text">#ff8d8d8d</color>
+    <color name="card_title_text">#ff707070</color>
+    <color name="card_light_text">#ffb5b5b5</color>
+    <color name="card_grid_text">#ff707070</color>
+    <color name="card_separator">#ffe5e5e5</color>
+    <color name="card_border">#ffdedede</color>
+    <color name="card_background">#f3f3f3</color>
+    <color name="card_shadow">#ffd6d6d6</color>
+    <color name="card_ui_page_background">#ebebeb</color>
+    
+    <!-- Default Label Colors -->
+    <color name="default_label_black">#333333</color>
+    <color name="default_label_blue">#79A7CC</color>
+    
 </resources>

@@ -1,16 +1,206 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/grey"
+    android:orientation="vertical"
     tools:context=".TrainingResultActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/list_states"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="18dp" >
+
+            <TextView
+                android:id="@+id/training_result_stats_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="STATS"
+                android:textColor="@color/bright_blue"
+                android:textSize="40sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="15dp"
+                android:text="Running Time"
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="40dp"
+                android:text="Distance"
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="65dp"
+                android:text="Burned Calories"
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="90dp"
+                android:text="Number of Steps"
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_running_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="15dp"
+                android:text="16:43"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="40dp"
+                android:text="1,708 km"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_cal_burned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="65dp"
+                android:text="203 cal"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_steps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="90dp"
+                android:text="213"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/list_states"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="18dp" >
+
+            <TextView
+                android:id="@+id/training_result_pet_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="PET"
+                android:textColor="@color/bright_blue"
+                android:textSize="40sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_pet_title"
+                android:layout_marginTop="15dp"
+                android:text="Monster Defeated"
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_pet_title"
+                android:layout_marginTop="80dp"
+                android:text="Training Exp."
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_pet_title"
+                android:layout_marginTop="105dp"
+                android:text="Total Exp."
+                android:textColor="@color/default_label_blue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_monster_defeated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_pet_title"
+                android:layout_marginTop="15dp"
+                android:text="5"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_pet_title"
+                android:layout_marginTop="80dp"
+                android:text="213.024 pt"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/training_result_total_exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_pet_title"
+                android:layout_marginTop="105dp"
+                android:text="311.203 pt"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
