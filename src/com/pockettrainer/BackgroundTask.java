@@ -1,22 +1,25 @@
-package com.pockettrainer.animation;
+package com.pockettrainer;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
-import com.pockettrainer.MainDashboard;
+import com.pockettrainer.animation.MainThread;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
-/**
- * @author impaler
- * 
- *         The Main thread which contains the game loop. The thread must have
- *         access to the surface view and holder to trigger events every game
- *         tick.
- */
-public class MainThread extends Thread {
+public class BackgroundTask extends AsyncTask<Object, Void, Void> {
 
+	private Context context;
 	private static final String TAG = MainThread.class.getSimpleName();
 
 	// desired fps
@@ -49,17 +52,16 @@ public class MainThread extends Thread {
 	private long statsCount = 0;
 	// the average FPS since the game started
 	private double averageFps = 0.0;
-
-	private boolean mPaused;
-
 	// Surface holder that can access the physical surface
 	private SurfaceHolder surfaceHolder;
 	// The actual view that handles inputs
 	// and draws to the surface
 	private MainDashboard gamePanel;
 
+	ThreadControl tControl = new ThreadControl();
+
 	// flag to hold game state
-	private boolean running = false;
+	private boolean running;
 
 	public void setRunning(boolean running) {
 		this.running = running;
@@ -69,14 +71,18 @@ public class MainThread extends Thread {
 		return running;
 	}
 
-	public MainThread(SurfaceHolder surfaceHolder, MainDashboard gamePanel) {
-		super();
+	public BackgroundTask(SurfaceHolder surfaceHolder, MainDashboard gamePanel) {
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 	}
 
 	@Override
-	public void run() {
+	protected void onPostExecute(Void result) {
+
+	}
+
+	@Override
+	protected Void doInBackground(Object... params) {
 		Canvas canvas;
 		Log.d(TAG, "Starting game loop");
 		// initialise timing elements for stat gathering
@@ -88,15 +94,19 @@ public class MainThread extends Thread {
 		int framesSkipped; // number of frames being skipped
 
 		sleepTime = 0;
+		
 
-		while (running) {
+		while (true) {
 			canvas = null;
 			// try locking the canvas for exclusive pixel editing
 			// in the surface
 			try {
+				tControl.waitIfPaused();
+				if (tControl.isCancelled()) {
+					break;
+				}
 				canvas = this.surfaceHolder.lockCanvas(null);
 				synchronized (surfaceHolder) {
-					Log.i("Paused", "resuming" + mPaused);
 					beginTime = System.currentTimeMillis();
 					framesSkipped = 0; // resetting the frames skipped
 					// update game state
@@ -108,14 +118,6 @@ public class MainThread extends Thread {
 					timeDiff = System.currentTimeMillis() - beginTime;
 					// calculate sleep time
 					sleepTime = (int) (FRAME_PERIOD - timeDiff);
-
-					while (mPaused) {
-						Log.i("Paused", "pausing" + mPaused);
-						try {
-							surfaceHolder.wait();
-						} catch (InterruptedException e) {
-						}
-					}
 
 					if (sleepTime > 0) {
 						// if sleepTime > 0 we're OK
@@ -134,12 +136,15 @@ public class MainThread extends Thread {
 													// if in next frame
 						framesSkipped++;
 					}
-
+					
 					// for statistics
 					framesSkippedPerStatCycle += framesSkipped;
 					// calling the routine to store the gathered statistics
 					storeStats();
 				}
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			} finally {
 				// in case of an exception the surface is not left in
 				// an inconsistent state
@@ -148,17 +153,9 @@ public class MainThread extends Thread {
 				}
 			} // end finally
 		}
+		return null;
 	}
 
-	/**
-	 * The statistics - it is called every cycle, it checks if time since last
-	 * store is greater than the statistics gathering period (1 sec) and if so
-	 * it calculates the FPS for the last period and stores it.
-	 * 
-	 * It tracks the number of frames per period. The number of frames since the
-	 * start of the period are summed up and the calculation takes part only if
-	 * the next period and the frame count is reset to 0.
-	 */
 	private void storeStats() {
 		frameCountPerStatCycle++;
 		totalFrameCount++;
@@ -209,19 +206,16 @@ public class MainThread extends Thread {
 		Log.d(TAG + ".initTimingElements()",
 				"Timing elements for stats initialised");
 	}
-
-	public void onPause() {
-		synchronized (surfaceHolder) {
-			mPaused = true;
-		}
-		Log.i("start", "masuk onPause() " + mPaused);
+	
+	public void pauseTask() {
+		tControl.pause();
 	}
-
-	public void onResume() {
-		synchronized (surfaceHolder) {
-			mPaused = false;
-			surfaceHolder.notifyAll();
-		}
-		Log.i("start", "masuk onResume() " + mPaused);
+	
+	public void resumeTask() {
+		tControl.resume();
+	}
+	
+	public void cancelTask() {
+		tControl.cancel();
 	}
 }
