@@ -13,34 +13,24 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener {
 	
+	Button myBtn;
 	MainDashboard dashboard;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dashboard = new MainDashboard(this);
 		setContentView(dashboard);
-=======
-public class MainActivity extends Activity implements OnClickListener {
-	
-	Button myBtn;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-//		setContentView(new MainDashboard(this));
-		setContentView(R.layout.activity_main);
+//		setContentView(R.layout.activity_main);
 		
-		setupView();
+//		setupView();
 	}
 	
 	private void setupView() {
 		myBtn = (Button) this.findViewById(R.id.main_button);
 		myBtn.setOnClickListener(this);
->>>>>>> 16ff77eac5fe676ab5f8181e945115c5d616b518
 	}
 
 	@Override
@@ -63,7 +53,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		return super.onCreateOptionsMenu(menu);
 	}
-<<<<<<< HEAD
 	
 	@Override
 	public void onResume() {
@@ -76,7 +65,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onPause();
 		dashboard.pauseThread();
 	}
-=======
 
 	@Override
 	public void onClick(View v) {
@@ -94,5 +82,4 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	
 
->>>>>>> 16ff77eac5fe676ab5f8181e945115c5d616b518
 }

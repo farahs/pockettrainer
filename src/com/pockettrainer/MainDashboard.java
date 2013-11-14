@@ -30,6 +30,8 @@ public class MainDashboard extends SurfaceView implements
 	private BackgroundTask bgTask;
 	private MainThread thread;
 	private SpriteAnimation sprite;
+	
+	private boolean isTouched;
 
 	// the fps to be displayed
 	private String avgFps;
@@ -47,10 +49,13 @@ public class MainDashboard extends SurfaceView implements
 
 		// create Elaine and load bitmap
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
-				getResources(), R.drawable.sprite_egg), 10, 50 // initial
-																// position
-				, 157, 157 // width and height of sprite
-				, 30, 20); // FPS and number of frames in the animation
+				getResources(), R.drawable.sprite_egg)
+				, 10, 50   // initial position
+				, 300, 300 // width and height of sprite
+				, 30, 20   // FPS and number of frames in the animation
+				, true); 
+		sprite.setMove(BitmapFactory.decodeResource(getResources(), R.drawable.sprite_egg_move), 10);
+		sprite.setEnd(BitmapFactory.decodeResource(getResources(), R.drawable.sprite_egg_remove), 10);
 
 		// create the game loop thread
 		// thread = new MainThread(getHolder(), this);
@@ -113,7 +118,15 @@ public class MainDashboard extends SurfaceView implements
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			// handle touch
+			
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			if(!isTouched) {
+				isTouched = true;
+				sprite.goMove();
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			isTouched = false;
+			sprite.goEnd();
 		}
 		return true;
 	}
