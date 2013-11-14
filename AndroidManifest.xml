@@ -31,6 +31,10 @@
             android:name="com.example.pockettrainer.TrainingResultActivity"
             android:label="@string/training_result" >
         </activity>
+        <activity
+            android:name="com.example.pockettrainer.TrainingActivity"
+            android:label="@string/train" >
+        </activity>
     </application>
 
 </manifest>
