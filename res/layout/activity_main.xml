@@ -7,9 +7,14 @@
     <RelativeLayout
         android:id="@+id/gameView"
         android:layout_width="match_parent"
-    	android:layout_height="500dp"
-    	android:layout_centerVertical="true">
-        
+        android:layout_height="400dp"
+        android:layout_centerVertical="true" >
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/main_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RESULT" />
+	
 </RelativeLayout>

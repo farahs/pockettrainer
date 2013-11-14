@@ -23,18 +23,18 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 dashboard = new MainDashboard(this);
+		dashboard = new MainDashboard(this);
 		// setContentView(dashboard);
 		setContentView(R.layout.activity_main);
 
-		 setupView();
+		setupView();
 	}
 
 	private void setupView() {
 		gameView = (RelativeLayout) this.findViewById(R.id.gameView);
 		gameView.addView(dashboard);
-		// myBtn = (Button) this.findViewById(R.id.main_button);
-		// myBtn.setOnClickListener(this);
+		myBtn = (Button) this.findViewById(R.id.main_button);
+		myBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -77,11 +77,11 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		// case R.id.main_button:
-		// Intent i = new Intent(getApplicationContext(),
-		// TrainingResultActivity.class);
-		// startActivity(i);
-		// break;
+		case R.id.main_button:
+			Intent i = new Intent(getApplicationContext(),
+					TrainingResultActivity.class);
+			startActivity(i);
+			break;
 
 		default:
 			break;
