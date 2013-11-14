@@ -11,24 +11,28 @@ import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	Button myBtn;
 	MainDashboard dashboard;
+	RelativeLayout gameView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dashboard = new MainDashboard(this);
-		setContentView(dashboard);
-		// setContentView(R.layout.activity_main);
+		 dashboard = new MainDashboard(this);
+		// setContentView(dashboard);
+		setContentView(R.layout.activity_main);
 
-		// setupView();
+		 setupView();
 	}
 
 	private void setupView() {
+		gameView = (RelativeLayout) this.findViewById(R.id.gameView);
+		gameView.addView(dashboard);
 		// myBtn = (Button) this.findViewById(R.id.main_button);
 		// myBtn.setOnClickListener(this);
 	}
