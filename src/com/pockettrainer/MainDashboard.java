@@ -13,10 +13,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 /**
  * @author impaler This is the main surface that handles the ontouch events and
@@ -46,11 +49,16 @@ public class MainDashboard extends SurfaceView implements
 		super(context);
 		// adding the callback (this) to the surface holder to intercept events
 		getHolder().addCallback(this);
+		
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
 
 		// create Elaine and load bitmap
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
 				getResources(), R.drawable.sprite_egg)
-				, 10, 50   // initial position
+				, size.x/2, size.y/2-50   // initial position
 				, 300, 300 // width and height of sprite
 				, 30, 20   // FPS and number of frames in the animation
 				, true); 
