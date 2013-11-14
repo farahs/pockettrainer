@@ -8,14 +8,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="MainActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-    <Button 
-   		android:id="@+id/main_button"
-   		android:text="@string/dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <com.pockettrainer.MainDashboard
+         android:id="@+id/gameView"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_centerVertical="true"
+    />
 
 </RelativeLayout>

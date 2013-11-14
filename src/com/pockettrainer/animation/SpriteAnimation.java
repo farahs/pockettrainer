@@ -41,8 +41,8 @@ public class SpriteAnimation {
 		this.bitmap = Bitmap.createScaledBitmap(bitmap, width * frameCount,
 				height, true);
 		an_idle = bitmap;
-		this.x = x;
-		this.y = y;
+		this.x = x - width/2;
+		this.y = y - height/2;
 		currentFrame = 0;
 		frameNr = frameCount;
 		frameIdle = frameNr;
@@ -184,9 +184,7 @@ public class SpriteAnimation {
 				}
 			} else {
 				if (currentFrame >= frameNr) {
-					bitmap = an_idle;
-					frameNr = frameIdle;
-					currentFrame = 0;
+					goIdle();
 					looped = true;
 				}
 			}
