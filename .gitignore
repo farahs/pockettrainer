@@ -4,3 +4,8 @@ project.properties
 bin/
 gen/
 *.class
+*.dex
+.gradle/
+build/
+local.properties
+proguard/
