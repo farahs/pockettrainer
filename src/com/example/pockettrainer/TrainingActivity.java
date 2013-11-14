@@ -15,7 +15,6 @@ public class TrainingActivity extends Activity implements OnClickListener {
 	TextView timerTV;
 	Button startBtn;
 	Button pauseBtn;
-	LinearLayout resumeStopLyt;
 	Button resumeBtn;
 	Button stopBtn;
 
@@ -32,13 +31,11 @@ public class TrainingActivity extends Activity implements OnClickListener {
 		timerTV = (TextView) this.findViewById(R.id.train_timer);
 		startBtn = (Button) this.findViewById(R.id.training_start);
 		pauseBtn = (Button) this.findViewById(R.id.training_pause);
-		resumeStopLyt = (LinearLayout) this.findViewById(R.id.layoutAtasBawah);
 		resumeBtn = (Button) this.findViewById(R.id.training_resume);
 		stopBtn = (Button) this.findViewById(R.id.training_stop);
 		
 		startBtn.setVisibility(View.VISIBLE);
 		pauseBtn.setVisibility(View.GONE);
-		resumeStopLyt.setVisibility(View.GONE);
 		resumeBtn.setVisibility(View.GONE);
 		stopBtn.setVisibility(View.GONE);
 	}
@@ -64,21 +61,18 @@ public class TrainingActivity extends Activity implements OnClickListener {
 		case R.id.training_start:
 			startBtn.setVisibility(View.GONE);
 			pauseBtn.setVisibility(View.VISIBLE);
-			resumeStopLyt.setVisibility(View.GONE);
 			resumeBtn.setVisibility(View.GONE);
 			stopBtn.setVisibility(View.GONE);
 			break;
 		case R.id.training_pause:
 			startBtn.setVisibility(View.GONE);
 			pauseBtn.setVisibility(View.GONE);
-			resumeStopLyt.setVisibility(View.VISIBLE);
 			resumeBtn.setVisibility(View.VISIBLE);
 			stopBtn.setVisibility(View.VISIBLE);
 			break;
 		case R.id.training_resume:
 			startBtn.setVisibility(View.GONE);
 			pauseBtn.setVisibility(View.VISIBLE);
-			resumeStopLyt.setVisibility(View.GONE);
 			resumeBtn.setVisibility(View.GONE);
 			stopBtn.setVisibility(View.GONE);
 			break;
