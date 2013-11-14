@@ -1,4 +1,9 @@
-package com.example.pockettrainer;
+package com.pockettrainer;
+
+import com.example.pockettrainer.R;
+import com.example.pockettrainer.R.id;
+import com.example.pockettrainer.R.layout;
+import com.example.pockettrainer.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;

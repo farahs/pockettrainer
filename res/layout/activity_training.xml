@@ -23,9 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="20dp"
-                android:text="00:00"
+                android:text="00:00:00"
                 android:textColor="@color/white"
-                android:textSize="100sp" />
+                android:textSize="70sp" />
         </LinearLayout>
 
         <Button
@@ -85,14 +85,25 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutBawah"
-        android:layout_width="match_parent"
+    
+    
+    <com.mapquest.android.maps.MapView
+	    android:id="@+id/map"
+	    android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/layoutAtas"
-        android:background="@drawable/map" 
-        android:orientation="vertical">
-    </LinearLayout>
+	    android:clickable="true"
+	    android:enabled="true"
+	    android:apiKey="@string/api_key"
+	/>
+    <Button 
+		android:id="@+id/followMeButton"
+		android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginTop="5dip"
+	   	android:layout_marginRight="5dip"
+		android:text="Follow Me"/>
 
 </LinearLayout>
