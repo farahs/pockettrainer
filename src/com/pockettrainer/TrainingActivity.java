@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TrainingActivity extends MapActivity implements OnClickListener {
 
@@ -33,7 +32,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	List<GeoPoint> trackedPoint;
 	protected MapView myMap;
 	protected MyLocationOverlay myLocationOverlay;
-	
+
 	private long startTime = 0L;
 
 	private Handler customHandler = new Handler();
@@ -46,12 +45,12 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training);
-        trackedPoint = new ArrayList<GeoPoint>();
-        
+		trackedPoint = new ArrayList<GeoPoint>();
+
 		setupView();
 		setupEvent();
 		setupMapView();
-        setupMyLocation();
+		setupMyLocation();
 	}
 
 	private void setupView() {
@@ -84,40 +83,40 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.training_start:
-				startBtn.setVisibility(View.GONE);
-				pauseBtn.setVisibility(View.VISIBLE);
-				resumeBtn.setVisibility(View.GONE);
-				stopBtn.setVisibility(View.GONE);
-				startTime = SystemClock.uptimeMillis();
-				customHandler.postDelayed(updateTimerThread, 0);
-				break;
-			case R.id.training_pause:
-				startBtn.setVisibility(View.GONE);
-				pauseBtn.setVisibility(View.GONE);
-				resumeBtn.setVisibility(View.VISIBLE);
-				stopBtn.setVisibility(View.VISIBLE);
-				timeSwapBuff += timeInMilliseconds;
-				customHandler.removeCallbacks(updateTimerThread);
-				break;
-			case R.id.training_resume:
-				startBtn.setVisibility(View.GONE);
-				pauseBtn.setVisibility(View.VISIBLE);
-				resumeBtn.setVisibility(View.GONE);
-				stopBtn.setVisibility(View.GONE);
-				startTime = SystemClock.uptimeMillis();
-				customHandler.postDelayed(updateTimerThread, 0);
-				break;
-			case R.id.training_stop:
-				Intent i = new Intent(getApplicationContext(),
-						TrainingResultActivity.class);
-				startActivity(i);
-				break;
-			default:
-				break;
+		case R.id.training_start:
+			startBtn.setVisibility(View.GONE);
+			pauseBtn.setVisibility(View.VISIBLE);
+			resumeBtn.setVisibility(View.GONE);
+			stopBtn.setVisibility(View.GONE);
+			startTime = SystemClock.uptimeMillis();
+			customHandler.postDelayed(updateTimerThread, 0);
+			break;
+		case R.id.training_pause:
+			startBtn.setVisibility(View.GONE);
+			pauseBtn.setVisibility(View.GONE);
+			resumeBtn.setVisibility(View.VISIBLE);
+			stopBtn.setVisibility(View.VISIBLE);
+			timeSwapBuff += timeInMilliseconds;
+			customHandler.removeCallbacks(updateTimerThread);
+			break;
+		case R.id.training_resume:
+			startBtn.setVisibility(View.GONE);
+			pauseBtn.setVisibility(View.VISIBLE);
+			resumeBtn.setVisibility(View.GONE);
+			stopBtn.setVisibility(View.GONE);
+			startTime = SystemClock.uptimeMillis();
+			customHandler.postDelayed(updateTimerThread, 0);
+			break;
+		case R.id.training_stop:
+			Intent i = new Intent(getApplicationContext(),
+					TrainingResultActivity.class);
+			startActivity(i);
+			break;
+		default:
+			break;
 		}
 	}
-	
+
 	private Runnable updateTimerThread = new Runnable() {
 
 		public void run() {
@@ -130,44 +129,39 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			int mins = secs / 60;
 			secs = secs % 60;
 			int milliseconds = (int) (updatedTime % 1000);
-			timerTV.setText("" + mins + ":"
-					+ String.format("%02d", secs) + ":"
+			timerTV.setText("" + mins + ":" + String.format("%02d", secs) + ":"
 					+ String.format("%02d", milliseconds));
 			customHandler.postDelayed(this, 0);
-			
-			if(secs%10 == 0)
-			{
-				GeoPoint currentLocation = myLocationOverlay.getMyLocation(); 
+
+			if (secs % 10 == 0) {
+				GeoPoint currentLocation = myLocationOverlay.getMyLocation();
 				trackedPoint.add(currentLocation);
-//				Toast.makeText(TrainingActivity.this, currentLocation.toString(), Toast.LENGTH_SHORT).show();
+				// Toast.makeText(TrainingActivity.this,
+				// currentLocation.toString(), Toast.LENGTH_SHORT).show();
 				drawTrackLine();
 			}
 		}
 
 	};
 
-	
-	
-	
-
-    /**
-     * This will set up a MapQuest map with a MyLocation Overlay
-     */
+	/**
+	 * This will set up a MapQuest map with a MyLocation Overlay
+	 */
 	private void setupMapView() {
 		this.myMap = (MapView) findViewById(R.id.map);
-		
+
 		// enable the zoom controls
 		myMap.setBuiltInZoomControls(true);
 	}
-	
+
 	protected void setupMyLocation() {
 		this.myLocationOverlay = new MyLocationOverlay(this, myMap);
-		
+
 		myLocationOverlay.enableMyLocation();
 		myLocationOverlay.runOnFirstFix(new Runnable() {
 			@Override
 			public void run() {
-				GeoPoint currentLocation = myLocationOverlay.getMyLocation(); 
+				GeoPoint currentLocation = myLocationOverlay.getMyLocation();
 				myMap.getController().animateTo(currentLocation);
 				myMap.getController().setZoom(18);
 				myMap.getOverlays().add(myLocationOverlay);
@@ -175,31 +169,30 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			}
 		});
 	}
-	
-	private void drawTrackLine()
-	{
+
+	private void drawTrackLine() {
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.BLUE);
-        paint.setAlpha(100);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeWidth(5);
+		paint.setColor(Color.BLUE);
+		paint.setAlpha(100);
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeJoin(Paint.Join.ROUND);
+		paint.setStrokeCap(Paint.Cap.ROUND);
+		paint.setStrokeWidth(5);
 		LineOverlay line = new LineOverlay(paint);
-        line.setData(trackedPoint);
-        
-        this.myMap.getOverlays().add(line);
-        //this.map.getController().z
-        this.myMap.invalidate();
+		line.setData(trackedPoint);
+
+		this.myMap.getOverlays().add(line);
+		// this.map.getController().z
+		this.myMap.invalidate();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		myLocationOverlay.enableMyLocation();
 		myLocationOverlay.enableCompass();
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
