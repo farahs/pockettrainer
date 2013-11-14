@@ -24,9 +24,9 @@
 
     <!-- style for the action bar backgrounds -->
     <style name="MainActionBar" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@color/luminate_sea</item>
-        <item name="android:backgroundStacked">@color/luminate_undersea</item>
-        <item name="android:backgroundSplit">@color/luminate_undersea</item>
+        <item name="android:background">@color/default_blue</item>
+        <item name="android:backgroundStacked">@color/default_blue</item>
+        <item name="android:backgroundSplit">@color/default_blue</item>
         <item name="android:actionBarTabTextStyle">@style/CustomTabTextStyle</item>
         <item name="android:icon">@drawable/ic_launcher</item>        <item name="android:titleTextStyle">@style/TitleTextStyle</item>
     </style>

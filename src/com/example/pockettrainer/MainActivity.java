@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.main_button:
 			Intent i = new Intent(getApplicationContext(),
-					TrainingResultActivity.class);
+					TrainingActivity.class);
 			startActivity(i);
 			break;
 

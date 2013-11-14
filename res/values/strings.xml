@@ -6,5 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="dashboard">Dashboard</string>
     <string name="training_result">Training Result</string>
+    <string name="train">Train</string>
 
 </resources>

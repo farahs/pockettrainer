@@ -6,8 +6,7 @@
     <color name="black">#000000</color>
    	<color name="grey">#E6E6E6</color>
     
-    <color name="luminate_sea">#0099CC</color>
-   	<color name="luminate_undersea">#0099CC</color>
+    <color name="default_blue">#0099CC</color>
    	<color name="bright_blue">#3268C6</color>
 	
    	<!-- dari card UI -->
@@ -26,5 +25,10 @@
     <!-- Default Label Colors -->
     <color name="default_label_black">#333333</color>
     <color name="default_label_blue">#79A7CC</color>
+    
+    <!-- Train Activity Colors -->
+    <color name="blue_light">#006699</color>
+    <color name="blue_dark">#005783</color>
+    <color name="red_light">#ff4141</color>
     
 </resources>
