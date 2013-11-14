@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TrainingActivity extends Activity implements OnClickListener {
@@ -33,7 +32,7 @@ public class TrainingActivity extends Activity implements OnClickListener {
 		pauseBtn = (Button) this.findViewById(R.id.training_pause);
 		resumeBtn = (Button) this.findViewById(R.id.training_resume);
 		stopBtn = (Button) this.findViewById(R.id.training_stop);
-		
+
 		startBtn.setVisibility(View.VISIBLE);
 		pauseBtn.setVisibility(View.GONE);
 		resumeBtn.setVisibility(View.GONE);
@@ -56,32 +55,32 @@ public class TrainingActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.training_start:
-			startBtn.setVisibility(View.GONE);
-			pauseBtn.setVisibility(View.VISIBLE);
-			resumeBtn.setVisibility(View.GONE);
-			stopBtn.setVisibility(View.GONE);
-			break;
-		case R.id.training_pause:
-			startBtn.setVisibility(View.GONE);
-			pauseBtn.setVisibility(View.GONE);
-			resumeBtn.setVisibility(View.VISIBLE);
-			stopBtn.setVisibility(View.VISIBLE);
-			break;
-		case R.id.training_resume:
-			startBtn.setVisibility(View.GONE);
-			pauseBtn.setVisibility(View.VISIBLE);
-			resumeBtn.setVisibility(View.GONE);
-			stopBtn.setVisibility(View.GONE);
-			break;
-		case R.id.training_stop:
-			Intent i = new Intent(getApplicationContext(), TrainingResultActivity.class);
-			startActivity(i);
-			break;
-		default:
-			break;
+			case R.id.training_start:
+				startBtn.setVisibility(View.GONE);
+				pauseBtn.setVisibility(View.VISIBLE);
+				resumeBtn.setVisibility(View.GONE);
+				stopBtn.setVisibility(View.GONE);
+				break;
+			case R.id.training_pause:
+				startBtn.setVisibility(View.GONE);
+				pauseBtn.setVisibility(View.GONE);
+				resumeBtn.setVisibility(View.VISIBLE);
+				stopBtn.setVisibility(View.VISIBLE);
+				break;
+			case R.id.training_resume:
+				startBtn.setVisibility(View.GONE);
+				pauseBtn.setVisibility(View.VISIBLE);
+				resumeBtn.setVisibility(View.GONE);
+				stopBtn.setVisibility(View.GONE);
+				break;
+			case R.id.training_stop:
+				Intent i = new Intent(getApplicationContext(),
+						TrainingResultActivity.class);
+				startActivity(i);
+				break;
+			default:
+				break;
 		}
 	}
 
