@@ -39,6 +39,8 @@ public class TrainingActivity extends Activity implements OnClickListener {
 		startBtn.setVisibility(View.VISIBLE);
 		pauseBtn.setVisibility(View.GONE);
 		resumeStopLyt.setVisibility(View.GONE);
+		resumeBtn.setVisibility(View.GONE);
+		stopBtn.setVisibility(View.GONE);
 	}
 
 	private void setupEvent() {
@@ -63,16 +65,22 @@ public class TrainingActivity extends Activity implements OnClickListener {
 			startBtn.setVisibility(View.GONE);
 			pauseBtn.setVisibility(View.VISIBLE);
 			resumeStopLyt.setVisibility(View.GONE);
+			resumeBtn.setVisibility(View.GONE);
+			stopBtn.setVisibility(View.GONE);
 			break;
 		case R.id.training_pause:
 			startBtn.setVisibility(View.GONE);
 			pauseBtn.setVisibility(View.GONE);
 			resumeStopLyt.setVisibility(View.VISIBLE);
+			resumeBtn.setVisibility(View.VISIBLE);
+			stopBtn.setVisibility(View.VISIBLE);
 			break;
 		case R.id.training_resume:
 			startBtn.setVisibility(View.GONE);
 			pauseBtn.setVisibility(View.VISIBLE);
 			resumeStopLyt.setVisibility(View.GONE);
+			resumeBtn.setVisibility(View.GONE);
+			stopBtn.setVisibility(View.GONE);
 			break;
 		case R.id.training_stop:
 			Intent i = new Intent(getApplicationContext(), TrainingResultActivity.class);
