@@ -1,20 +1,112 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context="MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        android:orientation="horizontal"
+        android:weightSum="100" >
+
+        <ImageButton
+            android:id="@+id/eat_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="25"
+            android:background="#FF3131"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/burger" />
+
+        <ImageButton
+            android:id="@+id/sleep_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="25"
+            android:background="#996699"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/sleep" />
+
+        <ImageButton
+            android:id="@+id/bath_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="25"
+            android:background="#00CCCC"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/bath" />
+
+        <ImageButton
+            android:id="@+id/pet_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="25"
+            android:background="#FF6666"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/love" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/gameView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_centerVertical="true" >
+        android:layout_height="0dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="45" >
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/main_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="RESULT" />
-	
-</RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_weight="40"
+        android:background="@color/default_blue"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="100" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:orientation="vertical" >
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mood_good"
+                android:layout_margin="10dp"
+                />
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"
+                android:text="In a good mood"
+                />
+
+            <Button
+                android:id="@+id/main_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/blue_light"
+                android:text="Train"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

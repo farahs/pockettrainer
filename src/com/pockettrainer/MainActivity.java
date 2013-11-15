@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	Button myBtn;
+	ImageButton hungerBtn, energyBtn, hygieneBtn, loveBtn;
 	MainDashboard dashboard;
 	RelativeLayout gameView;
 
@@ -38,6 +40,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		gameView.addView(dashboard);
 		myBtn = (Button) this.findViewById(R.id.main_button);
 		myBtn.setOnClickListener(this);
+		hungerBtn = (ImageButton) this.findViewById(R.id.eat_button);
+		hungerBtn.setOnClickListener(this);
+		energyBtn = (ImageButton) this.findViewById(R.id.sleep_button);
+		energyBtn.setOnClickListener(this);
+		hygieneBtn = (ImageButton) this.findViewById(R.id.bath_button);
+		hygieneBtn.setOnClickListener(this);
+		loveBtn = (ImageButton) this.findViewById(R.id.pet_button);
+		loveBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -85,7 +95,18 @@ public class MainActivity extends Activity implements OnClickListener {
 					TrainingActivity.class);
 			startActivity(i);
 			break;
-
+		case R.id.eat_button:
+			Toast.makeText(MainActivity.this, "Eat", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.sleep_button:
+			Toast.makeText(MainActivity.this, "Sleep", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.bath_button:
+			Toast.makeText(MainActivity.this, "Bath", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.pet_button:
+			Toast.makeText(MainActivity.this, "Pet", Toast.LENGTH_SHORT).show();
+			break;
 		default:
 			break;
 		}
