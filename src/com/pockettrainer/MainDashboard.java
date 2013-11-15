@@ -9,11 +9,13 @@ import com.pockettrainer.animation.MainThread;
 import com.pockettrainer.animation.SpriteAnimation;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -33,8 +35,10 @@ public class MainDashboard extends SurfaceView implements
 	private BackgroundTask bgTask;
 	private MainThread thread;
 	private SpriteAnimation sprite;
-	
+
 	private boolean isTouched;
+	
+	private BitmapDrawable tile;
 
 	// the fps to be displayed
 	private String avgFps;
@@ -49,21 +53,24 @@ public class MainDashboard extends SurfaceView implements
 		super(context);
 		// adding the callback (this) to the surface holder to intercept events
 		getHolder().addCallback(this);
-		
-		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-
+		
 		// create Elaine and load bitmap
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
-				getResources(), R.drawable.sprite_egg)
-				, size.x/2, size.y/2-50   // initial position
+				getResources(), R.drawable.sprite_egg), size.x / 2,
+				200 // initial position
 				, 300, 300 // width and height of sprite
-				, 30, 20   // FPS and number of frames in the animation
-				, true); 
-		sprite.setMove(BitmapFactory.decodeResource(getResources(), R.drawable.sprite_egg_move), 10);
-		sprite.setEnd(BitmapFactory.decodeResource(getResources(), R.drawable.sprite_egg_remove), 10);
+				, 30, 20 // FPS and number of frames in the animation
+				, true);
+		sprite.setMove(BitmapFactory.decodeResource(getResources(),
+				R.drawable.sprite_egg_move), 10);
+		sprite.setEnd(BitmapFactory.decodeResource(getResources(),
+				R.drawable.sprite_egg_remove), 10);
 
 		// create the game loop thread
 		// thread = new MainThread(getHolder(), this);
@@ -125,22 +132,32 @@ public class MainDashboard extends SurfaceView implements
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		int X = (int) event.getX();
+		int Y = (int) event.getY();
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			
+
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			if(!isTouched) {
+			int centerX = sprite.getX() + sprite.getSpriteWidth() / 2;
+			int centerY = sprite.getY() + sprite.getSpriteHeight() / 2;
+
+			double radCircle = Math
+					.sqrt((((centerX - X) * (centerX - X)) + (centerY - Y)
+							* (centerY - Y)));
+			if (radCircle < 150 && !isTouched) {
 				isTouched = true;
 				sprite.goMove();
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			isTouched = false;
-			sprite.goEnd();
+			if(isTouched) {
+				isTouched = false;
+				sprite.goEnd();
+			}
 		}
 		return true;
 	}
 
 	public void render(Canvas canvas) {
-		canvas.drawColor(Color.BLACK);
+		canvas.drawColor(Color.WHITE);
 		sprite.draw(canvas);
 		// display fps
 		// displayFps(canvas, avgFps);
