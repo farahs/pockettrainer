@@ -6,8 +6,8 @@ import android.content.Context;
 
 public class USER_BLL {
 
-	public static USER getUSER(Context context, int ID) {
-		USER = 
-	}
+//	public static USER getUSER(Context context, int ID) {
+////		USER = 
+//	}
 	
 }
