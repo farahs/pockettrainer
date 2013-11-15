@@ -96,16 +96,16 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivity(i);
 			break;
 		case R.id.eat_button:
-			Toast.makeText(MainActivity.this, "Eat", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Eat", 20).show();
 			break;
 		case R.id.sleep_button:
-			Toast.makeText(MainActivity.this, "Sleep", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Sleep", 20).show();
 			break;
 		case R.id.bath_button:
-			Toast.makeText(MainActivity.this, "Bath", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Bath", 20).show();
 			break;
 		case R.id.pet_button:
-			Toast.makeText(MainActivity.this, "Pet", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Pet", 20).show();
 			break;
 		default:
 			break;
