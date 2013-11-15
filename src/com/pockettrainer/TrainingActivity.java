@@ -10,9 +10,12 @@ import com.mapquest.android.maps.MapActivity;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -84,12 +87,20 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.training_start:
-			startBtn.setVisibility(View.GONE);
-			pauseBtn.setVisibility(View.VISIBLE);
-			resumeBtn.setVisibility(View.GONE);
-			stopBtn.setVisibility(View.GONE);
-			startTime = SystemClock.uptimeMillis();
-			customHandler.postDelayed(updateTimerThread, 0);
+			ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+			if(networkInfo != null && networkInfo.isConnected()){
+				startBtn.setVisibility(View.GONE);
+				pauseBtn.setVisibility(View.VISIBLE);
+				resumeBtn.setVisibility(View.GONE);
+				stopBtn.setVisibility(View.GONE);
+				startTime = SystemClock.uptimeMillis();
+				customHandler.postDelayed(updateTimerThread, 0);
+			} else {
+				Intent i = new Intent(getApplicationContext(),
+						TrainingResultActivity.class);
+				startActivity(i);
+			}
 			break;
 		case R.id.training_pause:
 			startBtn.setVisibility(View.GONE);
