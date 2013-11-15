@@ -5,6 +5,7 @@ import android.content.Context;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class DatabaseManager {
+	
 	private static DatabaseHelper	databaseHelper;
 
 	public static void releaseHelper()

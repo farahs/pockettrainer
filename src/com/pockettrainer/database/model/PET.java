@@ -19,7 +19,7 @@ public class PET implements Parcelable {
 	@DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
 	private int USER_ID;
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
 	private Date BIRTH_DATE;
 	
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
@@ -43,16 +43,16 @@ public class PET implements Parcelable {
 	@DatabaseField(dataType = DataType.INTEGER, canBeNull = true)
 	private int RELATIONSHIP_INDICATOR;
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
 	private Date LAST_UPDATE_HUNGER_INDICATOR;
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
 	private Date LAST_UPDATE_SLEEP_INDICATOR;
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
 	private Date LAST_UPDATE_HYGIENE_INDICATOR;
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
 	private Date LAST_UPDATE_RELATIONSHIP_INDICATOR;
 	
 	public PET() {

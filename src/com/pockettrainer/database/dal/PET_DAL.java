@@ -2,7 +2,6 @@ package com.pockettrainer.database.dal;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import com.j256.ormlite.dao.Dao;
@@ -35,15 +34,18 @@ public class PET_DAL {
 
 	}
 
-	public static List<PET> getPET_Multiple_ByMap(Context context, Map<String, Object> idMaps) throws SQLException
-	{
-
+	public static PET getPET_Single(Context context, int id) {
+		
 		Dao<PET, Integer> dao = getDAO(context);
-
-		List<PET> res = dao.queryForFieldValues(idMaps);
-
-		return res;
-
+		PET myPet = new PET();
+		
+		try {
+			myPet = dao.queryForId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return myPet;
 	}
 
 	/**

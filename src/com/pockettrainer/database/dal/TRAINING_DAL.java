@@ -1,8 +1,8 @@
 package com.pockettrainer.database.dal;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import com.j256.ormlite.dao.Dao;
@@ -35,15 +35,32 @@ public class TRAINING_DAL {
 
 	}
 
-	public static List<TRAINING> getTRAINING_Multiple_ByMap(Context context, Map<String, Object> idMaps) throws SQLException
-	{
-
+	public static TRAINING getTRAINING_Single(Context context, int id) {
+		
 		Dao<TRAINING, Integer> dao = getDAO(context);
-
-		List<TRAINING> res = dao.queryForFieldValues(idMaps);
-
-		return res;
-
+		TRAINING myTraining = new TRAINING();
+		
+		try {
+			myTraining = dao.queryForId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return myTraining;
+	}
+	
+	public static List<TRAINING> getTraining_Multiple_byUser(Context context, int idUser) {
+		
+		Dao<TRAINING, Integer> dao = getDAO(context);
+		List<TRAINING> myTraining = new ArrayList<TRAINING>();
+		
+		try {
+			myTraining = dao.queryForEq("USER_ID", idUser);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return myTraining;
 	}
 
 	/**

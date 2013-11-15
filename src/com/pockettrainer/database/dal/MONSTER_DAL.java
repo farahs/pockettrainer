@@ -2,7 +2,6 @@ package com.pockettrainer.database.dal;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import com.j256.ormlite.dao.Dao;
@@ -35,15 +34,18 @@ public class MONSTER_DAL {
 
 	}
 
-	public static List<MONSTER> getMONSTER_Multiple_ByMap(Context context, Map<String, Object> idMaps) throws SQLException
-	{
-
+	public static MONSTER getTRAINING_Single(Context context, int id) {
+		
 		Dao<MONSTER, Integer> dao = getDAO(context);
-
-		List<MONSTER> res = dao.queryForFieldValues(idMaps);
-
-		return res;
-
+		MONSTER myMonster = new MONSTER();
+		
+		try {
+			myMonster = dao.queryForId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return myMonster;
 	}
 
 	/**

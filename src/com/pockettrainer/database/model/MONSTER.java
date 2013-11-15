@@ -14,6 +14,9 @@ public class MONSTER implements Parcelable {
 	private int ID;
 	
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	private String CODE;	
+	
+	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String NAME;	
 	
 	
@@ -21,9 +24,10 @@ public class MONSTER implements Parcelable {
 
 	}
 	
-	public MONSTER(int iD, String nAME) {
+	public MONSTER(int iD, String cODE, String nAME) {
 		super();
 		ID = iD;
+		CODE = cODE;
 		NAME = nAME;
 	}
 
@@ -40,11 +44,13 @@ public class MONSTER implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		
 		dest.writeInt(ID);
+		dest.writeString(CODE);
 		dest.writeString(NAME);
 	}
 	
 	private void readFromParcel(Parcel in) {
 		ID = in.readInt();
+		CODE = in.readString();
 		NAME = in.readString();
 	}
 	
@@ -69,6 +75,14 @@ public class MONSTER implements Parcelable {
 
 	public void setID(int iD) {
 		ID = iD;
+	}
+	
+	public String getCODE() {
+		return CODE;
+	}
+
+	public void setCODE(String cODE) {
+		CODE = cODE;
 	}
 
 	public String getNAME() {

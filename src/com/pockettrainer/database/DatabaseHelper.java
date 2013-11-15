@@ -2,12 +2,16 @@ package com.pockettrainer.database;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
+import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.TRAINING;
@@ -20,9 +24,8 @@ import android.util.Log;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pockettrainer_db.sqlite";
-	private static String DATABASE_PATH;
 	private Context context;
-	private static final int DATABASE_VERSION = 0;
+	private static final int DATABASE_VERSION = 1;
 
 	private static DatabaseConnection databaseConnection;
 
@@ -34,14 +37,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	public DatabaseHelper(Context c) {
 
-		super(c, c.getExternalFilesDir(null).getAbsolutePath() + File.separator
-				+ "pockettrainer" + File.separator + DATABASE_NAME, null,
-				DATABASE_VERSION);
+		super(c, DATABASE_NAME, null, DATABASE_VERSION);
 
 		this.context = c;
-		this.DATABASE_PATH = c.getExternalFilesDir(null).getAbsolutePath()
-				+ File.separator + "pockettrainer" + File.separator
-				+ DATABASE_NAME;
 
 	}
 
@@ -92,7 +90,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(this.connectionSource, PET.class);
 			TableUtils.createTable(this.connectionSource, TRAINING.class);
 			TableUtils.createTable(this.connectionSource, MONSTER.class);
-			// initiate monster table with default value}
+			
+			setInitData();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -173,4 +173,33 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 		return this.MONSTER_DAO;
 	}
+	
+	/*
+	 * TO SET INITIAL DATA TO DATABASE
+	 */
+	
+	private void setInitData() {
+		
+		List<MONSTER> listMonster = new ArrayList<MONSTER>();
+		
+		MONSTER a = new MONSTER();
+		a.setCODE("01");
+		a.setNAME("POOH");
+		listMonster.add(a);
+		
+		MONSTER b = new MONSTER();
+		b.setCODE("02");
+		b.setNAME("TIGGER");
+		listMonster.add(b);
+		
+		for (MONSTER monster : listMonster) {
+			try {
+				MONSTER_DAL.insertMONSTER(context, monster);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 } 

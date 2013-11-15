@@ -1,9 +1,15 @@
 package com.pockettrainer;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.pockettrainer.R;
 import com.example.pockettrainer.R.id;
 import com.example.pockettrainer.R.layout;
 import com.example.pockettrainer.R.menu;
+import com.pockettrainer.database.dal.MONSTER_DAL;
+import com.pockettrainer.database.model.MONSTER;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -96,6 +102,14 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivity(i);
 			break;
 		case R.id.eat_button:
+//			List<MONSTER> m = new ArrayList<MONSTER>();
+//			try {
+//				m = MONSTER_DAL.getMONSTER_All(getApplicationContext());
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			Toast.makeText(MainActivity.this, "" + m.get((m.size()-1)).getNAME(), 20).show();
 			Toast.makeText(MainActivity.this, "Eat", 20).show();
 			break;
 		case R.id.sleep_button:
