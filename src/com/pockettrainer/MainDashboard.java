@@ -72,6 +72,9 @@ public class MainDashboard extends SurfaceView implements
 	private SpriteAnimation sprite;
 
 	private int spriteOptimalSize;
+	
+	private Bitmap fireEnv, grassEnv, waterEnv, currEnv;
+	private int selEnv = 0;
 
 	private boolean isTouched;
 	boolean mSurfaceExists = true;
@@ -98,6 +101,8 @@ public class MainDashboard extends SurfaceView implements
 		Point size = new Point();
 		display.getSize(size);
 
+		setEnvironment();
+		
 		spriteOptimalSize = size.x - 280;
 
 		// create Elaine and load bitmap
@@ -120,6 +125,13 @@ public class MainDashboard extends SurfaceView implements
 
 		// make the GamePanel focusable so it can handle events
 		setFocusable(true);
+	}
+	
+	private void setEnvironment() {
+		fireEnv = BitmapFactory.decodeResource(getResources(), R.drawable.env_fire);
+		grassEnv = BitmapFactory.decodeResource(getResources(), R.drawable.env_grass);
+		waterEnv = BitmapFactory.decodeResource(getResources(), R.drawable.env_water);
+		currEnv = grassEnv;
 	}
 
 	@Override
@@ -178,7 +190,9 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void render(Canvas canvas) {
+//		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		canvas.drawColor(Color.WHITE);
+//		canvas.drawBitmap(currEnv, 0,0, paint);
 		sprite.draw(canvas);
 		// display fps
 		// displayFps(canvas, avgFps);
