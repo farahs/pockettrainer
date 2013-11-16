@@ -7,6 +7,7 @@ import com.example.pockettrainer.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -30,11 +31,11 @@ public class TrainingResultActivity extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item)
 			{
-				Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
-				return true;
-//				Intent intent = new Intent(MainPageActivity.this.getApplicationContext(), SettingActivity.class);
-//				startActivity(intent);
+//				Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
 //				return true;
+				Intent intent = new Intent(TrainingResultActivity.this.getApplicationContext(), TestAccelerometerActivity.class);
+				startActivity(intent);
+				return true;
 			}
 		});
 

@@ -43,6 +43,10 @@
             android:name="com.pockettrainer.TrainingActivity"
             android:label="@string/train" >
         </activity>
+        <activity
+            android:name="com.pockettrainer.TestAccelerometerActivity"
+            android:label="@string/title_activity_test_accelerometer" >
+        </activity>
     </application>
 
 </manifest>
