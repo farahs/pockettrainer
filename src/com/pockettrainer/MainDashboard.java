@@ -25,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 /**
  * @author impaler This is the main surface that handles the ontouch events and
@@ -70,6 +71,8 @@ public class MainDashboard extends SurfaceView implements
 	private Handler customHandler = new Handler();
 	private SpriteAnimation sprite;
 
+	private int spriteOptimalSize;
+
 	private boolean isTouched;
 	boolean mSurfaceExists = true;
 
@@ -95,13 +98,18 @@ public class MainDashboard extends SurfaceView implements
 		Point size = new Point();
 		display.getSize(size);
 
+		spriteOptimalSize = size.x - 280;
+
 		// create Elaine and load bitmap
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
 				getResources(), R.drawable.sprite_egg), size.x / 2, 200 // initial
 																		// position
-				, 300, 300 // width and height of sprite
+				, spriteOptimalSize, spriteOptimalSize // width and height of
+														// sprite
 				, 30, 20 // FPS and number of frames in the animation
 				, true);
+		sprite.setIdle(BitmapFactory.decodeResource(getResources(),
+				R.drawable.sprite_egg), 20);
 		sprite.setMove(BitmapFactory.decodeResource(getResources(),
 				R.drawable.sprite_egg_move), 10);
 		sprite.setEnd(BitmapFactory.decodeResource(getResources(),
@@ -126,14 +134,6 @@ public class MainDashboard extends SurfaceView implements
 		Log.i("start", "resuming " + ThreadIsRunning);
 		customHandler.postDelayed(taskRunnable, 0);
 		ThreadIsRunning = true;
-		// if (bgTask == null || bgTask.getStatus() ==
-		// AsyncTask.Status.FINISHED)
-		// {
-		// bgTask = new BackgroundTask(getHolder(), this);
-		// }
-		// mSurfaceExists = true;
-		// bgTask.execute(AndEngineTexturePackerExtension
-		// AndEngineTexturePackerExtension );
 	}
 
 	@Override
@@ -141,6 +141,14 @@ public class MainDashboard extends SurfaceView implements
 		Log.d(TAG, "Surface is being destroyed");
 		// mSurfaceExists = false;
 		customHandler.removeCallbacks(taskRunnable);
+	}
+
+	@Override
+	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
+		super.onSizeChanged(xNew, yNew, xOld, yOld);
+
+		sprite.setX(xNew / 2 - spriteOptimalSize/2);
+		sprite.setY(yNew / 2 - spriteOptimalSize/2);
 	}
 
 	@Override
@@ -190,7 +198,7 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void resumeThread() {
-//		customHandler.postDelayed(taskRunnable, 0);
+		// customHandler.postDelayed(taskRunnable, 0);
 	}
 
 	private void displayFps(Canvas canvas, String fps) {
