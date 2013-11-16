@@ -31,6 +31,9 @@ public class SpriteAnimation {
 								// rectangle
 	private int spriteHeight; // the height of the sprite
 
+	private final int MAX_HEIGHT = 400;
+	private final int MAX_WIDTH = 400;
+
 	private int x; // the X coordinate of the object (top left of the image)
 	private int y; // the Y coordinate of the object (top left of the image)
 
@@ -38,19 +41,20 @@ public class SpriteAnimation {
 
 	public SpriteAnimation(Bitmap bitmap, int x, int y, int width, int height,
 			int fps, int frameCount, boolean looped) {
-		this.bitmap = Bitmap.createScaledBitmap(bitmap, width * frameCount,
-				height, true);
+
+		spriteWidth = width;
+		spriteHeight = height;
+
+		this.bitmap = Bitmap.createScaledBitmap(bitmap, spriteWidth
+				* frameCount, spriteHeight, true);
 		an_idle = bitmap;
-		this.x = x - width/2;
-		this.y = y - height/2;
+		this.x = x - width / 2;
+		this.y = y - height / 2;
 		currentFrame = 0;
 		frameNr = frameCount;
 		frameIdle = frameNr;
 		this.looped = looped;
-		// spriteWidth = bitmap.getWidth() / frameCount;
-		// spriteHeight = bitmap.getHeight();
-		spriteWidth = width;
-		spriteHeight = height;
+
 		sourceRect = new Rect(0, 0, spriteWidth, spriteHeight);
 		framePeriod = 1000 / fps;
 		frameTicker = 0l;
@@ -76,12 +80,14 @@ public class SpriteAnimation {
 
 	public void goIdle() {
 		currentFrame = 0;
+		looped = true;
 		frameNr = frameIdle;
 		bitmap = an_idle;
 	}
 
 	public void goMove() {
 		currentFrame = 0;
+		looped = true;
 		frameNr = frameMove;
 		bitmap = an_move;
 	}
@@ -89,8 +95,8 @@ public class SpriteAnimation {
 	public void goEnd() {
 		currentFrame = 0;
 		looped = false;
-		bitmap = an_end;
 		frameNr = frameEnd;
+		bitmap = an_end;
 	}
 
 	public Bitmap getBitmap() {
