@@ -15,8 +15,12 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.Menu;
@@ -89,7 +93,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		case R.id.training_start:
 			ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-			if(networkInfo != null && networkInfo.isConnected()){
+			if (networkInfo != null && networkInfo.isConnected()) {
 				startBtn.setVisibility(View.GONE);
 				pauseBtn.setVisibility(View.VISIBLE);
 				resumeBtn.setVisibility(View.GONE);
@@ -155,6 +159,28 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 
 	};
 
+	private void setupNotification() {
+		Intent intent = new Intent(this, TrainingActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		Notification.Builder builder = new Notification.Builder(
+				getApplicationContext());
+		builder.setContentTitle("Pocket Trainer");
+		builder.setContentText("You have an ongoing training");
+		builder.setContentIntent(pendingIntent);
+		builder.setTicker("You have an ongoing training");
+		builder.setSmallIcon(R.drawable.ic_launcher);
+		builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),
+				R.drawable.ic_launcher));
+		builder.setOngoing(true);
+		builder.setAutoCancel(true);
+		builder.setPriority(0);
+		Notification notification = builder.build();
+		NotificationManager notificationManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManger.notify(01, notification);
+	}
+
 	/**
 	 * This will set up a MapQuest map with a MyLocation Overlay
 	 */
@@ -207,8 +233,16 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		// setupNotification();
 		myLocationOverlay.disableCompass();
 		myLocationOverlay.disableMyLocation();
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		customHandler.removeCallbacks(updateTimerThread);
+		this.finish();
 	}
 
 	@Override

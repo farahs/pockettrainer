@@ -72,7 +72,7 @@ public class MainDashboard extends SurfaceView implements
 	private SpriteAnimation sprite;
 
 	private int spriteOptimalSize;
-	
+
 	private Bitmap fireEnv, grassEnv, waterEnv, currEnv;
 	private int selEnv = 0;
 
@@ -102,7 +102,7 @@ public class MainDashboard extends SurfaceView implements
 		display.getSize(size);
 
 		setEnvironment();
-		
+
 		spriteOptimalSize = size.x - 280;
 
 		// create Elaine and load bitmap
@@ -126,11 +126,14 @@ public class MainDashboard extends SurfaceView implements
 		// make the GamePanel focusable so it can handle events
 		setFocusable(true);
 	}
-	
+
 	private void setEnvironment() {
-		fireEnv = BitmapFactory.decodeResource(getResources(), R.drawable.env_fire);
-		grassEnv = BitmapFactory.decodeResource(getResources(), R.drawable.env_grass);
-		waterEnv = BitmapFactory.decodeResource(getResources(), R.drawable.env_water);
+		fireEnv = BitmapFactory.decodeResource(getResources(),
+				R.drawable.env_fire);
+		grassEnv = BitmapFactory.decodeResource(getResources(),
+				R.drawable.env_grass);
+		waterEnv = BitmapFactory.decodeResource(getResources(),
+				R.drawable.env_water);
 		currEnv = grassEnv;
 	}
 
@@ -159,8 +162,8 @@ public class MainDashboard extends SurfaceView implements
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 
-		sprite.setX(xNew / 2 - spriteOptimalSize/2);
-		sprite.setY(yNew / 2 - spriteOptimalSize/2);
+		sprite.setX(xNew / 2 - spriteOptimalSize / 2);
+		sprite.setY(yNew / 2 - spriteOptimalSize / 2);
 	}
 
 	@Override
@@ -190,9 +193,9 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void render(Canvas canvas) {
-//		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		// Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		canvas.drawColor(Color.WHITE);
-//		canvas.drawBitmap(currEnv, 0,0, paint);
+		// canvas.drawBitmap(currEnv, 0,0, paint);
 		sprite.draw(canvas);
 		// display fps
 		// displayFps(canvas, avgFps);

@@ -41,7 +41,8 @@
         </activity>
         <activity
             android:name="com.pockettrainer.TrainingActivity"
-            android:label="@string/train" >
+            android:label="@string/train"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="com.pockettrainer.TestAccelerometerActivity"
