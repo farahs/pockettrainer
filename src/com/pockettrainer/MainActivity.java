@@ -10,10 +10,13 @@ import com.example.pockettrainer.R.layout;
 import com.example.pockettrainer.R.menu;
 import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.model.MONSTER;
+import com.pockettrainer.database.model.PET;
+import com.pockettrainer.database.model.USER;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,14 +33,33 @@ public class MainActivity extends Activity implements OnClickListener {
 	ImageButton hungerBtn, energyBtn, hygieneBtn, loveBtn;
 	MainDashboard dashboard;
 	RelativeLayout gameView;
-
+	PET myPet;
+	USER myUser;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dashboard = new MainDashboard(this);
 		// setContentView(dashboard);
 		setContentView(R.layout.activity_main);
+		
+		myPet = new PET();
+		myUser = new USER();
+		
+		Intent i = getIntent();
 
+		if (i != null) {
+			Bundle bund = i.getExtras();
+
+			if (bund != null) {
+				myPet = bund.getParcelable("PET");
+				myUser = bund.getParcelable("USER");
+				Log.i("POCKETTRAINER", "MainActivity" + myPet.getNAME());
+			}
+		} else {
+			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
+		}
+		
 		setupView();
 	}
 
@@ -66,7 +88,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						Toast.makeText(getApplicationContext(), "Setting",
+						Toast.makeText(getApplicationContext(), myPet.getNAME() + myPet.getBIRTH_DATE(),
 								Toast.LENGTH_SHORT).show();
 						return true;
 						// Intent intent = new

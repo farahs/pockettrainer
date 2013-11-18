@@ -1,0 +1,123 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".PetIdentityActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your selected environment: " />
+
+            <TextView
+                android:id="@+id/pet_environment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/textView1"
+                android:text="test" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rl_atas"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:background="@color/bright_blue"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="pet name"
+                    android:textColor="@color/white" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="78dp"
+                    android:layout_marginTop="33dp"
+                    android:background="@color/white" >
+
+                    <EditText
+                        android:id="@+id/pet_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="78dp"
+                        android:layout_centerInParent="true"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:hint="pet name"
+                        android:maxLines="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/default_label_blue" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:background="@color/bright_blue"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="pet birth"
+                    android:textColor="@color/white" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="78dp"
+                    android:layout_marginTop="33dp"
+                    android:background="@color/white" >
+
+                    <TextView
+                        android:id="@+id/pet_birth"
+                        android:layout_width="match_parent"
+                        android:layout_height="78dp"
+                        android:layout_centerInParent="true"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:hint="pet birth date"
+                        android:maxLines="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/default_label_blue" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp"
+        android:text="Start!" />
+
+</RelativeLayout>

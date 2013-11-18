@@ -25,7 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pockettrainer_db.sqlite";
 	private Context context;
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	private static DatabaseConnection databaseConnection;
 
@@ -134,7 +134,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		{
 			try
 			{
-				this.PET_DAO = this.getDao(USER.class);
+				this.PET_DAO = this.getDao(PET.class);
 			}
 			catch (java.sql.SQLException e)
 			{

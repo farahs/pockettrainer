@@ -34,7 +34,7 @@ public class USER_DAL {
 
 	}
 
-	public static USER getTRAINING_Single(Context context, int id) {
+	public static USER getUSER_Single(Context context, int id) {
 		
 		Dao<USER, Integer> dao = getDAO(context);
 		USER myUser = new USER();

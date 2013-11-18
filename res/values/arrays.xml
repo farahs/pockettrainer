@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    	
+    <string-array name="environment">
+        <item>Pilih salah satu</item>
+        <item>Fire</item>
+        <item>Grass</item>
+        <item>Water</item>
+    </string-array>
+    
+</resources>

@@ -10,5 +10,8 @@
     <string name="train">Train</string>
     <string name="api_key">Fmjtd%7Cluubn9ur2d%2Cb0%3Do5-902nqr</string>
     <string name="title_activity_test_accelerometer">Testing</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_select_environment">SelectEnvironmentActivity</string>
+    <string name="title_activity_pet_identity">PetIdentityActivity</string>
 
 </resources>

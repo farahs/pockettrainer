@@ -48,6 +48,20 @@ public class PET_DAL {
 		return myPet;
 	}
 
+	public static PET getPET_SingleByUserId(Context context, int userId) {
+		
+		Dao<PET, Integer> dao = getDAO(context);
+		PET myPet = new PET();
+		
+		try {
+			myPet = dao.queryForEq("USER_ID", userId).get(0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return myPet;
+	}
+	
 	/**
 	 * INSERT METHODS
 	 * 
