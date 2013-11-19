@@ -12,11 +12,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
-public class WelcomeActivity extends Activity implements OnClickListener {
+public class WelcomeActivity extends Activity implements OnClickListener, AnimationListener {
 
 	Button nextBtn;
+	ImageView egg;
+	
+	Animation animBounce;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +36,16 @@ public class WelcomeActivity extends Activity implements OnClickListener {
 	}
 
 	private void setView() {
+		egg = (ImageView) findViewById(R.id.egg);
 		nextBtn = (Button) findViewById(R.id.welcome_next);
 	}
 
 	private void setEvent() {
 		nextBtn.setOnClickListener(this);
+		animBounce = AnimationUtils.loadAnimation(getApplicationContext(),
+				R.anim.idle);
+		animBounce.setAnimationListener(this);
+		egg.startAnimation(animBounce);
 	}
 
 	@Override
@@ -54,6 +66,24 @@ public class WelcomeActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onAnimationEnd(Animation anim) {
+		// TODO Auto-generated method stub
+		egg.startAnimation(animBounce);
+	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
