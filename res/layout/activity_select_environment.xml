@@ -6,32 +6,71 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SelectEnvironmentActivity" >
+    tools:context=".SelectEnvironmentActivity"
+    android:background="@color/white" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Your Environment: " />
+    <RelativeLayout
+        android:id="@+id/env_logo_holder"
+        android:layout_width="match_parent"
+    	android:layout_height="170dp"
+    	android:layout_marginTop="80dp"
+        >
 
-    <Spinner
-        android:id="@+id/select_environment"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/env_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:src="@drawable/env_logo_none" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/env_logo_holder"
         android:layout_marginTop="30dp"
-        android:entries="@array/environment"
         android:gravity="center"
-        android:textAlignment="center" />
+        android:orientation="vertical"
+        android:weightSum="100" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Your Environment: " />
+
+        <Spinner
+            android:id="@+id/select_environment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="50"
+            android:entries="@array/environment"
+            android:gravity="center"
+            android:textAlignment="center" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="20dp"
+            android:text="This environment will determine your pet evolution. Choose wisely!" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/select_env_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="80dp"
-        android:background="@color/bright_blue"
-        android:text="Next" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/rect_button_states"
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="10dp"
+        android:text="Continue"
+        android:textColor="@drawable/text_states_blue"
+        android:textSize="20sp" />
 
 </RelativeLayout>

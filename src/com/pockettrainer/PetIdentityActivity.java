@@ -1,4 +1,4 @@
-package com.example.pockettrainer;
+package com.pockettrainer;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import com.pockettrainer.MainActivity;
+import com.example.pockettrainer.R;
+import com.example.pockettrainer.R.id;
+import com.example.pockettrainer.R.layout;
+import com.example.pockettrainer.R.menu;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.dal.USER_DAL;
 import com.pockettrainer.database.model.PET;
@@ -23,27 +26,39 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PetIdentityActivity extends Activity implements OnClickListener {
+public class PetIdentityActivity extends Activity implements OnClickListener, AnimationListener {
 
 	USER myUser;
 	Button startBtn;
 	PET myPet;
+	Animation animBounce;
+	ImageView pet_sprt;
+	ImageView pet_env;
 	TextView petEnvironmentTV;
 	EditText petNameET;
 	TextView petBirthDateTV;
+	
+	String clause = "You decided to grow your pet on ";
+	
 	boolean loginStatus;
 	Date nowDate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_pet_identity);
 
 		myPet = new PET();
@@ -68,23 +83,33 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 	}
 
 	private void setView() {
+		pet_sprt = (ImageView) findViewById(R.id.egg);
+		pet_env = (ImageView) findViewById(R.id.pet_env_iv);
+		animBounce = AnimationUtils.loadAnimation(getApplicationContext(),
+				R.anim.idle);
 		startBtn = (Button) findViewById(R.id.start);
 		petEnvironmentTV = (TextView) findViewById(R.id.pet_environment);
-		petNameET = (EditText) findViewById(R.id.pet_name);
+		petNameET = (EditText) findViewById(R.id.name);
 		petBirthDateTV = (TextView) findViewById(R.id.pet_birth);
 	}
 
 	private void setEvent() {
 		startBtn.setOnClickListener(this);
+		animBounce.setAnimationListener(this);
+		pet_sprt.startAnimation(animBounce);
+		pet_env.startAnimation(animBounce);
 	}
 
 	private void setData() {
 		if (myPet.getENVIRONMENT().equals("1")) {
-			petEnvironmentTV.setText("Fire");
+			petEnvironmentTV.setText(clause + "Fire environment");
+			pet_env.setImageResource(R.drawable.env_logo_fire);
 		} else if (myPet.getENVIRONMENT().equals("2")) {
-			petEnvironmentTV.setText("Grass");
+			petEnvironmentTV.setText(clause + "Grass environment");
+			pet_env.setImageResource(R.drawable.env_logo_grass);
 		} else if (myPet.getENVIRONMENT().equals("3")) {
-			petEnvironmentTV.setText("Water");
+			petEnvironmentTV.setText(clause + "Water environment");
+			pet_env.setImageResource(R.drawable.env_logo_water);
 		}
 
 		nowDate = new Date();
@@ -203,5 +228,24 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		// TODO Auto-generated method stub
+		pet_sprt.startAnimation(animBounce);
+		pet_env.startAnimation(animBounce);
+	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
+		
 	}
 }
