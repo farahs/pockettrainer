@@ -31,7 +31,7 @@ public class PET implements Parcelable {
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String ENVIRONMENT;
 	
-	@DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
+	@DatabaseField(dataType = DataType.INTEGER, canBeNull = true)
 	private int CURRENT_EXPERIENCE;
 
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)

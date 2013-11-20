@@ -39,7 +39,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 	EditText petNameET;
 	TextView petBirthDateTV;
 	boolean loginStatus;
-	Date nowDate; 
+	Date nowDate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 
 		myPet = new PET();
 		myUser = new USER();
-		
+
 		Intent i = getIntent();
 
 		if (i != null) {
@@ -86,10 +86,11 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 		} else if (myPet.getENVIRONMENT().equals("3")) {
 			petEnvironmentTV.setText("Water");
 		}
-		
+
 		nowDate = new Date();
-		petBirthDateTV.setText(FormatHelper.getFormattedStringDate(nowDate, FormatHelper.SHOW_DATE_FORMAT));
-		
+		petBirthDateTV.setText(FormatHelper.getFormattedStringDate(nowDate,
+				FormatHelper.SHOW_DATE_FORMAT));
+
 	}
 
 	@Override
@@ -104,12 +105,12 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.start:
 			if (processData() && processUser() && processSession()) {
-				
+
 				Intent i = new Intent(getApplicationContext(),
 						MainActivity.class);
 				Bundle bund = new Bundle();
-				bund.putParcelable("USER", myUser);
-				bund.putParcelable("PET", myPet);
+				bund.putParcelable("USER", this.myUser);
+				bund.putParcelable("PET", this.myPet);
 				i.putExtras(bund);
 				startActivity(i);
 			} else {
@@ -118,8 +119,9 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.pet_birth:
-//			DialogFragment newFragment = new DatePickerFragment(petBirthDateTV);
-//			newFragment.show(getFragmentManager(), "datePicker");
+			// DialogFragment newFragment = new
+			// DatePickerFragment(petBirthDateTV);
+			// newFragment.show(getFragmentManager(), "datePicker");
 			break;
 
 		default:
@@ -137,99 +139,69 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 
 		if (petBirthDateTV.getText().toString() != null
 				&& petBirthDateTV.getText().toString() != "") {
-			myPet.setBIRTH_DATE(FormatHelper.getFormattedDate(petBirthDateTV.getText().toString(), FormatHelper.SYSTEM_DATE_FORMAT));
+			this.myPet.setBIRTH_DATE(nowDate);
 			Log.i("POCKETTRAINER", "" + myPet.getBIRTH_DATE());
 		} else {
 			return false;
 		}
-		
+
+		this.myPet.setLEVEL("1");
+		this.myPet.setCURRENT_EXPERIENCE(0);
+		this.myPet.setMOOD("1");
+		this.myPet.setHUNGER_INDICATOR(100);
+		this.myPet.setSLEEP_INDICATOR(100);
+		this.myPet.setHYGIENE_INDICATOR(100);
+		this.myPet.setRELATIONSHIP_INDICATOR(100);
+
 		return true;
 	}
 
 	private boolean processUser() {
-		
+
 		Toast.makeText(getApplicationContext(), "PROCESS USER MULAI",
 				Toast.LENGTH_SHORT).show();
 		try {
-			myUser.setTRAINING_HISTORY("");
-			USER_DAL.insertUSER(getApplicationContext(), myUser);
+			this.myUser.setTRAINING_HISTORY("");
+			USER_DAL.insertUSER(getApplicationContext(), this.myUser);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		
+
 		try {
-			myUser = USER_DAL.getUSER_All(getApplicationContext()).get(0);
-			myPet.setUSER_ID(myUser.getID());
-			PET_DAL.insertPET(getApplicationContext(), myPet);
-			
+			this.myUser = USER_DAL.getUSER_All(getApplicationContext()).get(0);
+			this.myPet.setUSER_ID(this.myUser.getID());
+			PET_DAL.insertPET(getApplicationContext(), this.myPet);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		
+
 		try {
-			myPet = PET_DAL.getPET_All(getApplicationContext()).get(0);
+			this.myPet = PET_DAL.getPET_All(getApplicationContext()).get(0);
 			Log.i("POCKETTRAINER", "InsertPet" + myPet.getNAME());
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	private boolean processSession() {
-		UserSession.setUserSession(getApplicationContext(), "" + myUser.getID());
-		
+		UserSession
+				.setUserSession(getApplicationContext(), "" + myUser.getID());
+
 		loginStatus = UserSession.isLoggedIn(getApplicationContext());
-		
-		if(loginStatus){
-			UserSession.setUserSession(getApplicationContext(), "" + myUser.getID());
+
+		if (loginStatus) {
+			UserSession.setUserSession(getApplicationContext(),
+					"" + myUser.getID());
 			UserSession.setIdUser("" + myUser.getID());
 			return true;
 		}
-		
+
 		return false;
 	}
 }
-
-class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
-{
-
-	TextView	et;
-
-	public DatePickerFragment(TextView et)
-	{
-		this.et = et;
-	}
-
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState)
-	{
-		// Use the current date as the default date in the picker
-		final Calendar c = Calendar.getInstance();
-		int year = c.get(Calendar.YEAR);
-		int month = c.get(Calendar.MONTH);
-		int day = c.get(Calendar.DAY_OF_MONTH);
-
-//		Date date = c.getTime();
-
-		// Create a new instance of DatePickerDialog and return it
-		return new DatePickerDialog(this.getActivity(), this, year, month, day);
-	}
-
-	@Override
-	public void onDateSet(DatePicker view, int year, int month, int day)
-	{
-		// Do something with the date chosen by the user
-
-		final Calendar c = Calendar.getInstance();
-		c.set(year, month, day);
-
-		Date date = c.getTime();
-
-		SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH);
-//		Date tgl = null;
-
-		this.et.setText(dateFormat.format(date));
-	}
-}
-

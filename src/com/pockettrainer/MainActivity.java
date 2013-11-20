@@ -24,28 +24,38 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	Button myBtn;
 	ImageButton hungerBtn, energyBtn, hygieneBtn, loveBtn;
+	LinearLayout hungerIndMax, energyIndMax, hygieneIndMax, loveIndMax;
+	LinearLayout hungerInd, energyInd, hygieneInd, loveInd;
+	TextView levelTV;
+	TextView petNameTV;
+	LinearLayout experienceMax;
+	LinearLayout experiences;
+	ImageView petMood;
 	MainDashboard dashboard;
 	RelativeLayout gameView;
 	PET myPet;
 	USER myUser;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dashboard = new MainDashboard(this);
 		// setContentView(dashboard);
 		setContentView(R.layout.activity_main);
-		
+
 		myPet = new PET();
 		myUser = new USER();
-		
+
 		Intent i = getIntent();
 
 		if (i != null) {
@@ -59,23 +69,63 @@ public class MainActivity extends Activity implements OnClickListener {
 		} else {
 			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
 		}
-		
+
 		setupView();
+		setupEvent();
+		setupData();
 	}
 
 	private void setupView() {
 		gameView = (RelativeLayout) this.findViewById(R.id.gameView);
 		gameView.addView(dashboard);
+
 		myBtn = (Button) this.findViewById(R.id.main_button);
-		myBtn.setOnClickListener(this);
 		hungerBtn = (ImageButton) this.findViewById(R.id.eat_button);
-		hungerBtn.setOnClickListener(this);
 		energyBtn = (ImageButton) this.findViewById(R.id.sleep_button);
-		energyBtn.setOnClickListener(this);
 		hygieneBtn = (ImageButton) this.findViewById(R.id.bath_button);
-		hygieneBtn.setOnClickListener(this);
 		loveBtn = (ImageButton) this.findViewById(R.id.pet_button);
+
+		levelTV = (TextView) this.findViewById(R.id.level);
+		petNameTV = (TextView) this.findViewById(R.id.pet_name_text);
+		experienceMax = (LinearLayout) this.findViewById(R.id.exp_max);
+		experiences = (LinearLayout) this.findViewById(R.id.exp_bar);
+		hungerIndMax = (LinearLayout) this.findViewById(R.id.eat_indicator_max);
+		energyIndMax = (LinearLayout) this
+				.findViewById(R.id.sleep_indicator_max);
+		hygieneIndMax = (LinearLayout) this
+				.findViewById(R.id.bath_indicator_max);
+		loveIndMax = (LinearLayout) this.findViewById(R.id.pet_indicator_max);
+		hungerInd = (LinearLayout) this.findViewById(R.id.eat_indicator);
+		energyInd = (LinearLayout) this.findViewById(R.id.sleep_indicator);
+		hygieneInd = (LinearLayout) this.findViewById(R.id.bath_indicator);
+		loveInd = (LinearLayout) this.findViewById(R.id.pet_indicator);
+
+	}
+
+	private void setupEvent() {
+		myBtn.setOnClickListener(this);
+		hungerBtn.setOnClickListener(this);
+		energyBtn.setOnClickListener(this);
+		hygieneBtn.setOnClickListener(this);
 		loveBtn.setOnClickListener(this);
+	}
+
+	private void setupData() {
+		// setup nama pet
+		petNameTV.setText(this.myPet.getNAME());
+		
+		// setup level
+		levelTV.setText(this.myPet.getLEVEL());
+		
+		// setup current experience
+		
+		// setup mood
+		
+		// setup hunger
+		// setup energy
+		// setup hygiene
+		
+		// setup love
 	}
 
 	@Override
@@ -88,7 +138,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						Toast.makeText(getApplicationContext(), myPet.getNAME() + myPet.getBIRTH_DATE(),
+						Toast.makeText(getApplicationContext(),
+								myPet.getNAME() + myPet.getBIRTH_DATE(),
 								Toast.LENGTH_SHORT).show();
 						return true;
 						// Intent intent = new
@@ -124,14 +175,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivity(i);
 			break;
 		case R.id.eat_button:
-//			List<MONSTER> m = new ArrayList<MONSTER>();
-//			try {
-//				m = MONSTER_DAL.getMONSTER_All(getApplicationContext());
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			Toast.makeText(MainActivity.this, "" + m.get((m.size()-1)).getNAME(), 20).show();
 			Toast.makeText(MainActivity.this, "Eat", 20).show();
 			break;
 		case R.id.sleep_button:
