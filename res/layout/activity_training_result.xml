@@ -18,10 +18,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/list_states"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="18dp" >
+            android:padding="15dp" >
 
             <TextView
                 android:id="@+id/training_result_stats_title"
@@ -29,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="STATS"
-                android:textColor="@color/bright_blue"
+                android:textColor="@color/default_blue"
                 android:textSize="40sp" />
 
             <TextView
@@ -39,7 +36,7 @@
                 android:layout_below="@+id/training_result_stats_title"
                 android:layout_marginTop="15dp"
                 android:text="Running Time"
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -49,7 +46,7 @@
                 android:layout_below="@+id/training_result_stats_title"
                 android:layout_marginTop="40dp"
                 android:text="Distance"
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -59,7 +56,7 @@
                 android:layout_below="@+id/training_result_stats_title"
                 android:layout_marginTop="65dp"
                 android:text="Burned Calories"
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -69,7 +66,7 @@
                 android:layout_below="@+id/training_result_stats_title"
                 android:layout_marginTop="90dp"
                 android:text="Number of Steps"
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -124,10 +121,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/list_states"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="18dp" >
+            android:padding="15dp" >
 
             <TextView
                 android:id="@+id/training_result_pet_title"
@@ -135,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="PET"
-                android:textColor="@color/bright_blue"
+                android:textColor="@color/default_blue"
                 android:textSize="40sp" />
 
             <TextView
@@ -145,7 +139,7 @@
                 android:layout_below="@+id/training_result_pet_title"
                 android:layout_marginTop="15dp"
                 android:text="Monster Defeated"
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -155,7 +149,7 @@
                 android:layout_below="@+id/training_result_pet_title"
                 android:layout_marginTop="80dp"
                 android:text="Training Exp."
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -165,7 +159,7 @@
                 android:layout_below="@+id/training_result_pet_title"
                 android:layout_marginTop="105dp"
                 android:text="Total Exp."
-                android:textColor="@color/default_label_blue"
+                android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
             <TextView
@@ -201,6 +195,16 @@
                 android:textColor="@color/card_text_light"
                 android:textSize="20sp" />
         </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/default_button_states"
+            android:text="Continue"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </ScrollView>
