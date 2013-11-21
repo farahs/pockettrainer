@@ -97,19 +97,18 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 		startBtn.setOnClickListener(this);
 		animBounce.setAnimationListener(this);
 		pet_sprt.startAnimation(animBounce);
-		pet_env.startAnimation(animBounce);
 	}
 
 	private void setData() {
 		if (myPet.getENVIRONMENT().equals("1")) {
 			petEnvironmentTV.setText(clause + "Fire environment");
-			pet_env.setImageResource(R.drawable.env_logo_fire);
+			pet_env.setImageResource(R.drawable.env_fire);
 		} else if (myPet.getENVIRONMENT().equals("2")) {
 			petEnvironmentTV.setText(clause + "Grass environment");
-			pet_env.setImageResource(R.drawable.env_logo_grass);
+			pet_env.setImageResource(R.drawable.env_grass);
 		} else if (myPet.getENVIRONMENT().equals("3")) {
 			petEnvironmentTV.setText(clause + "Water environment");
-			pet_env.setImageResource(R.drawable.env_logo_water);
+			pet_env.setImageResource(R.drawable.env_water);
 		}
 
 		nowDate = new Date();
@@ -238,7 +237,6 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 	public void onAnimationEnd(Animation animation) {
 		// TODO Auto-generated method stub
 		pet_sprt.startAnimation(animBounce);
-		pet_env.startAnimation(animBounce);
 	}
 
 	@Override

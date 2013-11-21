@@ -148,6 +148,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_centerVertical="true"
+        android:background="@drawable/env_fire"
         android:layout_weight="56" >
     </RelativeLayout>
 

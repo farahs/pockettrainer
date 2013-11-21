@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	ImageView petMood;
 	MainDashboard dashboard;
 	RelativeLayout gameView;
+	int environment;
 	PET myPet;
 	USER myUser;
 	Date nowDate;
@@ -140,7 +141,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		levelTV.setText(this.myPet.getLEVEL());
 
 		setupExperience(this.myPet.getLEVEL());
-
+		
+		environment = Integer.parseInt(this.myPet.getENVIRONMENT());
+		
+		dashboard.setEnvironment(environment);
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
 

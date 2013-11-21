@@ -81,6 +81,10 @@ public class MainDashboard extends SurfaceView implements
 
 	private BitmapDrawable tile;
 
+	private WindowManager wm;
+	Display display;
+	Point size;
+
 	// the fps to be displayed
 	private String avgFps;
 
@@ -95,10 +99,9 @@ public class MainDashboard extends SurfaceView implements
 		// adding the callback (this) to the surface holder to intercept events
 		getHolder().addCallback(this);
 
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		Display display = wm.getDefaultDisplay();
-		Point size = new Point();
+		wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		display = wm.getDefaultDisplay();
+		size = new Point();
 		display.getSize(size);
 
 		setEnvironment();
@@ -127,13 +130,57 @@ public class MainDashboard extends SurfaceView implements
 		setFocusable(true);
 	}
 
+	private Bitmap resizeBitmap(int resource) {
+
+		int width = size.x; // Width of the actual device
+
+		int height = size.y; // height of the actual device
+
+		Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(),
+				resource);
+
+		Bitmap Objbitmap = originalBitmap;
+
+		if (Objbitmap != null) {
+
+			// scaling the bitmap in respect to the width of the device to get
+
+			// variant height for different android //devices
+
+			int heightofBitMap = Objbitmap.getHeight();
+
+			int widthofBitMap = Objbitmap.getWidth();
+
+			heightofBitMap = width * heightofBitMap / widthofBitMap;
+
+			widthofBitMap = width;
+
+			// Scaling the bitmap according to new height and width
+
+			Objbitmap = Bitmap.createScaledBitmap(originalBitmap,
+					widthofBitMap,
+
+					heightofBitMap, true);
+
+		}
+
+		return Objbitmap;
+
+	}
+	
+	public void setEnvironment(int env) {
+		if(env == 1)
+			currEnv = fireEnv;
+		if(env == 2)
+			currEnv = grassEnv;
+		if(env == 3)
+			currEnv = waterEnv;
+	}
+
 	private void setEnvironment() {
-		fireEnv = BitmapFactory.decodeResource(getResources(),
-				R.drawable.env_fire);
-		grassEnv = BitmapFactory.decodeResource(getResources(),
-				R.drawable.env_grass);
-		waterEnv = BitmapFactory.decodeResource(getResources(),
-				R.drawable.env_water);
+		fireEnv = resizeBitmap(R.drawable.env_fire);
+		grassEnv = resizeBitmap(R.drawable.env_grass);
+		waterEnv = resizeBitmap(R.drawable.env_water);
 		currEnv = grassEnv;
 	}
 
@@ -163,7 +210,7 @@ public class MainDashboard extends SurfaceView implements
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 
 		sprite.setX(xNew / 2 - spriteOptimalSize / 2);
-		sprite.setY(yNew / 2 - spriteOptimalSize / 2);
+		sprite.setY(yNew / 2 - spriteOptimalSize / 2 + 50);
 	}
 
 	@Override
@@ -193,9 +240,10 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void render(Canvas canvas) {
-		// Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		canvas.drawColor(Color.WHITE);
-		// canvas.drawBitmap(currEnv, 0,0, paint);
+		canvas.drawBitmap(currEnv, canvas.getWidth() - currEnv.getWidth(),
+				canvas.getHeight() - currEnv.getHeight(), paint);
 		sprite.draw(canvas);
 		// display fps
 		// displayFps(canvas, avgFps);
