@@ -55,7 +55,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	USER myUser;
 	Date nowDate;
 	int nowMaxExp;
-
+	Intent service;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +66,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		myPet = new PET();
 		myUser = new USER();
-
+		
 		Intent i = getIntent();
 
 		if (i != null) {
@@ -83,8 +84,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		setupView();
 		setupEvent();
 		
-		Intent service = new Intent(MainActivity.this, MyService.class);
-		startService(service);
+		service = new Intent(MainActivity.this, MyService.class);
+		
 	}
 
 	@Override
@@ -219,12 +220,15 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
+//		stopService(service);
 		dashboard.resumeThread();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+		
+//		startService(service);
 		dashboard.pauseThread();
 	}
 

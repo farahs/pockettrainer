@@ -9,6 +9,7 @@ import com.pockettrainer.database.model.PET;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
@@ -22,6 +23,7 @@ public class MyService extends Service {
 	int HYGIENE;
 	int RELATIONSHIP;
 	long time = 0L;
+	Handler customHandler = new Handler();
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -42,9 +44,13 @@ public class MyService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		
-
-		return super.onStartCommand(intent, flags, startId);
+//		Thread t = new Thread(timer);
+//		if(! t.isAlive()){
+//			t.start();
+//		}
+		customHandler.postDelayed(timer, 0);
+		Log.i("POCKETTRAINER", "run");
+		return START_STICKY;
 
 	}
 
@@ -52,24 +58,38 @@ public class MyService extends Service {
 
 		public void run() {
 
-			time = SystemClock.uptimeMillis();
-
-			if (time == 3600000L){
-				HUNGER -= 10;
-				SLEEP -= 10;
-				HYGIENE -= 10;
-				RELATIONSHIP -= 10;
-				
-				myPet.setHUNGER_INDICATOR(HUNGER);
-				myPet.setSLEEP_INDICATOR(SLEEP);
-				myPet.setHYGIENE_INDICATOR(HYGIENE);
-				myPet.setRELATIONSHIP_INDICATOR(RELATIONSHIP);
-				
-				time = 0L;
-				try {
-					PET_DAL.updatePET(getApplicationContext(), myPet);
-				} catch (SQLException e) {
-					e.printStackTrace();
+			int count = 1;
+			while (true){
+				count++;
+				try{
+					Thread.sleep(1000);
+					
+					if(HUNGER < 0){
+						HUNGER = 0;
+						SLEEP = 0;
+						HYGIENE = 0;
+						RELATIONSHIP = 0;
+					} else {
+						HUNGER -= 1;
+						SLEEP -= 1;
+						HYGIENE -= 1;
+						RELATIONSHIP -= 1;
+					}
+					
+					
+					myPet.setHUNGER_INDICATOR(HUNGER);
+					myPet.setSLEEP_INDICATOR(SLEEP);
+					myPet.setHYGIENE_INDICATOR(HYGIENE);
+					myPet.setRELATIONSHIP_INDICATOR(RELATIONSHIP);
+					
+					try {
+						PET_DAL.updatePET(getApplicationContext(), myPet);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					
+				} catch(Exception ex) {
+					
 				}
 			}
 		}
@@ -79,5 +99,6 @@ public class MyService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		customHandler.removeCallbacks(timer);
 	}
 }
