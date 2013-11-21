@@ -1,5 +1,9 @@
 package com.pockettrainer.animation;
 
+import com.pockettrainer.helper.BitmapCache;
+
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -10,11 +14,12 @@ public class SpriteAnimation {
 
 	private static final String TAG = SpriteAnimation.class.getSimpleName();
 
+	private int idle = 1;
+	private int move = 2;
+	private int end = 3;
+	
 	private Bitmap bitmap; // the animation sequence
-
-	private Bitmap an_idle;
-	private Bitmap an_move;
-	private Bitmap an_end;
+	private Bitmap cachedResult;
 
 	private Rect sourceRect; // the rectangle to be drawn from the animation
 								// bitmap
@@ -33,6 +38,8 @@ public class SpriteAnimation {
 
 	private final int MAX_HEIGHT = 400;
 	private final int MAX_WIDTH = 400;
+	
+	private BitmapCache bitCache;
 
 	private int x; // the X coordinate of the object (top left of the image)
 	private int y; // the Y coordinate of the object (top left of the image)
@@ -40,14 +47,14 @@ public class SpriteAnimation {
 	private boolean finish;
 
 	public SpriteAnimation(Bitmap bitmap, int x, int y, int width, int height,
-			int fps, int frameCount, boolean looped) {
+			int fps, int frameCount, boolean looped, Context context) {
 
 		spriteWidth = width;
 		spriteHeight = height;
-
+		setCache(context);
 		this.bitmap = Bitmap.createScaledBitmap(bitmap, spriteWidth
 				* frameCount, spriteHeight, true);
-		an_idle = bitmap;
+		setIdle(this.bitmap, frameCount);
 		this.x = x - width / 2;
 		this.y = y - height / 2;
 		currentFrame = 0;
@@ -59,44 +66,56 @@ public class SpriteAnimation {
 		framePeriod = 1000 / fps;
 		frameTicker = 0l;
 	}
+	
+	public void setCache(Context context) {
+		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		int memoryClassBytes = am.getMemoryClass() * 1024 * 1024;
+		bitCache = new BitmapCache(memoryClassBytes / 4);
+	}
 
 	public void setIdle(Bitmap b, int frameCount) {
-		an_idle = Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
-				spriteHeight, true);
 		frameIdle = frameCount;
+		bitCache.put(idle, Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
+				spriteHeight, true));
 	}
 
 	public void setMove(Bitmap b, int frameCount) {
-		an_move = Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
-				spriteHeight, true);
 		frameMove = frameCount;
+		bitCache.put(move, Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
+				spriteHeight, true));
 	}
 
 	public void setEnd(Bitmap b, int frameCount) {
-		an_end = Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
-				spriteHeight, true);
 		frameEnd = frameCount;
+		bitCache.put(end, Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
+				spriteHeight, true));
 	}
 
 	public void goIdle() {
 		currentFrame = 0;
 		looped = true;
 		frameNr = frameIdle;
-		bitmap = an_idle;
+		cachedResult = bitCache.get(idle);
+		if(cachedResult!=null)
+			bitmap = cachedResult;
 	}
 
 	public void goMove() {
 		currentFrame = 0;
 		looped = true;
 		frameNr = frameMove;
-		bitmap = an_move;
+		cachedResult = bitCache.get(move);
+		if(cachedResult!=null)
+			bitmap = cachedResult;
 	}
 
 	public void goEnd() {
 		currentFrame = 0;
 		looped = false;
 		frameNr = frameEnd;
-		bitmap = an_end;
+		cachedResult = bitCache.get(end);
+		if(cachedResult!=null)
+			bitmap = cachedResult;
 	}
 
 	public Bitmap getBitmap() {
@@ -193,7 +212,7 @@ public class SpriteAnimation {
 					goIdle();
 					looped = true;
 				}
-			}
+			} 
 
 		}
 		// define the rectangle to cut out sprite

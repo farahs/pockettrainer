@@ -8,7 +8,9 @@ import java.text.DecimalFormat;
 
 import com.example.pockettrainer.R;
 import com.pockettrainer.animation.SpriteAnimation;
+import com.pockettrainer.helper.BitmapCache;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +21,7 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -79,8 +82,6 @@ public class MainDashboard extends SurfaceView implements
 	private boolean isTouched;
 	boolean mSurfaceExists = true;
 
-	private BitmapDrawable tile;
-
 	private WindowManager wm;
 	Display display;
 	Point size;
@@ -103,19 +104,16 @@ public class MainDashboard extends SurfaceView implements
 		display = wm.getDefaultDisplay();
 		size = new Point();
 		display.getSize(size);
-
+		
 		setEnvironment();
 
-		spriteOptimalSize = size.x/2;
+		spriteOptimalSize = size.x / 2;
 
-		// create Elaine and load bitmap
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
-				getResources(), R.drawable.sprite_egg), size.x / 2, 200 // initial
-																		// position
-				, spriteOptimalSize, spriteOptimalSize // width and height of
-														// sprite
+				getResources(), R.drawable.sprite_egg), size.x / 2, 200 // initial position
+				, spriteOptimalSize, spriteOptimalSize // width and height of sprite
 				, 30, 20 // FPS and number of frames in the animation
-				, true);
+				, true, context);
 		sprite.setIdle(BitmapFactory.decodeResource(getResources(),
 				R.drawable.sprite_egg), 20);
 		sprite.setMove(BitmapFactory.decodeResource(getResources(),
@@ -123,57 +121,36 @@ public class MainDashboard extends SurfaceView implements
 		sprite.setEnd(BitmapFactory.decodeResource(getResources(),
 				R.drawable.sprite_egg_remove), 10);
 
-		// create the game loop thread
-		// thread = new MainThread(getHolder(), this);
-
-		// make the GamePanel focusable so it can handle events
 		setFocusable(true);
 	}
-
+	
 	private Bitmap resizeBitmap(int resource) {
 
 		int width = size.x; // Width of the actual device
-
 		int height = size.y; // height of the actual device
-
 		Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(),
 				resource);
-
 		Bitmap Objbitmap = originalBitmap;
 
 		if (Objbitmap != null) {
-
-			// scaling the bitmap in respect to the width of the device to get
-
-			// variant height for different android //devices
-
 			int heightofBitMap = Objbitmap.getHeight();
-
 			int widthofBitMap = Objbitmap.getWidth();
-
 			heightofBitMap = width * heightofBitMap / widthofBitMap;
-
 			widthofBitMap = width;
 
-			// Scaling the bitmap according to new height and width
-
 			Objbitmap = Bitmap.createScaledBitmap(originalBitmap,
-					widthofBitMap,
-
-					heightofBitMap, true);
-
+					widthofBitMap, heightofBitMap, true);
 		}
 
 		return Objbitmap;
-
 	}
-	
+
 	public void setEnvironment(int env) {
-		if(env == 1)
+		if (env == 1)
 			currEnv = fireEnv;
-		if(env == 2)
+		if (env == 2)
 			currEnv = grassEnv;
-		if(env == 3)
+		if (env == 3)
 			currEnv = waterEnv;
 	}
 
@@ -210,7 +187,7 @@ public class MainDashboard extends SurfaceView implements
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 
 		sprite.setX(xNew / 2 - spriteOptimalSize / 2);
-		sprite.setY(yNew / 2 - spriteOptimalSize / 2 + 50);
+		sprite.setY(yNew / 2 - spriteOptimalSize / 2 + 25);
 	}
 
 	@Override
@@ -245,8 +222,6 @@ public class MainDashboard extends SurfaceView implements
 		canvas.drawBitmap(currEnv, canvas.getWidth() - currEnv.getWidth(),
 				canvas.getHeight() - currEnv.getHeight(), paint);
 		sprite.draw(canvas);
-		// display fps
-		// displayFps(canvas, avgFps);
 	}
 
 	/**
@@ -377,5 +352,4 @@ public class MainDashboard extends SurfaceView implements
 		Log.d(TAG + ".initTimingElements()",
 				"Timing elements for stats initialised");
 	}
-
 }
