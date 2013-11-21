@@ -106,7 +106,7 @@ public class MainDashboard extends SurfaceView implements
 
 		setEnvironment();
 
-		spriteOptimalSize = size.x - size.x/2;
+		spriteOptimalSize = size.x/2;
 
 		// create Elaine and load bitmap
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
