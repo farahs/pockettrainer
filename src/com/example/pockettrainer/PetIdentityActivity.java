@@ -152,7 +152,11 @@ public class PetIdentityActivity extends Activity implements OnClickListener {
 		this.myPet.setSLEEP_INDICATOR(100);
 		this.myPet.setHYGIENE_INDICATOR(100);
 		this.myPet.setRELATIONSHIP_INDICATOR(100);
-
+		this.myPet.setLAST_UPDATE_HUNGER_INDICATOR(nowDate);
+		this.myPet.setLAST_UPDATE_SLEEP_INDICATOR(nowDate);
+		this.myPet.setLAST_UPDATE_HYGIENE_INDICATOR(nowDate);
+		this.myPet.setLAST_UPDATE_RELATIONSHIP_INDICATOR(nowDate);
+		
 		return true;
 	}
 

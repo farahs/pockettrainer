@@ -13,6 +13,7 @@ public class UserSession {
 	private static String idPet = "0";
 	public static String IS_LOGGED_IN = "ISLOGGEDIN";
 	public static String LOGIN_ID = "LOGIN_ID";
+	public static String HAVE_PET = "HAVE_PET";
 	public static String PET_ID = "PET_ID";
 	public static String PET_HUNGER = "PET_HUNGER";
 	public static String PET_SLEEP = "PET_SLEEP";
@@ -84,15 +85,15 @@ public class UserSession {
 		return user;
 	}
 	
-	public static void setPetSession(Context context, String userId)
+	public static void setPetSession(Context context, String petId)
 	{
 		SharedPreferences sp = getSharedPreference(context);
 
-		setIdUser(userId);
+		setIdPet(petId);
 		
 		Editor editor = sp.edit();
-		editor.putBoolean(IS_LOGGED_IN, true);
-		editor.putString(LOGIN_ID, userId);
+		editor.putBoolean(HAVE_PET, true);
+		editor.putString(PET_ID, petId);
 		
 		editor.commit();
 	}

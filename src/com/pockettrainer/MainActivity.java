@@ -2,6 +2,7 @@ package com.pockettrainer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.example.pockettrainer.R;
@@ -12,20 +13,27 @@ import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.USER;
+import com.pockettrainer.helper.MyService;
+import com.pockettrainer.helper.UserSession;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +53,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	RelativeLayout gameView;
 	PET myPet;
 	USER myUser;
+	Date nowDate;
+	int nowMaxExp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		setupView();
 		setupEvent();
+		
+		Intent service = new Intent(MainActivity.this, MyService.class);
+		startService(service);
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
 		setupData();
 	}
 
@@ -111,21 +129,66 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	private void setupData() {
+
+		nowDate = new Date();
+
 		// setup nama pet
 		petNameTV.setText(this.myPet.getNAME());
-		
+
 		// setup level
 		levelTV.setText(this.myPet.getLEVEL());
-		
+
+		setupExperience(this.myPet.getLEVEL());
+
 		// setup current experience
-		
+		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
+
 		// setup mood
-		
-		// setup hunger
-		// setup energy
-		// setup hygiene
-		
-		// setup love
+
+		// setup bar indikator
+		setupBarIndikator(myPet.getHUNGER_INDICATOR(),
+				myPet.getSLEEP_INDICATOR(), myPet.getHYGIENE_INDICATOR(),
+				myPet.getRELATIONSHIP_INDICATOR());
+	}
+
+	private void setupExperience(String level) {
+		double intLev = Double.parseDouble(level);
+		this.nowMaxExp = (int) ((int) 100 * Math.pow(2, intLev));
+	}
+
+	private void setupBarExperience(int a, int max_exp) {
+		int experienceWidthMax = experienceMax.getWidth();
+		int experienceWidthNow = (experienceWidthMax * a) / max_exp;
+		experiences.setLayoutParams(new LinearLayout.LayoutParams(
+				experienceWidthNow, LayoutParams.MATCH_PARENT));
+	}
+
+	private void setupBarIndikator(int a, int b, int c, int d) {
+
+		// setup hunger bar
+		int hungerWidthMax = this.hungerIndMax.getWidth();
+		int hungerWidthNow = (hungerWidthMax * a) / 100;
+		hungerInd.setLayoutParams(new LinearLayout.LayoutParams(hungerWidthNow,
+				LayoutParams.MATCH_PARENT));
+
+		// setup energy bar
+		int energyWidthMax = this.energyIndMax.getWidth();
+		int energyWidthNow = (energyWidthMax * b) / 100;
+		energyInd.setLayoutParams(new LinearLayout.LayoutParams(energyWidthNow,
+				LayoutParams.MATCH_PARENT));
+
+		// setup hygiene bar
+		int hygieneWidthMax = this.hygieneIndMax.getWidth();
+		int hygieneWidthNow = (hygieneWidthMax * c) / 100;
+		hygieneInd.setLayoutParams(new LinearLayout.LayoutParams(
+				hygieneWidthNow, LayoutParams.MATCH_PARENT));
+
+		// setup love bar
+		int loveWidthMax = this.loveIndMax.getWidth();
+		int loveWidthNow = (loveWidthMax * d) / 100;
+		loveInd.setLayoutParams(new LinearLayout.LayoutParams(loveWidthNow,
+				LayoutParams.MATCH_PARENT));
+
 	}
 
 	@Override
@@ -139,8 +202,8 @@ public class MainActivity extends Activity implements OnClickListener {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						Toast.makeText(getApplicationContext(),
-								myPet.getNAME() + myPet.getBIRTH_DATE(),
-								Toast.LENGTH_SHORT).show();
+								UserSession.getIdUser(), Toast.LENGTH_SHORT)
+								.show();
 						return true;
 						// Intent intent = new
 						// Intent(MainPageActivity.this.getApplicationContext(),

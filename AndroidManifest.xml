@@ -83,6 +83,11 @@
             android:label="@string/title_activity_test_accelerometer"
             android:screenOrientation="portrait" >
         </activity>
+
+        <service
+            android:name="com.pockettrainer.helper.MyService"
+            android:enabled="true" >
+        </service>
     </application>
 
 </manifest>

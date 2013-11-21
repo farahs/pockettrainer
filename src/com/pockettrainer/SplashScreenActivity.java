@@ -11,6 +11,7 @@ import com.pockettrainer.helper.UserSession;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -84,9 +85,13 @@ public class SplashScreenActivity extends Activity implements AnimationListener 
 				try {
 					myUser = USER_DAL.getUSER_All(getApplicationContext()).get(
 							0);
-
+					UserSession.setUserSession(getApplicationContext(), ""
+							+ myUser.getID());
 					if (myUser != null) {
-						myPet = PET_DAL.getPET_SingleByUserId(getApplicationContext(), myUser.getID());
+						myPet = PET_DAL.getPET_SingleByUserId(
+								getApplicationContext(), myUser.getID());
+						UserSession.setPetSession(getApplicationContext(), ""
+								+ myPet.getID());
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
