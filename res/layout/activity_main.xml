@@ -57,7 +57,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:weightSum="100" >
@@ -65,16 +65,19 @@
         <LinearLayout
             android:id="@+id/eat_indicator_max"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
             android:layout_weight="25"
-            android:background="@color/grey"
+            android:background="#FF3131"
             android:orientation="horizontal" >
 
             <LinearLayout
                 android:id="@+id/eat_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
+                android:layout_width="30dp"
+                android:layout_height="fill_parent"
+                android:background="#981C1C"
                 android:orientation="horizontal" >
             </LinearLayout>
         </LinearLayout>
@@ -82,16 +85,19 @@
         <LinearLayout
             android:id="@+id/sleep_indicator_max"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
             android:layout_weight="25"
-            android:background="@color/grey"
+            android:background="#996699"
             android:orientation="horizontal" >
 
             <LinearLayout
                 android:id="@+id/sleep_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
+                android:background="#5F3F5F"
                 android:orientation="horizontal" >
             </LinearLayout>
         </LinearLayout>
@@ -99,16 +105,19 @@
         <LinearLayout
             android:id="@+id/bath_indicator_max"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
             android:layout_weight="25"
-            android:background="@color/grey"
+            android:background="#00CCCC"
             android:orientation="horizontal" >
 
             <LinearLayout
                 android:id="@+id/bath_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
+                android:layout_width="65dp"
+                android:layout_height="fill_parent"
+                android:background="#008E8E"
                 android:orientation="horizontal" >
             </LinearLayout>
         </LinearLayout>
@@ -116,16 +125,19 @@
         <LinearLayout
             android:id="@+id/pet_indicator_max"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
             android:layout_weight="25"
-            android:background="@color/grey"
+            android:background="#FF6666"
             android:orientation="horizontal" >
 
             <LinearLayout
                 android:id="@+id/pet_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
+                android:layout_width="40dp"
+                android:layout_height="fill_parent"
+                android:background="#AA4444"
                 android:orientation="horizontal" >
             </LinearLayout>
         </LinearLayout>
@@ -135,7 +147,8 @@
         android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="55" >
+        android:layout_centerVertical="true"
+        android:layout_weight="56" >
     </RelativeLayout>
 
     <LinearLayout
@@ -174,14 +187,14 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/label_level"
                 android:layout_marginTop="5dp"
-                android:background="@color/grey" >
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:id="@+id/exp_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="200dp"
+                    android:layout_height="8dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/red_light"
+                    android:background="@color/blue_dark"
                     android:orientation="horizontal" >
                 </LinearLayout>
             </LinearLayout>
