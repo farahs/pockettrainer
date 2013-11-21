@@ -47,7 +47,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.pockettrainer.PetIdentityActivity"
+            android:name="com.pockettrainer.PetIdentityActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_pet_identity"
             android:screenOrientation="portrait" >
