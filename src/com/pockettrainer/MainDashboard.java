@@ -81,6 +81,7 @@ public class MainDashboard extends SurfaceView implements
 	private int selEnv = 0;
 
 	private boolean isTouched;
+	private boolean isSleep = false;
 	boolean mSurfaceExists = true;
 
 	private BitmapHelper bHelper;
@@ -103,12 +104,13 @@ public class MainDashboard extends SurfaceView implements
 
 		setEnvironment();
 		setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
-				R.drawable.sprite_egg_remove, 20, 10, 10);
+				R.drawable.sprite_egg_remove, 20, 10, 10, 10, 10);
 		setFocusable(true);
 	}
 
 	public void setSprite(Context context, int idle, int move, int end,
-			int frameIdle, int frameMove, int frameEnd) {
+			int frameIdle, int frameMove, int frameEnd, int frameEat,
+			int frameSleep) {
 		spriteOptimalSize = bHelper.getSize().x / 2;
 
 		sprite = new SpriteAnimation(bHelper.resizeBitmap(idle,
@@ -117,11 +119,13 @@ public class MainDashboard extends SurfaceView implements
 				, spriteOptimalSize, spriteOptimalSize // width and height of sprite
 				, 30, frameIdle // FPS and number of frames in the animation
 				, true, context);
-		sprite.setIdle(bHelper.resizeBitmap(R.drawable.sprite_egg,
-				spriteOptimalSize * frameIdle, spriteOptimalSize), frameIdle);
 		sprite.setMove(bHelper.resizeBitmap(R.drawable.sprite_egg_move,
 				spriteOptimalSize * frameMove, spriteOptimalSize), frameMove);
 		sprite.setEnd(bHelper.resizeBitmap(R.drawable.sprite_egg_remove,
+				spriteOptimalSize * frameEnd, spriteOptimalSize), frameEnd);
+		sprite.setEat(bHelper.resizeBitmap(R.drawable.sprite_egg_eat,
+				spriteOptimalSize * frameEnd, spriteOptimalSize), frameEnd);
+		sprite.setSleep(bHelper.resizeBitmap(R.drawable.sprite_egg_sleep,
 				spriteOptimalSize * frameEnd, spriteOptimalSize), frameEnd);
 	}
 
@@ -133,9 +137,14 @@ public class MainDashboard extends SurfaceView implements
 		if (env == 3)
 			currEnv = waterEnv;
 	}
-	
+
 	public void goEat() {
-		sprite.goMove();
+		sprite.goEat();
+	}
+	
+	public void goSleep() {
+		sprite.goSleep();
+		isSleep = true;
 	}
 
 	private void setEnvironment() {
@@ -205,10 +214,15 @@ public class MainDashboard extends SurfaceView implements
 
 	public void render(Canvas canvas) {
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		Paint alpha = new Paint();
+		alpha.setColor(Color.BLACK);
+		alpha.setAlpha(95);
 		canvas.drawColor(Color.WHITE);
 		canvas.drawBitmap(currEnv, canvas.getWidth() - currEnv.getWidth(),
 				canvas.getHeight() - currEnv.getHeight(), paint);
 		sprite.draw(canvas);
+		if(isSleep)
+			canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(), alpha);
 	}
 
 	/**

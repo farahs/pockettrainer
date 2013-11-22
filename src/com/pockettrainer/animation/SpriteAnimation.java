@@ -17,9 +17,14 @@ public class SpriteAnimation {
 	private int idle = 1;
 	private int move = 2;
 	private int end = 3;
-	
+	private int eat = 3;
+	private int sleep = 4;
+
 	private Bitmap bitmap; // the animation sequence
 	private Bitmap cachedResult;
+	private Bitmap an_end;
+	private Bitmap an_eat;
+	private Bitmap an_sleep;
 
 	private Rect sourceRect; // the rectangle to be drawn from the animation
 								// bitmap
@@ -27,6 +32,9 @@ public class SpriteAnimation {
 	private int frameIdle;
 	private int frameMove;
 	private int frameEnd;
+	private int frameEat;
+	private int frameSleep;
+	private int repeat=0;
 	private int currentFrame; // the current frame
 	private long frameTicker; // the time of the last frame update
 	private int framePeriod; // milliseconds between each frame (1000/fps)
@@ -38,7 +46,7 @@ public class SpriteAnimation {
 
 	private final int MAX_HEIGHT = 400;
 	private final int MAX_WIDTH = 400;
-	
+
 	private BitmapCache bitCache;
 
 	private int x; // the X coordinate of the object (top left of the image)
@@ -65,11 +73,12 @@ public class SpriteAnimation {
 		framePeriod = 1000 / fps;
 		frameTicker = 0l;
 	}
-	
+
 	public void setCache(Context context) {
-		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		ActivityManager am = (ActivityManager) context
+				.getSystemService(Context.ACTIVITY_SERVICE);
 		int memoryClassBytes = am.getMemoryClass() * 1024 * 1024;
-		bitCache = new BitmapCache(memoryClassBytes / 3);
+		bitCache = new BitmapCache(memoryClassBytes / 6);
 	}
 
 	public void setIdle(Bitmap b, int frameCount) {
@@ -84,7 +93,20 @@ public class SpriteAnimation {
 
 	public void setEnd(Bitmap b, int frameCount) {
 		frameEnd = frameCount;
-		bitCache.put(end, b);
+		// bitCache.put(end, b);
+		an_end = b;
+	}
+
+	public void setEat(Bitmap b, int frameCount) {
+		frameEat = frameCount;
+		// bitCache.put(eat, b);
+		an_eat = b;
+	}
+
+	public void setSleep(Bitmap b, int frameCount) {
+		frameSleep = frameCount;
+		// bitCache.put(sleep, b);
+		an_sleep = b;
 	}
 
 	public void goIdle() {
@@ -92,7 +114,7 @@ public class SpriteAnimation {
 		looped = true;
 		frameNr = frameIdle;
 		cachedResult = bitCache.get(idle);
-		if(cachedResult!=null)
+		if (cachedResult != null)
 			bitmap = cachedResult;
 	}
 
@@ -101,7 +123,7 @@ public class SpriteAnimation {
 		looped = true;
 		frameNr = frameMove;
 		cachedResult = bitCache.get(move);
-		if(cachedResult!=null)
+		if (cachedResult != null)
 			bitmap = cachedResult;
 	}
 
@@ -109,9 +131,31 @@ public class SpriteAnimation {
 		currentFrame = 0;
 		looped = false;
 		frameNr = frameEnd;
-		cachedResult = bitCache.get(end);
-		if(cachedResult!=null)
-			bitmap = cachedResult;
+		// cachedResult = bitCache.get(end);
+		// if (cachedResult != null)
+		// bitmap = cachedResult;
+		bitmap = an_end;
+	}
+
+	public void goEat() {
+		currentFrame = 0;
+		repeat=4;
+		looped = false;
+		frameNr = frameEat;
+		// cachedResult = bitCache.get(end);
+		// if (cachedResult != null)
+		// bitmap = cachedResult;
+		bitmap = an_eat;
+	}
+
+	public void goSleep() {
+		currentFrame = 0;
+		looped = true;
+		frameNr = frameSleep;
+		// cachedResult = bitCache.get(end);
+		// if (cachedResult != null)
+		// bitmap = cachedResult;
+		bitmap = an_sleep;
 	}
 
 	public Bitmap getBitmap() {
@@ -203,12 +247,17 @@ public class SpriteAnimation {
 				if (currentFrame >= frameNr) {
 					currentFrame = 0;
 				}
+			} else if(repeat>0) {
+				if (currentFrame >= frameNr) {
+					repeat-=1;
+					currentFrame = 0;
+				}
 			} else {
 				if (currentFrame >= frameNr) {
 					goIdle();
 					looped = true;
 				}
-			} 
+			}
 
 		}
 		// define the rectangle to cut out sprite
