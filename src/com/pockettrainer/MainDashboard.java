@@ -143,8 +143,17 @@ public class MainDashboard extends SurfaceView implements
 	}
 	
 	public void goSleep() {
-		sprite.goSleep();
-		isSleep = true;
+		if(!isSleep) {
+			sprite.goSleep();
+			isSleep = true;
+		} else {
+			isSleep = false;
+			sprite.goIdle();
+		}
+	}
+	
+	public boolean getSleep() {
+		return isSleep;
 	}
 
 	private void setEnvironment() {
