@@ -52,8 +52,7 @@ public class SpriteAnimation {
 		spriteWidth = width;
 		spriteHeight = height;
 		setCache(context);
-		this.bitmap = Bitmap.createScaledBitmap(bitmap, spriteWidth
-				* frameCount, spriteHeight, true);
+		this.bitmap = bitmap;
 		setIdle(this.bitmap, frameCount);
 		this.x = x - width / 2;
 		this.y = y - height / 2;
@@ -75,20 +74,17 @@ public class SpriteAnimation {
 
 	public void setIdle(Bitmap b, int frameCount) {
 		frameIdle = frameCount;
-		bitCache.put(idle, Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
-				spriteHeight, true));
+		bitCache.put(idle, b);
 	}
 
 	public void setMove(Bitmap b, int frameCount) {
 		frameMove = frameCount;
-		bitCache.put(move, Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
-				spriteHeight, true));
+		bitCache.put(move, b);
 	}
 
 	public void setEnd(Bitmap b, int frameCount) {
 		frameEnd = frameCount;
-		bitCache.put(end, Bitmap.createScaledBitmap(b, spriteWidth * frameCount,
-				spriteHeight, true));
+		bitCache.put(end, b);
 	}
 
 	public void goIdle() {
