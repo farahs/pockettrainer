@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import com.example.pockettrainer.R;
 import com.pockettrainer.animation.SpriteAnimation;
 import com.pockettrainer.helper.BitmapCache;
+import com.pockettrainer.helper.BitmapHelper;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -81,10 +82,8 @@ public class MainDashboard extends SurfaceView implements
 
 	private boolean isTouched;
 	boolean mSurfaceExists = true;
-
-	private WindowManager wm;
-	Display display;
-	Point size;
+	
+	private BitmapHelper bHelper;
 
 	// the fps to be displayed
 	private String avgFps;
@@ -99,18 +98,15 @@ public class MainDashboard extends SurfaceView implements
 		super(context);
 		// adding the callback (this) to the surface holder to intercept events
 		getHolder().addCallback(this);
-
-		wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		display = wm.getDefaultDisplay();
-		size = new Point();
-		display.getSize(size);
 		
+		bHelper = new BitmapHelper(this, context);
+
 		setEnvironment();
 
-		spriteOptimalSize = size.x / 2;
+		spriteOptimalSize = bHelper.getSize().x / 2;
 
 		sprite = new SpriteAnimation(BitmapFactory.decodeResource(
-				getResources(), R.drawable.sprite_egg), size.x / 2, 200 // initial position
+				getResources(), R.drawable.sprite_egg), bHelper.getSize().x / 2, 200 // initial position
 				, spriteOptimalSize, spriteOptimalSize // width and height of sprite
 				, 30, 20 // FPS and number of frames in the animation
 				, true, context);
@@ -124,27 +120,6 @@ public class MainDashboard extends SurfaceView implements
 		setFocusable(true);
 	}
 	
-	private Bitmap resizeBitmap(int resource) {
-
-		int width = size.x; // Width of the actual device
-		int height = size.y; // height of the actual device
-		Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(),
-				resource);
-		Bitmap Objbitmap = originalBitmap;
-
-		if (Objbitmap != null) {
-			int heightofBitMap = Objbitmap.getHeight();
-			int widthofBitMap = Objbitmap.getWidth();
-			heightofBitMap = width * heightofBitMap / widthofBitMap;
-			widthofBitMap = width;
-
-			Objbitmap = Bitmap.createScaledBitmap(originalBitmap,
-					widthofBitMap, heightofBitMap, true);
-		}
-
-		return Objbitmap;
-	}
-
 	public void setEnvironment(int env) {
 		if (env == 1)
 			currEnv = fireEnv;
@@ -155,9 +130,9 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	private void setEnvironment() {
-		fireEnv = resizeBitmap(R.drawable.env_fire);
-		grassEnv = resizeBitmap(R.drawable.env_grass);
-		waterEnv = resizeBitmap(R.drawable.env_water);
+		fireEnv = bHelper.resizeBitmap(R.drawable.env_fire, bHelper.getSize().x, bHelper.getSize().y);
+		grassEnv = bHelper.resizeBitmap(R.drawable.env_grass, bHelper.getSize().x, bHelper.getSize().y);
+		waterEnv = bHelper.resizeBitmap(R.drawable.env_water, bHelper.getSize().x, bHelper.getSize().y);
 		currEnv = grassEnv;
 	}
 
