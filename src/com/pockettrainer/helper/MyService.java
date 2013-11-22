@@ -1,17 +1,13 @@
 package com.pockettrainer.helper;
 
 import java.sql.SQLException;
-import java.util.Timer;
 
-import com.mapquest.android.maps.GeoPoint;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.model.PET;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
 
 public class MyService extends Service {
@@ -22,9 +18,7 @@ public class MyService extends Service {
 	int SLEEP;
 	int HYGIENE;
 	int RELATIONSHIP;
-	long time = 0L;
 
-	// Handler customHandler = new Handler();
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -50,7 +44,6 @@ public class MyService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		// customHandler.postDelayed(timer, 0);
 		ThreadDemo td = new ThreadDemo();
 		td.start();
 
@@ -102,6 +95,5 @@ public class MyService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-//		customHandler.removeCallbacks(timer);
 	}
 }
