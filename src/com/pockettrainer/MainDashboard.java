@@ -133,6 +133,10 @@ public class MainDashboard extends SurfaceView implements
 		if (env == 3)
 			currEnv = waterEnv;
 	}
+	
+	public void goEat() {
+		sprite.goMove();
+	}
 
 	private void setEnvironment() {
 		fireEnv = bHelper.resizeBitmap(R.drawable.env_fire,

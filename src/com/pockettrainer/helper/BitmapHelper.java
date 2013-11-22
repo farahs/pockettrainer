@@ -1,6 +1,7 @@
 package com.pockettrainer.helper;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -26,13 +27,13 @@ public class BitmapHelper {
 
 	public Bitmap resizeBitmap(int resource, int w, int h) {
 
-		int width = w; // Width of the actual device
-		int height = h; // height of the actual device
+		int width = w;
+		int height = h;
 		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inSampleSize = calculateInSampleSize(options, width, height);
-		Bitmap originalBitmap = BitmapFactory.decodeResource(
-				view.getResources(), resource, options);
-		
+
+		Bitmap originalBitmap = decodeBitmapFromResource(view.getResources(),
+				resource, w, h);
+
 		Bitmap Objbitmap = originalBitmap;
 
 		if (Objbitmap != null) {
@@ -40,12 +41,28 @@ public class BitmapHelper {
 			int widthofBitMap = Objbitmap.getWidth();
 			heightofBitMap = width * heightofBitMap / widthofBitMap;
 			widthofBitMap = width;
-			
+
 			Objbitmap = Bitmap.createScaledBitmap(originalBitmap,
 					widthofBitMap, heightofBitMap, true);
 		}
-		
+
 		return Objbitmap;
+	}
+
+	public Bitmap decodeBitmapFromResource(Resources res, int resId,
+			int reqWidth, int reqHeight) {
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeResource(res, resId, options);
+
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, reqWidth,
+				reqHeight);
+
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeResource(res, resId, options);
 	}
 
 	public Display getDisplay() {
@@ -63,10 +80,12 @@ public class BitmapHelper {
 		int inSampleSize = 1;
 
 		if (height > reqHeight || width > reqWidth) {
-			if (width > height) {
-				inSampleSize = Math.round((float) height / (float) reqHeight);
-			} else {
-				inSampleSize = Math.round((float) width / (float) reqWidth);
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
 			}
 		}
 		return inSampleSize;
