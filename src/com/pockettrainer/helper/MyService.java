@@ -23,7 +23,8 @@ public class MyService extends Service {
 	int HYGIENE;
 	int RELATIONSHIP;
 	long time = 0L;
-	Handler customHandler = new Handler();
+
+	// Handler customHandler = new Handler();
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -33,7 +34,7 @@ public class MyService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		idPet = Integer.parseInt(UserSession.getIdPet());
+		idPet = Integer.parseInt(UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID));
 		myPet = PET_DAL.getPET_Single(getApplicationContext(), idPet);
 		HUNGER = myPet.getHUNGER_INDICATOR();
 		SLEEP = myPet.getSLEEP_INDICATOR();
@@ -42,63 +43,65 @@ public class MyService extends Service {
 	}
 
 	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+	}
+
+	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-//		Thread t = new Thread(timer);
-//		if(! t.isAlive()){
-//			t.start();
-//		}
-		customHandler.postDelayed(timer, 0);
+		// customHandler.postDelayed(timer, 0);
+		ThreadDemo td = new ThreadDemo();
+		td.start();
+
 		Log.i("POCKETTRAINER", "run");
-		return START_STICKY;
+
+		return super.onStartCommand(intent, flags, startId);
 
 	}
 
-	private Runnable timer = new Runnable() {
-
+	private class ThreadDemo extends Thread {
+		@Override
 		public void run() {
+			super.run();
+			
+			try {
+				Thread.sleep(10000);
 
-			int count = 1;
-			while (true){
-				count++;
-				try{
-					Thread.sleep(1000);
-					
-					if(HUNGER < 0){
-						HUNGER = 0;
-						SLEEP = 0;
-						HYGIENE = 0;
-						RELATIONSHIP = 0;
-					} else {
-						HUNGER -= 1;
-						SLEEP -= 1;
-						HYGIENE -= 1;
-						RELATIONSHIP -= 1;
-					}
-					
-					
-					myPet.setHUNGER_INDICATOR(HUNGER);
-					myPet.setSLEEP_INDICATOR(SLEEP);
-					myPet.setHYGIENE_INDICATOR(HYGIENE);
-					myPet.setRELATIONSHIP_INDICATOR(RELATIONSHIP);
-					
-					try {
-						PET_DAL.updatePET(getApplicationContext(), myPet);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					
-				} catch(Exception ex) {
-					
+				if (HUNGER < 0) {
+					HUNGER = 0;
+					SLEEP = 0;
+					HYGIENE = 0;
+					RELATIONSHIP = 0;
+				} else {
+					HUNGER -= 5;
+					SLEEP -= 5;
+					HYGIENE -= 5;
+					RELATIONSHIP -= 5;
+					Log.i("POCKETTRAINER", " " + HUNGER + " " + SLEEP + " " + HYGIENE + " " + RELATIONSHIP);
 				}
+
+				myPet.setHUNGER_INDICATOR(HUNGER);
+				myPet.setSLEEP_INDICATOR(SLEEP);
+				myPet.setHYGIENE_INDICATOR(HYGIENE);
+				myPet.setRELATIONSHIP_INDICATOR(RELATIONSHIP);
+
+				try {
+					PET_DAL.updatePET(getApplicationContext(), myPet);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+			} catch (Exception ex) {
+
 			}
 		}
-
-	};
+	}
+	
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		customHandler.removeCallbacks(timer);
+//		customHandler.removeCallbacks(timer);
 	}
 }

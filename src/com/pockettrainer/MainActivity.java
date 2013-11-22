@@ -84,8 +84,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		setupView();
 		setupEvent();
-		
-		service = new Intent(MainActivity.this, MyService.class);
+	
 		
 	}
 
@@ -226,16 +225,19 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-//		stopService(service);
+		
 		dashboard.resumeThread();
+		service = new Intent(MainActivity.this, MyService.class);
+		stopService(service);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-//		startService(service);
+
 		dashboard.pauseThread();
+		service = new Intent(MainActivity.this, MyService.class);
+		startService(service);
 	}
 
 	@Override
