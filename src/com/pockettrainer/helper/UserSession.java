@@ -19,6 +19,10 @@ public class UserSession {
 	public static String PET_SLEEP = "PET_SLEEP";
 	public static String PET_HYGIENE = "PET_HYGIENE";
 	public static String PET_RELATIONSHIP = "PET_RELATIONSHIP";
+	public static int HUNGER = 0;
+	public static int SLEEP = 0;
+	public static int HYGIENE = 0;
+	public static int RELATIONSHIP = 0;
 	
 	public static SharedPreferences getSharedPreference(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context);
@@ -97,5 +101,7 @@ public class UserSession {
 		
 		editor.commit();
 	}
+	
+	
 	
 }

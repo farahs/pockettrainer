@@ -70,7 +70,7 @@ public class SpriteAnimation {
 	public void setCache(Context context) {
 		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		int memoryClassBytes = am.getMemoryClass() * 1024 * 1024;
-		bitCache = new BitmapCache(memoryClassBytes / 4);
+		bitCache = new BitmapCache(memoryClassBytes / 3);
 	}
 
 	public void setIdle(Bitmap b, int frameCount) {

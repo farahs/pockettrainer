@@ -206,8 +206,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
+						
+						
 						Toast.makeText(getApplicationContext(),
-								UserSession.getIdUser(), Toast.LENGTH_SHORT)
+								UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID), Toast.LENGTH_SHORT)
 								.show();
 						return true;
 						// Intent intent = new
