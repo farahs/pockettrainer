@@ -10,6 +10,7 @@ import com.example.pockettrainer.R.id;
 import com.example.pockettrainer.R.layout;
 import com.example.pockettrainer.R.menu;
 import com.pockettrainer.database.dal.MONSTER_DAL;
+import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.USER;
@@ -57,7 +58,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	Date nowDate;
 	int nowMaxExp;
 	Intent service;
-	
+	int hunger, energy, hygiene, love;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		myPet = new PET();
 		myUser = new USER();
-		
+
 		Intent i = getIntent();
 
 		if (i != null) {
@@ -84,8 +86,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		setupView();
 		setupEvent();
-	
-		
+
 	}
 
 	@Override
@@ -140,9 +141,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		levelTV.setText(this.myPet.getLEVEL());
 
 		setupExperience(this.myPet.getLEVEL());
-		
+
 		environment = Integer.parseInt(this.myPet.getENVIRONMENT());
-		
+
 		dashboard.setEnvironment(environment);
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
@@ -150,9 +151,12 @@ public class MainActivity extends Activity implements OnClickListener {
 		// setup mood
 
 		// setup bar indikator
-		setupBarIndikator(myPet.getHUNGER_INDICATOR(),
-				myPet.getSLEEP_INDICATOR(), myPet.getHYGIENE_INDICATOR(),
-				myPet.getRELATIONSHIP_INDICATOR());
+		hunger = myPet.getHUNGER_INDICATOR();
+		energy = myPet.getSLEEP_INDICATOR();
+		hygiene = myPet.getHYGIENE_INDICATOR();
+		love = myPet.getRELATIONSHIP_INDICATOR();
+		
+		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
 	private void setupExperience(String level) {
@@ -205,11 +209,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						
-						
-						Toast.makeText(getApplicationContext(),
-								UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID), Toast.LENGTH_SHORT)
-								.show();
+
+						Toast.makeText(
+								getApplicationContext(),
+								UserSession.getUserSession(
+										getApplicationContext()).get(
+										UserSession.LOGIN_ID),
+								Toast.LENGTH_SHORT).show();
 						return true;
 						// Intent intent = new
 						// Intent(MainPageActivity.this.getApplicationContext(),
@@ -225,7 +231,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		dashboard.resumeThread();
 		service = new Intent(MainActivity.this, MyService.class);
 		stopService(service);
@@ -250,16 +256,48 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivity(i);
 			break;
 		case R.id.eat_button:
-			Toast.makeText(MainActivity.this, "Eat", 20).show();
+			hunger = hunger + 5;
+			myPet.setHUNGER_INDICATOR(hunger);
+			try {
+				PET_DAL.updatePET(getApplicationContext(), myPet);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			setupBarIndikator(hunger, energy, hygiene, love);
+			Toast.makeText(MainActivity.this, "Eat", 1).show();
 			break;
 		case R.id.sleep_button:
-			Toast.makeText(MainActivity.this, "Sleep", 20).show();
+			energy = energy + 5;
+			myPet.setSLEEP_INDICATOR(energy);
+			try {
+				PET_DAL.updatePET(getApplicationContext(), myPet);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			setupBarIndikator(hunger, energy, hygiene, love);
+			Toast.makeText(MainActivity.this, "Sleep", 1).show();
 			break;
 		case R.id.bath_button:
-			Toast.makeText(MainActivity.this, "Bath", 20).show();
+			hygiene = hygiene + 5;
+			myPet.setHYGIENE_INDICATOR(hygiene);
+			try {
+				PET_DAL.updatePET(getApplicationContext(), myPet);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			setupBarIndikator(hunger, energy, hygiene, love);
+			Toast.makeText(MainActivity.this, "Bath", 1).show();
 			break;
 		case R.id.pet_button:
-			Toast.makeText(MainActivity.this, "Pet", 20).show();
+			love = love + 5;
+			myPet.setRELATIONSHIP_INDICATOR(love);
+			try {
+				PET_DAL.updatePET(getApplicationContext(), myPet);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			setupBarIndikator(hunger, energy, hygiene, love);
+			Toast.makeText(MainActivity.this, "Pet", 1).show();
 			break;
 		default:
 			break;
