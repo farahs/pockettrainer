@@ -35,6 +35,7 @@ public class SpriteAnimation {
 	private int frameEat;
 	private int frameSleep;
 	private int repeat=0;
+	private boolean isFinish = true;
 	private int currentFrame; // the current frame
 	private long frameTicker; // the time of the last frame update
 	private int framePeriod; // milliseconds between each frame (1000/fps)
@@ -119,22 +120,26 @@ public class SpriteAnimation {
 	}
 
 	public void goMove() {
-		currentFrame = 0;
-		looped = true;
-		frameNr = frameMove;
-		cachedResult = bitCache.get(move);
-		if (cachedResult != null)
-			bitmap = cachedResult;
+		if(isFinish) {
+			currentFrame = 0;
+			looped = true;
+			frameNr = frameMove;
+			cachedResult = bitCache.get(move);
+			if (cachedResult != null)
+				bitmap = cachedResult;
+		}
 	}
 
 	public void goEnd() {
-		currentFrame = 0;
-		looped = false;
-		frameNr = frameEnd;
-		// cachedResult = bitCache.get(end);
-		// if (cachedResult != null)
-		// bitmap = cachedResult;
-		bitmap = an_end;
+		if(isFinish) {
+			currentFrame = 0;
+			looped = false;
+			frameNr = frameEnd;
+			// cachedResult = bitCache.get(end);
+			// if (cachedResult != null)
+			// bitmap = cachedResult;
+			bitmap = an_end;
+		}
 	}
 
 	public void goEat() {
@@ -142,6 +147,7 @@ public class SpriteAnimation {
 		repeat=4;
 		looped = false;
 		frameNr = frameEat;
+		isFinish = false;
 		// cachedResult = bitCache.get(end);
 		// if (cachedResult != null)
 		// bitmap = cachedResult;
@@ -254,6 +260,7 @@ public class SpriteAnimation {
 				}
 			} else {
 				if (currentFrame >= frameNr) {
+					isFinish=true;
 					goIdle();
 					looped = true;
 				}

@@ -89,10 +89,13 @@ public class MainDashboard extends SurfaceView implements
 
 	private boolean isTouched;
 	private boolean isSleep = false;
+	private boolean isEat = false;
+	private boolean isTouchEat = false;
 	boolean mSurfaceExists = true;
 
 	private BitmapHelper bHelper;
 	private DragAnimation brushAnim;
+	private DragAnimation foodAnim;
 
 	// the fps to be displayed
 	private String avgFps;
@@ -110,6 +113,10 @@ public class MainDashboard extends SurfaceView implements
 
 		bHelper = new BitmapHelper(this, context);
 
+		brushAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.sikat,
+				100, 100), context);
+		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
+				100, 100), context);
 		setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
 				R.drawable.sprite_egg_remove, 20, 10, 10, 10, 10);
 
@@ -120,9 +127,6 @@ public class MainDashboard extends SurfaceView implements
 			int frameIdle, int frameMove, int frameEnd, int frameEat,
 			int frameSleep) {
 		spriteOptimalSize = bHelper.getSize().x / 2;
-
-		brushAnim = new DragAnimation(brush = bHelper.resizeBitmap(
-				R.drawable.sikat, 100, 100), context);
 
 		sprite = new SpriteAnimation(bHelper.resizeBitmap(idle,
 				spriteOptimalSize * frameIdle, spriteOptimalSize),
@@ -154,7 +158,13 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void goEat() {
-		sprite.goEat();
+		if (isEat)
+			isEat = false;
+		else
+			isEat = true;
+
+		if (bathing)
+			bathing = false;
 	}
 
 	private void setBrushX(int a) {
@@ -192,6 +202,9 @@ public class MainDashboard extends SurfaceView implements
 			bathing = false;
 		else
 			bathing = true;
+
+		if (isEat)
+			isEat = false;
 	}
 
 	@Override
@@ -239,13 +252,14 @@ public class MainDashboard extends SurfaceView implements
 			double radCircle = Math
 					.sqrt((((centerX - X) * (centerX - X)) + (centerY - Y)
 							* (centerY - Y)));
-			if (radCircle < 150) {
+			isTouchBath = true;
+			isTouchEat = true;
+			if (radCircle < 150 && !isEat) {
 				if (!isTouched) {
 					if (isSleep)
 						goSleep();
 					isTouched = true;
 					sprite.goMove();
-					isTouchBath = true;
 				}
 			} else {
 				if (isTouched)
@@ -253,12 +267,27 @@ public class MainDashboard extends SurfaceView implements
 				isTouched = false;
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			int centerX = sprite.getX() + sprite.getSpriteWidth() / 2;
+			int centerY = sprite.getY() + sprite.getSpriteHeight() / 2;
+			int X = (int) event.getX();
+			int Y = (int) event.getY();
+			double radCircle = Math
+					.sqrt((((centerX - X) * (centerX - X)) + (centerY - Y)
+							* (centerY - Y)));
+
+			if (radCircle < 100 && isEat) {
+				sprite.goEat();
+				goEat();
+			}
+
 			if (isTouched) {
 				isTouched = false;
 				sprite.goEnd();
 			}
 			if (isTouchBath)
 				isTouchBath = false;
+			if (isTouchEat)
+				isTouchEat = false;
 		}
 		return true;
 	}
@@ -277,6 +306,10 @@ public class MainDashboard extends SurfaceView implements
 		if (bathing && isTouchBath) {
 			brushAnim.update(brushX, brushY);
 			brushAnim.Draw(canvas);
+		}
+		if (isEat && isTouchEat) {
+			foodAnim.update(brushX, brushY);
+			foodAnim.Draw(canvas);
 		}
 	}
 
