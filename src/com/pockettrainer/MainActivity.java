@@ -155,7 +155,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		energy = myPet.getSLEEP_INDICATOR();
 		hygiene = myPet.getHYGIENE_INDICATOR();
 		love = myPet.getRELATIONSHIP_INDICATOR();
-		
+
 		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
@@ -256,17 +256,22 @@ public class MainActivity extends Activity implements OnClickListener {
 			startActivity(i);
 			break;
 		case R.id.eat_button:
-			hunger = hunger + 5;
-			myPet.setHUNGER_INDICATOR(hunger);
-			try {
-				PET_DAL.updatePET(getApplicationContext(), myPet);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if (!dashboard.getSleep()) {
+				dashboard.goEat();
+				hunger = hunger + 5;
+				myPet.setHUNGER_INDICATOR(hunger);
+				try {
+					PET_DAL.updatePET(getApplicationContext(), myPet);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				setupBarIndikator(hunger, energy, hygiene, love);
+				Toast.makeText(MainActivity.this, "Eat", 1).show();
 			}
-			setupBarIndikator(hunger, energy, hygiene, love);
-			Toast.makeText(MainActivity.this, "Eat", 1).show();
+
 			break;
 		case R.id.sleep_button:
+			dashboard.goSleep();
 			energy = energy + 5;
 			myPet.setSLEEP_INDICATOR(energy);
 			try {
@@ -278,15 +283,18 @@ public class MainActivity extends Activity implements OnClickListener {
 			Toast.makeText(MainActivity.this, "Sleep", 1).show();
 			break;
 		case R.id.bath_button:
-			hygiene = hygiene + 5;
-			myPet.setHYGIENE_INDICATOR(hygiene);
-			try {
-				PET_DAL.updatePET(getApplicationContext(), myPet);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if (dashboard.getSleep()) { 
+				hygiene = hygiene + 5;
+				myPet.setHYGIENE_INDICATOR(hygiene);
+				try {
+					PET_DAL.updatePET(getApplicationContext(), myPet);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				setupBarIndikator(hunger, energy, hygiene, love);
+				Toast.makeText(MainActivity.this, "Bath", 1).show();
 			}
-			setupBarIndikator(hunger, energy, hygiene, love);
-			Toast.makeText(MainActivity.this, "Bath", 1).show();
+
 			break;
 		case R.id.pet_button:
 			love = love + 5;
