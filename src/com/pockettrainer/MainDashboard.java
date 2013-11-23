@@ -7,6 +7,7 @@ package com.pockettrainer;
 import java.text.DecimalFormat;
 
 import com.example.pockettrainer.R;
+import com.pockettrainer.animation.DragAnimation;
 import com.pockettrainer.animation.SpriteAnimation;
 import com.pockettrainer.helper.BitmapCache;
 import com.pockettrainer.helper.BitmapHelper;
@@ -77,7 +78,13 @@ public class MainDashboard extends SurfaceView implements
 
 	private int spriteOptimalSize;
 
-	private Bitmap fireEnv, grassEnv, waterEnv, currEnv;
+	private Bitmap currEnv;
+	private Bitmap brush;
+	private boolean bathing = false;
+	private boolean isTouchBath = false;
+	private int bLastTouchX;
+	private int bLastTouchY;
+	private int brushX, brushY;
 	private int selEnv = 0;
 
 	private boolean isTouched;
@@ -85,6 +92,7 @@ public class MainDashboard extends SurfaceView implements
 	boolean mSurfaceExists = true;
 
 	private BitmapHelper bHelper;
+	private DragAnimation brushAnim;
 
 	// the fps to be displayed
 	private String avgFps;
@@ -102,9 +110,9 @@ public class MainDashboard extends SurfaceView implements
 
 		bHelper = new BitmapHelper(this, context);
 
-		setEnvironment();
 		setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
 				R.drawable.sprite_egg_remove, 20, 10, 10, 10, 10);
+
 		setFocusable(true);
 	}
 
@@ -113,10 +121,14 @@ public class MainDashboard extends SurfaceView implements
 			int frameSleep) {
 		spriteOptimalSize = bHelper.getSize().x / 2;
 
+		brushAnim = new DragAnimation(brush = bHelper.resizeBitmap(
+				R.drawable.sikat, 100, 100), context);
+
 		sprite = new SpriteAnimation(bHelper.resizeBitmap(idle,
 				spriteOptimalSize * frameIdle, spriteOptimalSize),
 				bHelper.getSize().x / 2, 200 // initial position
-				, spriteOptimalSize, spriteOptimalSize // width and height of sprite
+				, spriteOptimalSize, spriteOptimalSize // width and height of
+														// sprite
 				, 30, frameIdle // FPS and number of frames in the animation
 				, true, context);
 		sprite.setMove(bHelper.resizeBitmap(R.drawable.sprite_egg_move,
@@ -131,19 +143,38 @@ public class MainDashboard extends SurfaceView implements
 
 	public void setEnvironment(int env) {
 		if (env == 1)
-			currEnv = fireEnv;
+			currEnv = bHelper.resizeBitmap(R.drawable.env_fire,
+					bHelper.getSize().x, bHelper.getSize().y);
 		if (env == 2)
-			currEnv = grassEnv;
+			currEnv = bHelper.resizeBitmap(R.drawable.env_grass,
+					bHelper.getSize().x, bHelper.getSize().y);
 		if (env == 3)
-			currEnv = waterEnv;
+			currEnv = bHelper.resizeBitmap(R.drawable.env_water,
+					bHelper.getSize().x, bHelper.getSize().y);
 	}
 
 	public void goEat() {
 		sprite.goEat();
 	}
-	
+
+	private void setBrushX(int a) {
+		brushX = a;
+	}
+
+	private void setBrushY(int a) {
+		brushY = a;
+	}
+
+	private int getBrushX() {
+		return brushX;
+	}
+
+	private int getBrushY() {
+		return brushY;
+	}
+
 	public void goSleep() {
-		if(!isSleep) {
+		if (!isSleep) {
 			sprite.goSleep();
 			isSleep = true;
 		} else {
@@ -151,19 +182,16 @@ public class MainDashboard extends SurfaceView implements
 			sprite.goIdle();
 		}
 	}
-	
+
 	public boolean getSleep() {
 		return isSleep;
 	}
 
-	private void setEnvironment() {
-		fireEnv = bHelper.resizeBitmap(R.drawable.env_fire,
-				bHelper.getSize().x, bHelper.getSize().y);
-		grassEnv = bHelper.resizeBitmap(R.drawable.env_grass,
-				bHelper.getSize().x, bHelper.getSize().y);
-		waterEnv = bHelper.resizeBitmap(R.drawable.env_water,
-				bHelper.getSize().x, bHelper.getSize().y);
-		currEnv = grassEnv;
+	public void setIsBath() {
+		if (bathing)
+			bathing = false;
+		else
+			bathing = true;
 	}
 
 	@Override
@@ -197,26 +225,40 @@ public class MainDashboard extends SurfaceView implements
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		int X = (int) event.getX();
-		int Y = (int) event.getY();
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int centerX = sprite.getX() + sprite.getSpriteWidth() / 2;
 			int centerY = sprite.getY() + sprite.getSpriteHeight() / 2;
+			int X = (int) event.getX();
+			int Y = (int) event.getY();
+			Log.d("brush", X + " & " + Y);
+			setBrushX(X);
+			setBrushY(Y);
 
 			double radCircle = Math
 					.sqrt((((centerX - X) * (centerX - X)) + (centerY - Y)
 							* (centerY - Y)));
-			if (radCircle < 150 && !isTouched) {
-				isTouched = true;
-				sprite.goMove();
+			if (radCircle < 150) {
+				if (!isTouched) {
+					if (isSleep)
+						goSleep();
+					isTouched = true;
+					sprite.goMove();
+					isTouchBath = true;
+				}
+			} else {
+				if (isTouched)
+					sprite.goEnd();
+				isTouched = false;
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			if (isTouched) {
 				isTouched = false;
 				sprite.goEnd();
 			}
+			if (isTouchBath)
+				isTouchBath = false;
 		}
 		return true;
 	}
@@ -230,8 +272,12 @@ public class MainDashboard extends SurfaceView implements
 		canvas.drawBitmap(currEnv, canvas.getWidth() - currEnv.getWidth(),
 				canvas.getHeight() - currEnv.getHeight(), paint);
 		sprite.draw(canvas);
-		if(isSleep)
-			canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight(), alpha);
+		if (isSleep)
+			canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), alpha);
+		if (bathing && isTouchBath) {
+			brushAnim.update(brushX, brushY);
+			brushAnim.Draw(canvas);
+		}
 	}
 
 	/**
