@@ -98,6 +98,7 @@ public class SelectEnvironmentActivity extends Activity implements
 			i.putExtras(bund);
 			
 			startActivity(i);
+			this.finish();
 			break;
 		default:
 			break;

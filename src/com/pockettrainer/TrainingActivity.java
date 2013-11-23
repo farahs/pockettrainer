@@ -103,6 +103,8 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			} else {
 				Intent i = new Intent(getApplicationContext(),
 						TrainingResultActivity.class);
+				
+				
 				startActivity(i);
 			}
 			break;

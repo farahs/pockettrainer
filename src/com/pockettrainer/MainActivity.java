@@ -59,6 +59,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	int nowMaxExp;
 	Intent service;
 	int hunger, energy, hygiene, love;
+	int sum;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		levelTV = (TextView) this.findViewById(R.id.level);
 		petNameTV = (TextView) this.findViewById(R.id.pet_name_text);
+		petMood = (ImageView) this.findViewById(R.id.pet_mood);
 		experienceMax = (LinearLayout) this.findViewById(R.id.exp_max);
 		experiences = (LinearLayout) this.findViewById(R.id.exp_bar);
 		hungerIndMax = (LinearLayout) this.findViewById(R.id.eat_indicator_max);
@@ -148,8 +150,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
 
-		// setup mood
-
 		// setup bar indikator
 		hunger = myPet.getHUNGER_INDICATOR();
 		energy = myPet.getSLEEP_INDICATOR();
@@ -157,6 +157,28 @@ public class MainActivity extends Activity implements OnClickListener {
 		love = myPet.getRELATIONSHIP_INDICATOR();
 
 		setupBarIndikator(hunger, energy, hygiene, love);
+
+		// setup mood
+		setupMood(hunger, energy, hygiene, love);
+		
+	}
+
+	private void setupMood(int h, int e, int hy, int l) {
+		this.sum = h+e+hy+l;
+		if(this.sum <= 100) {
+			petMood.setImageResource(R.drawable.mood_verybad);
+			myPet.setMOOD("1");
+		} else if(this.sum <= 200) {
+			petMood.setImageResource(R.drawable.mood_bad);
+			myPet.setMOOD("2");
+		} else if(this.sum <= 300) {
+			petMood.setImageResource(R.drawable.mood_good);
+			myPet.setMOOD("3");
+		} else if(this.sum <= 400){
+			petMood.setImageResource(R.drawable.mood_verygood);
+			myPet.setMOOD("4");
+		}
+		
 	}
 
 	private void setupExperience(String level) {
@@ -248,7 +270,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.main_button:
 			Intent i = new Intent(getApplicationContext(),
@@ -266,7 +287,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}
 				setupBarIndikator(hunger, energy, hygiene, love);
-				Toast.makeText(MainActivity.this, "Eat", 1).show();
+				setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
@@ -280,7 +301,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 			setupBarIndikator(hunger, energy, hygiene, love);
-			Toast.makeText(MainActivity.this, "Sleep", 1).show();
+			setupMood(hunger, energy, hygiene, love);
 			break;
 		case R.id.bath_button:
 			if (dashboard.getSleep()) { 
@@ -292,7 +313,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}
 				setupBarIndikator(hunger, energy, hygiene, love);
-				Toast.makeText(MainActivity.this, "Bath", 1).show();
+				setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
@@ -305,7 +326,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 			setupBarIndikator(hunger, energy, hygiene, love);
-			Toast.makeText(MainActivity.this, "Pet", 1).show();
+			setupMood(hunger, energy, hygiene, love);
 			break;
 		default:
 			break;

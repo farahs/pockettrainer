@@ -137,15 +137,11 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 				bund.putParcelable("PET", this.myPet);
 				i.putExtras(bund);
 				startActivity(i);
+				this.finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "ELSE",
 						Toast.LENGTH_SHORT).show();
 			}
-			break;
-		case R.id.pet_birth:
-			// DialogFragment newFragment = new
-			// DatePickerFragment(petBirthDateTV);
-			// newFragment.show(getFragmentManager(), "datePicker");
 			break;
 
 		default:
@@ -171,7 +167,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 
 		this.myPet.setLEVEL("1");
 		this.myPet.setCURRENT_EXPERIENCE(0);
-		this.myPet.setMOOD("1");
+		this.myPet.setMOOD("4");
 		this.myPet.setHUNGER_INDICATOR(100);
 		this.myPet.setSLEEP_INDICATOR(100);
 		this.myPet.setHYGIENE_INDICATOR(100);

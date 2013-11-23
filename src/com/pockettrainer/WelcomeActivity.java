@@ -61,6 +61,7 @@ public class WelcomeActivity extends Activity implements OnClickListener, Animat
 		case R.id.welcome_next:
 			Intent i = new Intent(getApplicationContext(), SelectEnvironmentActivity.class);
 			startActivity(i);
+			this.finish();
 			break;
 
 		default:
