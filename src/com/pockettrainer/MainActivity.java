@@ -304,7 +304,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			setupMood(hunger, energy, hygiene, love);
 			break;
 		case R.id.bath_button:
-			if (dashboard.getSleep()) { 
+			if (!dashboard.getSleep()) { 
+				dashboard.setIsBath();
 				hygiene = hygiene + 5;
 				myPet.setHYGIENE_INDICATOR(hygiene);
 				try {
