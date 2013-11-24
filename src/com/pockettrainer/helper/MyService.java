@@ -18,7 +18,10 @@ public class MyService extends Service {
 	int SLEEP;
 	int HYGIENE;
 	int RELATIONSHIP;
-
+	int MINUS_SLEEP = 3;
+	int MINUS_RELATIONSHIP = 2;
+	int MINUS_HYGIENE = 4;
+	int MINUS_HUNGER = 6;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -28,7 +31,8 @@ public class MyService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		idPet = Integer.parseInt(UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID));
+		idPet = Integer.parseInt(UserSession.getUserSession(
+				getApplicationContext()).get(UserSession.LOGIN_ID));
 		myPet = PET_DAL.getPET_Single(getApplicationContext(), idPet);
 		HUNGER = myPet.getHUNGER_INDICATOR();
 		SLEEP = myPet.getSLEEP_INDICATOR();
@@ -57,22 +61,48 @@ public class MyService extends Service {
 		@Override
 		public void run() {
 			super.run();
-			
+
 			try {
 				Thread.sleep(10000);
 
-				if (HUNGER < 0) {
+				// HUNGER
+				if (HUNGER == 0) {
 					HUNGER = 0;
+				} else if (HUNGER - MINUS_HUNGER <= 0) {
+					HUNGER = 0;
+				} else {
+					HUNGER -= MINUS_HUNGER;
+				}
+
+				// SLEEP
+				if (SLEEP == 0) {
 					SLEEP = 0;
+				} else if (SLEEP - MINUS_SLEEP <= 0) {
+					SLEEP = 0;
+				} else {
+					SLEEP -= MINUS_SLEEP;
+				}
+
+				// HYGIENE
+				if (HYGIENE == 0) {
 					HYGIENE = 0;
+				} else if (HYGIENE - MINUS_HYGIENE <= 0) {
+					HYGIENE = 0;
+				} else {
+					HYGIENE -= MINUS_HYGIENE;
+				}
+
+				// RELATIONSHIP
+				if (RELATIONSHIP == 0) {
+					RELATIONSHIP = 0;
+				} else if (RELATIONSHIP - MINUS_RELATIONSHIP <= 0) {
 					RELATIONSHIP = 0;
 				} else {
-					HUNGER -= 5;
-					SLEEP -= 5;
-					HYGIENE -= 5;
-					RELATIONSHIP -= 5;
-					Log.i("POCKETTRAINER", " " + HUNGER + " " + SLEEP + " " + HYGIENE + " " + RELATIONSHIP);
+					RELATIONSHIP -= MINUS_RELATIONSHIP;
 				}
+				
+				Log.i("POCKETTRAINER", " " + HUNGER + " " + SLEEP + " "
+						+ HYGIENE + " " + RELATIONSHIP);
 
 				myPet.setHUNGER_INDICATOR(HUNGER);
 				myPet.setSLEEP_INDICATOR(SLEEP);
@@ -90,8 +120,7 @@ public class MyService extends Service {
 			}
 		}
 	}
-	
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

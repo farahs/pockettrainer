@@ -165,6 +165,15 @@ public class MainDashboard extends SurfaceView implements
 
 		if (bathing)
 			bathing = false;
+
+		int hunger = MainActivity.getInstance().getHunger();
+		int energy = MainActivity.getInstance().getEnergy();
+		int hygiene = MainActivity.getInstance().getHygiene();
+		int love = MainActivity.getInstance().getLove();
+
+		MainActivity.getInstance().setHunger(10);
+		MainActivity.getInstance().setupBarIndikator(hunger, energy, hygiene,
+				love);
 	}
 
 	private void setBrushX(int a) {
@@ -187,9 +196,37 @@ public class MainDashboard extends SurfaceView implements
 		if (!isSleep) {
 			sprite.goSleep();
 			isSleep = true;
+			EnergyRecharger er = new EnergyRecharger();
+			er.start();
 		} else {
 			isSleep = false;
 			sprite.goIdle();
+		}
+	}
+
+	private class EnergyRecharger extends Thread {
+
+		@Override
+		public void run() {
+			super.run();
+
+			try {
+
+				int hunger = MainActivity.getInstance().getHunger();
+				int energy = MainActivity.getInstance().getEnergy();
+				int hygiene = MainActivity.getInstance().getHygiene();
+				int love = MainActivity.getInstance().getLove();
+
+				Thread.sleep(10000);
+				MainActivity.getInstance().setEnergy(1);
+				MainActivity.getInstance().setupBarIndikator(hunger, energy,
+						hygiene, love);
+				
+				Log.i("POCKETTRAINER", " " + hunger + " " + energy + " "
+						+ hygiene + " " + love);
+			} catch (Exception ex) {
+
+			}
 		}
 	}
 
@@ -258,6 +295,27 @@ public class MainDashboard extends SurfaceView implements
 				if (!isTouched) {
 					if (isSleep)
 						goSleep();
+					if (bathing) {
+						// nambah hygiene
+						int hunger = MainActivity.getInstance().getHunger();
+						int energy = MainActivity.getInstance().getEnergy();
+						int hygiene = MainActivity.getInstance().getHygiene();
+						int love = MainActivity.getInstance().getLove();
+
+						MainActivity.getInstance().setHygiene(1);
+						MainActivity.getInstance().setupBarIndikator(hunger,
+								energy, hygiene, love);
+					} else {
+						// nambah relationship
+						int hunger = MainActivity.getInstance().getHunger();
+						int energy = MainActivity.getInstance().getEnergy();
+						int hygiene = MainActivity.getInstance().getHygiene();
+						int love = MainActivity.getInstance().getLove();
+
+						MainActivity.getInstance().setLove(2);
+						MainActivity.getInstance().setupBarIndikator(hunger,
+								energy, hygiene, love);
+					}
 					isTouched = true;
 					sprite.goMove();
 				}
@@ -441,4 +499,5 @@ public class MainDashboard extends SurfaceView implements
 		Log.d(TAG + ".initTimingElements()",
 				"Timing elements for stats initialised");
 	}
+
 }

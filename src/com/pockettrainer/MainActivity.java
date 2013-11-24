@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
+	static MainActivity mainActivity;
 	Button myBtn;
 	ImageButton hungerBtn, energyBtn, hygieneBtn, loveBtn;
 	LinearLayout hungerIndMax, energyIndMax, hygieneIndMax, loveIndMax;
@@ -67,7 +68,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		dashboard = new MainDashboard(this);
 		// setContentView(dashboard);
 		setContentView(R.layout.activity_main);
-
+		
+		mainActivity = this;
 		myPet = new PET();
 		myUser = new USER();
 
@@ -181,41 +183,41 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 	}
 
-	private void setupExperience(String level) {
+	public void setupExperience(String level) {
 		double intLev = Double.parseDouble(level);
 		this.nowMaxExp = (int) ((int) 100 * Math.pow(2, intLev));
 	}
 
-	private void setupBarExperience(int a, int max_exp) {
+	public void setupBarExperience(int a, int max_exp) {
 		int experienceWidthMax = experienceMax.getWidth();
 		int experienceWidthNow = (experienceWidthMax * a) / max_exp;
 		experiences.setLayoutParams(new LinearLayout.LayoutParams(
 				experienceWidthNow, LayoutParams.MATCH_PARENT));
 	}
 
-	private void setupBarIndikator(int a, int b, int c, int d) {
+	public void setupBarIndikator(int h, int e, int hy, int l) {
 
 		// setup hunger bar
 		int hungerWidthMax = this.hungerIndMax.getWidth();
-		int hungerWidthNow = (hungerWidthMax * a) / 100;
+		int hungerWidthNow = (hungerWidthMax * h) / 100;
 		hungerInd.setLayoutParams(new LinearLayout.LayoutParams(hungerWidthNow,
 				LayoutParams.MATCH_PARENT));
 
 		// setup energy bar
 		int energyWidthMax = this.energyIndMax.getWidth();
-		int energyWidthNow = (energyWidthMax * b) / 100;
+		int energyWidthNow = (energyWidthMax * e) / 100;
 		energyInd.setLayoutParams(new LinearLayout.LayoutParams(energyWidthNow,
 				LayoutParams.MATCH_PARENT));
 
 		// setup hygiene bar
 		int hygieneWidthMax = this.hygieneIndMax.getWidth();
-		int hygieneWidthNow = (hygieneWidthMax * c) / 100;
+		int hygieneWidthNow = (hygieneWidthMax * hy) / 100;
 		hygieneInd.setLayoutParams(new LinearLayout.LayoutParams(
 				hygieneWidthNow, LayoutParams.MATCH_PARENT));
 
 		// setup love bar
 		int loveWidthMax = this.loveIndMax.getWidth();
-		int loveWidthNow = (loveWidthMax * d) / 100;
+		int loveWidthNow = (loveWidthMax * l) / 100;
 		loveInd.setLayoutParams(new LinearLayout.LayoutParams(loveWidthNow,
 				LayoutParams.MATCH_PARENT));
 
@@ -279,42 +281,42 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.eat_button:
 			if (!dashboard.getSleep()) {
 				dashboard.goEat();
-				hunger = hunger + 5;
-				myPet.setHUNGER_INDICATOR(hunger);
-				try {
-					PET_DAL.updatePET(getApplicationContext(), myPet);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				setupBarIndikator(hunger, energy, hygiene, love);
-				setupMood(hunger, energy, hygiene, love);
+//				hunger = hunger + 5;
+//				myPet.setHUNGER_INDICATOR(hunger);
+//				try {
+//					PET_DAL.updatePET(getApplicationContext(), myPet);
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//				setupBarIndikator(hunger, energy, hygiene, love);
+//				setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
 		case R.id.sleep_button:
 			dashboard.goSleep();
-			energy = energy + 5;
-			myPet.setSLEEP_INDICATOR(energy);
-			try {
-				PET_DAL.updatePET(getApplicationContext(), myPet);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			setupBarIndikator(hunger, energy, hygiene, love);
-			setupMood(hunger, energy, hygiene, love);
+//			energy = energy + 5;
+//			myPet.setSLEEP_INDICATOR(energy);
+//			try {
+//				PET_DAL.updatePET(getApplicationContext(), myPet);
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//			setupBarIndikator(hunger, energy, hygiene, love);
+//			setupMood(hunger, energy, hygiene, love);
 			break;
 		case R.id.bath_button:
 			if (!dashboard.getSleep()) { 
 				dashboard.setIsBath();
-				hygiene = hygiene + 5;
-				myPet.setHYGIENE_INDICATOR(hygiene);
-				try {
-					PET_DAL.updatePET(getApplicationContext(), myPet);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				setupBarIndikator(hunger, energy, hygiene, love);
-				setupMood(hunger, energy, hygiene, love);
+//				hygiene = hygiene + 5;
+//				myPet.setHYGIENE_INDICATOR(hygiene);
+//				try {
+//					PET_DAL.updatePET(getApplicationContext(), myPet);
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//				setupBarIndikator(hunger, energy, hygiene, love);
+//				setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
@@ -331,6 +333,94 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	public static MainActivity getInstance(){
+		return mainActivity;
+	}
+
+	public int getHunger() {
+		return hunger;
+	}
+
+	public void setHunger(int tambahHunger) {
+		if(hunger == 100){
+			hunger = 100;
+		} else if(hunger + tambahHunger >= 100){
+			hunger = 100;
+		} else {
+			this.hunger += tambahHunger;
+		}
+		
+		myPet.setHUNGER_INDICATOR(hunger);
+		try {
+			PET_DAL.updatePET(getApplicationContext(), myPet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getEnergy() {
+		return energy;
+	}
+
+	public void setEnergy(int tambahEnergy) {
+		if(energy == 100){
+			energy = 100;
+		} else if(energy + tambahEnergy >= 100){
+			energy = 100;
+		} else {
+			this.energy += tambahEnergy;
+		}
+		
+		myPet.setSLEEP_INDICATOR(energy);
+		try {
+			PET_DAL.updatePET(getApplicationContext(), myPet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getHygiene() {
+		return hygiene;
+	}
+
+	public void setHygiene(int tambahHygiene) {
+		if(hygiene == 100){
+			hygiene = 100;
+		} else if(hygiene + tambahHygiene >= 100){
+			hygiene = 100;
+		} else {
+			this.hygiene += tambahHygiene;
+		}
+		
+		myPet.setHYGIENE_INDICATOR(hygiene);
+		try {
+			PET_DAL.updatePET(getApplicationContext(), myPet);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getLove() {
+		return love;
+	}
+
+	public void setLove(int tambahLove) {
+		if(love == 100){
+			love = 100;
+		} else if(love + tambahLove >= 100){
+			love = 100;
+		} else {
+			this.love += tambahLove;
+		}
+		
+		myPet.setRELATIONSHIP_INDICATOR(love);
+		try {
+			PET_DAL.updatePET(getApplicationContext(), myPet);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
