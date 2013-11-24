@@ -30,5 +30,7 @@
     <color name="blue_light">#006699</color>
     <color name="blue_dark">#005783</color>
     <color name="red_light">#ff4141</color>
+    <color name="magenta_light">#FF3399</color>
+    <color name="magenta_dark">#C62777</color>
     
 </resources>

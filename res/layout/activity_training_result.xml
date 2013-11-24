@@ -196,15 +196,37 @@
                 android:textSize="20sp" />
         </RelativeLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
-            android:background="@drawable/default_button_states"
-            android:text="Continue"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:weightSum="100" >
+
+            <Button
+                android:id="@+id/share_button"
+                android:layout_weight="50"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="5dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/default3_button_states"
+                android:text="Share"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+            
+            <Button
+                android:id="@+id/continue_button"
+                android:layout_weight="50"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/default_button_states"
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
