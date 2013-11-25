@@ -161,23 +161,22 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void goEat() {
-		if (isEat)
+		if (isEat) {
 			isEat = false;
-		else
-			isEat = true;
-
-		if (bathing) {
-			bathing = false;
-			MainActivity.setActHygiene(false);
-		}
-
-		if(isEat) {
 			int hunger = MainActivity.getInstance().getHunger();
 			int energy = MainActivity.getInstance().getEnergy();
 			int hygiene = MainActivity.getInstance().getHygiene();
 			int love = MainActivity.getInstance().getLove();
-	
+
 			MainActivity.getInstance().setHunger(10);
+			
+			MainActivity.setActHunger();
+		} else {
+			isEat = true;
+			if(bathing) {
+				bathing = false;
+				MainActivity.setActHygiene();
+			}
 		}
 	}
 
@@ -204,6 +203,16 @@ public class MainDashboard extends SurfaceView implements
 			EnergyRecharger er = new EnergyRecharger();
 			er.start();
 			UserSession.setPetSleepSession(getContext(), isSleep);
+			
+			if(bathing) {
+				bathing = false;
+				MainActivity.setActHygiene();
+			}
+			if(isEat) {
+				isEat = false;
+				MainActivity.setActHunger();
+			}
+			
 		} else {
 			isSleep = false;
 			sprite.goIdle();
@@ -245,11 +254,11 @@ public class MainDashboard extends SurfaceView implements
 		else
 			bathing = true;
 
-		if (isEat) {
+		if(isEat) {
 			isEat = false;
-			MainActivity.setActHunger(false);
+			MainActivity.setActHunger();
 		}
-		
+
 	}
 
 	@Override
@@ -303,8 +312,7 @@ public class MainDashboard extends SurfaceView implements
 				if (!isTouched) {
 					if (isSleep) {
 						goSleep();
-						MainActivity.setActHygiene(false);
-						MainActivity.setActHunger(false);
+						MainActivity.setActEnergy();
 					}
 					isTouched = true;
 					sprite.goMove();
@@ -327,7 +335,7 @@ public class MainDashboard extends SurfaceView implements
 				sprite.goEat();
 				goEat();
 			}
-			
+
 			if (isTouched) {
 				isTouched = false;
 				int hunger = MainActivity.getInstance().getHunger();
@@ -424,10 +432,10 @@ public class MainDashboard extends SurfaceView implements
 			try {
 				beginTime = System.currentTimeMillis();
 				framesSkipped = 0; // resetting the frames skipped
-				if (isTouched && bathing) {
+				if (isTouched && isTouchBath) {
 					// nambah hygiene
 					incHygiene += 1;
-				} else if (isTouched && !bathing) {
+				} else if (isTouched && !isTouchBath) {
 					// nambah relationship
 					incRel += 1;
 				}

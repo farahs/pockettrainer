@@ -98,7 +98,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		if (b) {
 			dashboard.goSleep();
-			MainActivity.setActEnergy(true);
+			MainActivity.setActEnergy();
 		}
 
 	}
@@ -292,7 +292,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.eat_button:
 			if (!dashboard.getSleep()) {
 				dashboard.goEat();
-				setActHunger(hungBtn);
+				setActHunger();
 				// hunger = hunger + 5;
 				// myPet.setHUNGER_INDICATOR(hunger);
 				// try {
@@ -307,7 +307,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.sleep_button:
 			dashboard.goSleep();
-			setActEnergy(enBtn);
+			setActEnergy();
 			// energy = energy + 5;
 			// myPet.setSLEEP_INDICATOR(energy);
 			// try {
@@ -321,7 +321,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.bath_button:
 			if (!dashboard.getSleep()) {
 				dashboard.setIsBath();
-				setActHygiene(hyBtn);
+				setActHygiene();
 				// hygiene = hygiene + 5;
 				// myPet.setHYGIENE_INDICATOR(hygiene);
 				// try {
@@ -350,32 +350,32 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	public static void setActHunger(boolean a) {
-		if(a == true) {
-			hungBtn = !a;
+	public static void setActHunger() {
+		if(hungBtn) {
+			hungBtn = !hungBtn;
 			hungerBtn.setBackgroundResource(R.drawable.top_hunger_color);
 		} else {
-			hungBtn = !a;
+			hungBtn = !hungBtn;
 			hungerBtn.setBackgroundResource(R.drawable.top_default_color);
 		}
 	}
 	
-	public static void setActHygiene(boolean a) {
-		if(a == true) {
-			hyBtn = !a;
+	public static void setActHygiene() {
+		if(hyBtn) {
+			hyBtn = !hyBtn;
 			hygieneBtn.setBackgroundResource(R.drawable.top_hygiene_color);
 		} else {
-			hyBtn = !a;
+			hyBtn = !hyBtn;
 			hygieneBtn.setBackgroundResource(R.drawable.top_default_color);
 		}
 	}
 	
-	public static void setActEnergy(boolean a) {
-		if(a == true) {
-			enBtn = !a;
+	public static void setActEnergy() {
+		if(enBtn) {
+			enBtn = !enBtn;
 			energyBtn.setBackgroundResource(R.drawable.top_sleep_color);
 		} else {
-			enBtn = !a;
+			enBtn = !enBtn;
 			energyBtn.setBackgroundResource(R.drawable.top_default_color);
 		}
 	}
