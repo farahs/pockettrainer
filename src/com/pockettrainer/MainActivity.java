@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	static MainActivity mainActivity;
 	Button myBtn;
-	ImageButton hungerBtn, energyBtn, hygieneBtn, loveBtn;
+	static RelativeLayout hungerBtn, energyBtn, hygieneBtn, loveBtn;
 	LinearLayout hungerIndMax, energyIndMax, hygieneIndMax, loveIndMax;
 	LinearLayout hungerInd, energyInd, hygieneInd, loveInd;
 	TextView levelTV;
@@ -54,6 +54,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	MainDashboard dashboard;
 	RelativeLayout gameView;
 	int environment;
+	static boolean hungBtn = false;
+	static boolean enBtn = false;
+	static boolean hyBtn = false;
 	PET myPet;
 	USER myUser;
 	Date nowDate;
@@ -90,12 +93,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		boolean b = UserSession.getPetSleepSession(getApplicationContext())
 				.get(UserSession.SLEEP_FLAG);
 
-		if (b) {
-			dashboard.goSleep();
-		}
-
 		setupView();
 		setupEvent();
+		
+		if (b) {
+			dashboard.goSleep();
+			MainActivity.setActEnergy(true);
+		}
 
 	}
 
@@ -110,10 +114,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		gameView.addView(dashboard);
 
 		myBtn = (Button) this.findViewById(R.id.main_button);
-		hungerBtn = (ImageButton) this.findViewById(R.id.eat_button);
-		energyBtn = (ImageButton) this.findViewById(R.id.sleep_button);
-		hygieneBtn = (ImageButton) this.findViewById(R.id.bath_button);
-		loveBtn = (ImageButton) this.findViewById(R.id.pet_button);
+		hungerBtn = (RelativeLayout) this.findViewById(R.id.eat_button);
+		energyBtn = (RelativeLayout) this.findViewById(R.id.sleep_button);
+		hygieneBtn = (RelativeLayout) this.findViewById(R.id.bath_button);
+		loveBtn = (RelativeLayout) this.findViewById(R.id.pet_button);
 
 		levelTV = (TextView) this.findViewById(R.id.level);
 		petNameTV = (TextView) this.findViewById(R.id.pet_name_text);
@@ -288,6 +292,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.eat_button:
 			if (!dashboard.getSleep()) {
 				dashboard.goEat();
+				setActHunger(hungBtn);
 				// hunger = hunger + 5;
 				// myPet.setHUNGER_INDICATOR(hunger);
 				// try {
@@ -302,6 +307,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.sleep_button:
 			dashboard.goSleep();
+			setActEnergy(enBtn);
 			// energy = energy + 5;
 			// myPet.setSLEEP_INDICATOR(energy);
 			// try {
@@ -315,6 +321,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.bath_button:
 			if (!dashboard.getSleep()) {
 				dashboard.setIsBath();
+				setActHygiene(hyBtn);
 				// hygiene = hygiene + 5;
 				// myPet.setHYGIENE_INDICATOR(hygiene);
 				// try {
@@ -340,6 +347,36 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	public static void setActHunger(boolean a) {
+		if(a == true) {
+			hungBtn = !a;
+			hungerBtn.setBackgroundResource(R.drawable.top_hunger_color);
+		} else {
+			hungBtn = !a;
+			hungerBtn.setBackgroundResource(R.drawable.top_default_color);
+		}
+	}
+	
+	public static void setActHygiene(boolean a) {
+		if(a == true) {
+			hyBtn = !a;
+			hygieneBtn.setBackgroundResource(R.drawable.top_hygiene_color);
+		} else {
+			hyBtn = !a;
+			hygieneBtn.setBackgroundResource(R.drawable.top_default_color);
+		}
+	}
+	
+	public static void setActEnergy(boolean a) {
+		if(a == true) {
+			enBtn = !a;
+			energyBtn.setBackgroundResource(R.drawable.top_sleep_color);
+		} else {
+			enBtn = !a;
+			energyBtn.setBackgroundResource(R.drawable.top_default_color);
 		}
 	}
 
