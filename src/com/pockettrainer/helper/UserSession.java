@@ -129,7 +129,7 @@ public class UserSession {
 		setSleep(isS);
 		
 		Editor editor = sp.edit();
-		editor.putBoolean(SLEEP_FLAG, true);
+		editor.putBoolean(SLEEP_FLAG, isS);
 		
 		editor.commit();
 	}

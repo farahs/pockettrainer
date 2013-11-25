@@ -28,7 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class TrainingResultActivity extends Activity {
+public class TrainingResultActivity extends Activity implements OnClickListener {
 
 	SocialAuthAdapter adapter;
 	Button share;
@@ -41,6 +41,8 @@ public class TrainingResultActivity extends Activity {
 
 		share = (Button) findViewById(R.id.share_button);
 		cont = (Button) findViewById(R.id.continue_button);
+		
+		cont.setOnClickListener(this);
 		
 		adapter = new SocialAuthAdapter(new ResponseListener());
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
@@ -128,6 +130,21 @@ public class TrainingResultActivity extends Activity {
 		@Override
 		public void onError(SocialAuthError e) {
 
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.continue_button:
+			Intent i = new Intent(getApplicationContext(),
+					TestGMaps.class);
+			
+			startActivity(i);
+			break;
+
+		default:
+			break;
 		}
 	}
 

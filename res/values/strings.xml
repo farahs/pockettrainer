@@ -13,5 +13,6 @@
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_select_environment">SelectEnvironmentActivity</string>
     <string name="title_activity_pet_identity">PetIdentityActivity</string>
+    <string name="title_activity_test_gmaps">TestGMaps</string>
 
 </resources>

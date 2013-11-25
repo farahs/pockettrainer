@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.pockettrainer.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.LineOverlay;
 import com.mapquest.android.maps.MapActivity;
@@ -37,7 +39,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	Button resumeBtn;
 	Button stopBtn;
 	List<GeoPoint> trackedPoint;
-	protected MapView myMap;
+	protected GoogleMap myMap;
 	protected MyLocationOverlay myLocationOverlay;
 
 	private long startTime = 0L;
@@ -56,8 +58,8 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 
 		setupView();
 		setupEvent();
-		setupMapView();
-		setupMyLocation();
+//		setupMapView();
+//		setupMyLocation();
 	}
 
 	private void setupView() {
@@ -67,6 +69,9 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		resumeBtn = (Button) this.findViewById(R.id.training_resume);
 		stopBtn = (Button) this.findViewById(R.id.training_stop);
 
+		myMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+		        .getMap();
+		
 		startBtn.setVisibility(View.VISIBLE);
 		pauseBtn.setVisibility(View.GONE);
 		resumeBtn.setVisibility(View.GONE);
@@ -155,7 +160,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 				trackedPoint.add(currentLocation);
 				// Toast.makeText(TrainingActivity.this,
 				// currentLocation.toString(), Toast.LENGTH_SHORT).show();
-				drawTrackLine();
+//				drawTrackLine();
 			}
 		}
 
@@ -183,72 +188,9 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		notificationManger.notify(01, notification);
 	}
 
-	/**
-	 * This will set up a MapQuest map with a MyLocation Overlay
-	 */
-	private void setupMapView() {
-		this.myMap = (MapView) findViewById(R.id.map);
-
-		// enable the zoom controls
-		myMap.setBuiltInZoomControls(true);
-	}
-
-	protected void setupMyLocation() {
-		this.myLocationOverlay = new MyLocationOverlay(this, myMap);
-
-		myLocationOverlay.enableMyLocation();
-		myLocationOverlay.runOnFirstFix(new Runnable() {
-			@Override
-			public void run() {
-				GeoPoint currentLocation = myLocationOverlay.getMyLocation();
-				myMap.getController().animateTo(currentLocation);
-				myMap.getController().setZoom(18);
-				myMap.getOverlays().add(myLocationOverlay);
-				myLocationOverlay.setFollowing(true);
-			}
-		});
-	}
-
-	private void drawTrackLine() {
-		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		paint.setColor(Color.BLUE);
-		paint.setAlpha(100);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeJoin(Paint.Join.ROUND);
-		paint.setStrokeCap(Paint.Cap.ROUND);
-		paint.setStrokeWidth(5);
-		LineOverlay line = new LineOverlay(paint);
-		line.setData(trackedPoint);
-
-		this.myMap.getOverlays().add(line);
-		// this.map.getController().z
-		this.myMap.invalidate();
-	}
-
 	@Override
-	protected void onResume() {
-		myLocationOverlay.enableMyLocation();
-		myLocationOverlay.enableCompass();
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		// setupNotification();
-		myLocationOverlay.disableCompass();
-		myLocationOverlay.disableMyLocation();
-	}
-
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		customHandler.removeCallbacks(updateTimerThread);
-		this.finish();
-	}
-
-	@Override
-	public boolean isRouteDisplayed() {
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
