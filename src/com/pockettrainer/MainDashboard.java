@@ -85,7 +85,8 @@ public class MainDashboard extends SurfaceView implements
 	private boolean isTouchBath = false;
 	private int bLastTouchX;
 	private int bLastTouchY;
-	private int brushX, brushY;
+	private int brushX = 100;
+	private int brushY = 100;
 	private int selEnv = 0;
 
 	private boolean isTouched;
@@ -159,20 +160,20 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void goEat() {
-		if (isEat)
+		if (isEat) {
+			int hunger = MainActivity.getInstance().getHunger();
+			int energy = MainActivity.getInstance().getEnergy();
+			int hygiene = MainActivity.getInstance().getHygiene();
+			int love = MainActivity.getInstance().getLove();
+
+			MainActivity.getInstance().setHunger(10);
 			isEat = false;
-		else
+		} else {
 			isEat = true;
+		}
 
 		if (bathing)
 			bathing = false;
-
-		int hunger = MainActivity.getInstance().getHunger();
-		int energy = MainActivity.getInstance().getEnergy();
-		int hygiene = MainActivity.getInstance().getHygiene();
-		int love = MainActivity.getInstance().getLove();
-
-		MainActivity.getInstance().setHunger(10);
 	}
 
 	private void setBrushX(int a) {
@@ -294,23 +295,6 @@ public class MainDashboard extends SurfaceView implements
 				if (!isTouched) {
 					if (isSleep)
 						goSleep();
-					if (bathing) {
-						// nambah hygiene
-						int hunger = MainActivity.getInstance().getHunger();
-						int energy = MainActivity.getInstance().getEnergy();
-						int hygiene = MainActivity.getInstance().getHygiene();
-						int love = MainActivity.getInstance().getLove();
-
-						MainActivity.getInstance().setHygiene(1);
-					} else {
-						// nambah relationship
-						int hunger = MainActivity.getInstance().getHunger();
-						int energy = MainActivity.getInstance().getEnergy();
-						int hygiene = MainActivity.getInstance().getHygiene();
-						int love = MainActivity.getInstance().getLove();
-
-						MainActivity.getInstance().setLove(2);
-					}
 					isTouched = true;
 					sprite.goMove();
 				}
@@ -337,10 +321,10 @@ public class MainDashboard extends SurfaceView implements
 				isTouched = false;
 				sprite.goEnd();
 			}
-			if (isTouchBath)
-				isTouchBath = false;
-			if (isTouchEat)
-				isTouchEat = false;
+			// if (isTouchBath)
+			// isTouchBath = false;
+			// if (isTouchEat)
+			// isTouchEat = false;
 		}
 		return true;
 	}
@@ -414,6 +398,24 @@ public class MainDashboard extends SurfaceView implements
 				beginTime = System.currentTimeMillis();
 				framesSkipped = 0; // resetting the frames skipped
 				update();
+				if (isTouched && bathing) {
+					// nambah hygiene
+					int hunger = MainActivity.getInstance().getHunger();
+					int energy = MainActivity.getInstance().getEnergy();
+					int hygiene = MainActivity.getInstance().getHygiene();
+					int love = MainActivity.getInstance().getLove();
+
+					MainActivity.getInstance().setHygiene(1);
+				}
+				if (isTouched && !bathing) {
+					// nambah relationship
+					int hunger = MainActivity.getInstance().getHunger();
+					int energy = MainActivity.getInstance().getEnergy();
+					int hygiene = MainActivity.getInstance().getHygiene();
+					int love = MainActivity.getInstance().getLove();
+
+					MainActivity.getInstance().setLove(2);
+				}
 				render(canvas);
 				timeDiff = System.currentTimeMillis() - beginTime;
 				sleepTime = (int) (FRAME_PERIOD - timeDiff);
