@@ -9,138 +9,149 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15"
+        android:layout_weight="16"
         android:orientation="horizontal"
         android:weightSum="100" >
 
-        <ImageButton
+        <RelativeLayout
             android:id="@+id/eat_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="25"
-            android:background="#FF3131"
-            android:padding="15dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/burger" />
+            android:background="@drawable/top_hunger_color" >
 
-        <ImageButton
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/burger" />
+
+            <LinearLayout
+                android:id="@+id/eat_indicator_max"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="5dp" >
+
+                <LinearLayout
+                    android:id="@+id/eat_indicator"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:background="#55000000"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/sleep_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="25"
-            android:background="#996699"
-            android:padding="15dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/sleep" />
+            android:background="@drawable/top_sleep_color" >
 
-        <ImageButton
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/sleep" />
+
+            <LinearLayout
+                android:id="@+id/sleep_indicator_max"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="5dp" >
+
+                <LinearLayout
+                    android:id="@+id/sleep_indicator"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:background="#55000000"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/bath_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="25"
-            android:background="#00CCCC"
-            android:padding="15dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/bath" />
+            android:background="@drawable/top_hygiene_color" >
 
-        <ImageButton
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bath" />
+
+            <LinearLayout
+                android:id="@+id/bath_indicator_max"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="5dp" >
+
+                <LinearLayout
+                    android:id="@+id/bath_indicator"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:background="#55000000"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/pet_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="25"
-            android:background="#FF6666"
-            android:padding="15dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/love" />
-    </LinearLayout>
+            android:background="@drawable/top_relationship_color" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:weightSum="100" >
-
-        <LinearLayout
-            android:id="@+id/eat_indicator_max"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="25"
-            android:background="#FF3131"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/love" />
 
             <LinearLayout
-                android:id="@+id/eat_indicator"
-                android:layout_width="30dp"
-                android:layout_height="fill_parent"
-                android:background="#981C1C"
-                android:orientation="horizontal" >
+                android:id="@+id/pet_indicator_max"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="5dp" >
+
+                <LinearLayout
+                    android:id="@+id/pet_indicator"
+                    android:layout_width="30dp"
+                    android:layout_height="fill_parent"
+                    android:background="#55000000"
+                    android:orientation="vertical" >
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sleep_indicator_max"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="25"
-            android:background="#996699"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
-
-            <LinearLayout
-                android:id="@+id/sleep_indicator"
-                android:layout_width="50dp"
-                android:layout_height="fill_parent"
-                android:background="#5F3F5F"
-                android:orientation="horizontal" >
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bath_indicator_max"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="25"
-            android:background="#00CCCC"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
-
-            <LinearLayout
-                android:id="@+id/bath_indicator"
-                android:layout_width="65dp"
-                android:layout_height="fill_parent"
-                android:background="#008E8E"
-                android:orientation="horizontal" >
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/pet_indicator_max"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="25"
-            android:background="#FF6666"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
-
-            <LinearLayout
-                android:id="@+id/pet_indicator"
-                android:layout_width="40dp"
-                android:layout_height="fill_parent"
-                android:background="#AA4444"
-                android:orientation="horizontal" >
-            </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -247,5 +258,4 @@
                 android:textSize="25sp" />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
