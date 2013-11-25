@@ -6,6 +6,8 @@ import java.util.List;
 import com.example.pockettrainer.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.LineOverlay;
 import com.mapquest.android.maps.MapActivity;
@@ -30,6 +32,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TrainingActivity extends MapActivity implements OnClickListener {
 
@@ -38,7 +41,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	Button pauseBtn;
 	Button resumeBtn;
 	Button stopBtn;
-	List<GeoPoint> trackedPoint;
+	List<LatLng> trackedPoint;
 	protected GoogleMap myMap;
 	protected MyLocationOverlay myLocationOverlay;
 
@@ -54,12 +57,16 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training);
-		trackedPoint = new ArrayList<GeoPoint>();
+		trackedPoint = new ArrayList<LatLng>();
 
 		setupView();
 		setupEvent();
-//		setupMapView();
-//		setupMyLocation();
+
+		try {
+			initializeMap();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setupView() {
@@ -69,9 +76,6 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		resumeBtn = (Button) this.findViewById(R.id.training_resume);
 		stopBtn = (Button) this.findViewById(R.id.training_stop);
 
-		myMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-		        .getMap();
-		
 		startBtn.setVisibility(View.VISIBLE);
 		pauseBtn.setVisibility(View.GONE);
 		resumeBtn.setVisibility(View.GONE);
@@ -108,8 +112,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			} else {
 				Intent i = new Intent(getApplicationContext(),
 						TrainingResultActivity.class);
-				
-				
+
 				startActivity(i);
 			}
 			break;
@@ -157,10 +160,10 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 
 			if (secs % 10 == 0) {
 				GeoPoint currentLocation = myLocationOverlay.getMyLocation();
-				trackedPoint.add(currentLocation);
+//				trackedPoint.add(currentLocation);
 				// Toast.makeText(TrainingActivity.this,
 				// currentLocation.toString(), Toast.LENGTH_SHORT).show();
-//				drawTrackLine();
+				// drawTrackLine();
 			}
 		}
 
@@ -193,5 +196,31 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	private void initializeMap() {
+
+		if (myMap == null) {
+			myMap = ((MapFragment) getFragmentManager().findFragmentById(
+					R.id.map)).getMap();
+
+			myMap.setMyLocationEnabled(true);
+
+			double latitude = myMap.getMyLocation().getLatitude();
+			double longitude = myMap.getMyLocation().getLongitude();
+
+			MarkerOptions marker = new MarkerOptions().position(
+					new LatLng(latitude, longitude)).title("My Position").snippet("Rumah");
+			myMap.addMarker(marker);
+
+			if (myMap == null) {
+				Toast.makeText(getApplicationContext(),
+						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
+						.show();
+			}
+		}
+
+	}
+	
+	
 
 }
