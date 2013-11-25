@@ -15,10 +15,10 @@ public class UserSession {
 	public static String LOGIN_ID = "LOGIN_ID";
 	public static String HAVE_PET = "HAVE_PET";
 	public static String PET_ID = "PET_ID";
-	public static String PET_HUNGER = "PET_HUNGER";
-	public static String PET_SLEEP = "PET_SLEEP";
-	public static String PET_HYGIENE = "PET_HYGIENE";
-	public static String PET_RELATIONSHIP = "PET_RELATIONSHIP";
+//	public static String PET_HUNGER = "PET_HUNGER";
+//	public static String PET_SLEEP = "PET_SLEEP";
+//	public static String PET_HYGIENE = "PET_HYGIENE";
+//	public static String PET_RELATIONSHIP = "PET_RELATIONSHIP";
 	public static String SLEEP_FLAG = "SLEEP_FLAG";
 	public static int HUNGER = 0;
 	public static int SLEEP = 0;
@@ -44,6 +44,14 @@ public class UserSession {
 
 	public static void setIdPet(String idPet) {
 		UserSession.idPet = idPet;
+	}
+
+	public static boolean isSleep() {
+		return isSleep;
+	}
+
+	public static void setSleep(boolean isSleep) {
+		UserSession.isSleep = isSleep;
 	}
 
 	public static HashMap<String, String> getUserSession(Context context)
@@ -85,10 +93,10 @@ public class UserSession {
 	{
 		SharedPreferences sp = getSharedPreference(context);
 		
-		HashMap<String, String> user = new HashMap<String, String>();
-		user.put(LOGIN_ID, sp.getString(LOGIN_ID, idUser));
+		HashMap<String, String> pet = new HashMap<String, String>();
+		pet.put(PET_ID, sp.getString(PET_ID, idPet));
 		
-		return user;
+		return pet;
 	}
 	
 	public static void setPetSession(Context context, String petId)
@@ -103,7 +111,28 @@ public class UserSession {
 		
 		editor.commit();
 	}
+
+	public static HashMap<String, Boolean> getPetSleepSession(Context context)
+	{
+		SharedPreferences sp = getSharedPreference(context);
+		
+		HashMap<String, Boolean> petSleep = new HashMap<String, Boolean>();
+		petSleep.put(SLEEP_FLAG, sp.getBoolean(SLEEP_FLAG, false));
+		
+		return petSleep;
+	}
 	
+	public static void setPetSleepSession(Context context, boolean isS)
+	{
+		SharedPreferences sp = getSharedPreference(context);
+
+		setSleep(isS);
+		
+		Editor editor = sp.edit();
+		editor.putBoolean(SLEEP_FLAG, true);
+		
+		editor.commit();
+	}
 	
 	
 }

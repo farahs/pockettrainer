@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		dashboard = new MainDashboard(this);
 		// setContentView(dashboard);
 		setContentView(R.layout.activity_main);
-		
+
 		mainActivity = this;
 		myPet = new PET();
 		myUser = new USER();
@@ -85,6 +85,13 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		} else {
 			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
+		}
+
+		boolean b = UserSession.getPetSleepSession(getApplicationContext())
+				.get(UserSession.SLEEP_FLAG);
+
+		if (b) {
+			dashboard.goSleep();
 		}
 
 		setupView();
@@ -162,25 +169,25 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// setup mood
 		setupMood(hunger, energy, hygiene, love);
-		
+
 	}
 
 	private void setupMood(int h, int e, int hy, int l) {
-		this.sum = h+e+hy+l;
-		if(this.sum <= 100) {
+		this.sum = h + e + hy + l;
+		if (this.sum <= 100) {
 			petMood.setImageResource(R.drawable.mood_verybad);
 			myPet.setMOOD("1");
-		} else if(this.sum <= 200) {
+		} else if (this.sum <= 200) {
 			petMood.setImageResource(R.drawable.mood_bad);
 			myPet.setMOOD("2");
-		} else if(this.sum <= 300) {
+		} else if (this.sum <= 300) {
 			petMood.setImageResource(R.drawable.mood_good);
 			myPet.setMOOD("3");
-		} else if(this.sum <= 400){
+		} else if (this.sum <= 400) {
 			petMood.setImageResource(R.drawable.mood_verygood);
 			myPet.setMOOD("4");
 		}
-		
+
 	}
 
 	public void setupExperience(String level) {
@@ -281,62 +288,62 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.eat_button:
 			if (!dashboard.getSleep()) {
 				dashboard.goEat();
-//				hunger = hunger + 5;
-//				myPet.setHUNGER_INDICATOR(hunger);
-//				try {
-//					PET_DAL.updatePET(getApplicationContext(), myPet);
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//				setupBarIndikator(hunger, energy, hygiene, love);
-//				setupMood(hunger, energy, hygiene, love);
+				// hunger = hunger + 5;
+				// myPet.setHUNGER_INDICATOR(hunger);
+				// try {
+				// PET_DAL.updatePET(getApplicationContext(), myPet);
+				// } catch (SQLException e) {
+				// e.printStackTrace();
+				// }
+				// setupBarIndikator(hunger, energy, hygiene, love);
+				// setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
 		case R.id.sleep_button:
 			dashboard.goSleep();
-//			energy = energy + 5;
-//			myPet.setSLEEP_INDICATOR(energy);
-//			try {
-//				PET_DAL.updatePET(getApplicationContext(), myPet);
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			setupBarIndikator(hunger, energy, hygiene, love);
-//			setupMood(hunger, energy, hygiene, love);
+			// energy = energy + 5;
+			// myPet.setSLEEP_INDICATOR(energy);
+			// try {
+			// PET_DAL.updatePET(getApplicationContext(), myPet);
+			// } catch (SQLException e) {
+			// e.printStackTrace();
+			// }
+			// setupBarIndikator(hunger, energy, hygiene, love);
+			// setupMood(hunger, energy, hygiene, love);
 			break;
 		case R.id.bath_button:
-			if (!dashboard.getSleep()) { 
+			if (!dashboard.getSleep()) {
 				dashboard.setIsBath();
-//				hygiene = hygiene + 5;
-//				myPet.setHYGIENE_INDICATOR(hygiene);
-//				try {
-//					PET_DAL.updatePET(getApplicationContext(), myPet);
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//				setupBarIndikator(hunger, energy, hygiene, love);
-//				setupMood(hunger, energy, hygiene, love);
+				// hygiene = hygiene + 5;
+				// myPet.setHYGIENE_INDICATOR(hygiene);
+				// try {
+				// PET_DAL.updatePET(getApplicationContext(), myPet);
+				// } catch (SQLException e) {
+				// e.printStackTrace();
+				// }
+				// setupBarIndikator(hunger, energy, hygiene, love);
+				// setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
 		case R.id.pet_button:
-			love = love + 5;
-			myPet.setRELATIONSHIP_INDICATOR(love);
-			try {
-				PET_DAL.updatePET(getApplicationContext(), myPet);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			setupBarIndikator(hunger, energy, hygiene, love);
-			setupMood(hunger, energy, hygiene, love);
+			// love = love + 5;
+			// myPet.setRELATIONSHIP_INDICATOR(love);
+			// try {
+			// PET_DAL.updatePET(getApplicationContext(), myPet);
+			// } catch (SQLException e) {
+			// e.printStackTrace();
+			// }
+			// setupBarIndikator(hunger, energy, hygiene, love);
+			// setupMood(hunger, energy, hygiene, love);
 			break;
 		default:
 			break;
 		}
 	}
-	
-	public static MainActivity getInstance(){
+
+	public static MainActivity getInstance() {
 		return mainActivity;
 	}
 
@@ -345,20 +352,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void setHunger(int tambahHunger) {
-		if(hunger == 100){
+		if (hunger == 100) {
 			hunger = 100;
-		} else if(hunger + tambahHunger >= 100){
+		} else if (hunger + tambahHunger >= 100) {
 			hunger = 100;
 		} else {
 			this.hunger += tambahHunger;
 		}
-		
+
 		myPet.setHUNGER_INDICATOR(hunger);
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
 	public int getEnergy() {
@@ -366,20 +375,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void setEnergy(int tambahEnergy) {
-		if(energy == 100){
+		if (energy == 100) {
 			energy = 100;
-		} else if(energy + tambahEnergy >= 100){
+		} else if (energy + tambahEnergy >= 100) {
 			energy = 100;
 		} else {
 			this.energy += tambahEnergy;
 		}
-		
+
 		myPet.setSLEEP_INDICATOR(energy);
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
 	public int getHygiene() {
@@ -387,20 +398,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void setHygiene(int tambahHygiene) {
-		if(hygiene == 100){
+		if (hygiene == 100) {
 			hygiene = 100;
-		} else if(hygiene + tambahHygiene >= 100){
+		} else if (hygiene + tambahHygiene >= 100) {
 			hygiene = 100;
 		} else {
 			this.hygiene += tambahHygiene;
 		}
-		
+
 		myPet.setHYGIENE_INDICATOR(hygiene);
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
 	public int getLove() {
@@ -408,20 +421,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void setLove(int tambahLove) {
-		if(love == 100){
+		if (love == 100) {
 			love = 100;
-		} else if(love + tambahLove >= 100){
+		} else if (love + tambahLove >= 100) {
 			love = 100;
 		} else {
 			this.love += tambahLove;
 		}
-		
+
 		myPet.setRELATIONSHIP_INDICATOR(love);
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
 }

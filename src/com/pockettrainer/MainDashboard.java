@@ -11,6 +11,7 @@ import com.pockettrainer.animation.DragAnimation;
 import com.pockettrainer.animation.SpriteAnimation;
 import com.pockettrainer.helper.BitmapCache;
 import com.pockettrainer.helper.BitmapHelper;
+import com.pockettrainer.helper.UserSession;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -172,8 +173,6 @@ public class MainDashboard extends SurfaceView implements
 		int love = MainActivity.getInstance().getLove();
 
 		MainActivity.getInstance().setHunger(10);
-		MainActivity.getInstance().setupBarIndikator(hunger, energy, hygiene,
-				love);
 	}
 
 	private void setBrushX(int a) {
@@ -198,9 +197,11 @@ public class MainDashboard extends SurfaceView implements
 			isSleep = true;
 			EnergyRecharger er = new EnergyRecharger();
 			er.start();
+			UserSession.setPetSleepSession(getContext(), isSleep);
 		} else {
 			isSleep = false;
 			sprite.goIdle();
+			UserSession.setPetSleepSession(getContext(), isSleep);
 		}
 	}
 
@@ -217,11 +218,9 @@ public class MainDashboard extends SurfaceView implements
 				int hygiene = MainActivity.getInstance().getHygiene();
 				int love = MainActivity.getInstance().getLove();
 
-				Thread.sleep(10000);
-				MainActivity.getInstance().setEnergy(1);
-				MainActivity.getInstance().setupBarIndikator(hunger, energy,
-						hygiene, love);
-				
+				Thread.sleep(1000);
+				MainActivity.getInstance().setEnergy(10);
+
 				Log.i("POCKETTRAINER", " " + hunger + " " + energy + " "
 						+ hygiene + " " + love);
 			} catch (Exception ex) {
@@ -303,8 +302,6 @@ public class MainDashboard extends SurfaceView implements
 						int love = MainActivity.getInstance().getLove();
 
 						MainActivity.getInstance().setHygiene(1);
-						MainActivity.getInstance().setupBarIndikator(hunger,
-								energy, hygiene, love);
 					} else {
 						// nambah relationship
 						int hunger = MainActivity.getInstance().getHunger();
@@ -313,8 +310,6 @@ public class MainDashboard extends SurfaceView implements
 						int love = MainActivity.getInstance().getLove();
 
 						MainActivity.getInstance().setLove(2);
-						MainActivity.getInstance().setupBarIndikator(hunger,
-								energy, hygiene, love);
 					}
 					isTouched = true;
 					sprite.goMove();
