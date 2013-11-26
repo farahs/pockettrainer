@@ -42,15 +42,25 @@ public class TrainingResultActivity extends Activity implements
 	private boolean mInitialized;
 	private final float NOISE = (float) 5.0;
 	private boolean shared = false;
+	NotificationDialog notifDialog;
 	SocialAuthAdapter adapter;
 	Button share;
 	Button cont;
+	Button tweet;
+	Button cancel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training_result);
 
+		notifDialog = new NotificationDialog(this);
+		notifDialog.setCanceledOnTouchOutside(false);
+		notifDialog.setTitle("Confirm Share");
+		notifDialog.setMessage("Do you want to share your activities?");
+
+		tweet = (Button) notifDialog.findViewById(R.id.notifDialog_ok);
+		cancel = (Button) notifDialog.findViewById(R.id.notifDialog_cancel);
 		share = (Button) findViewById(R.id.share_button);
 		cont = (Button) findViewById(R.id.continue_button);
 
@@ -65,6 +75,8 @@ public class TrainingResultActivity extends Activity implements
 				SensorManager.SENSOR_DELAY_NORMAL);
 
 		cont.setOnClickListener(this);
+		tweet.setOnClickListener(this);
+		cancel.setOnClickListener(this);
 
 		adapter = new SocialAuthAdapter(new ResponseListener());
 		// adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
@@ -108,7 +120,7 @@ public class TrainingResultActivity extends Activity implements
 					.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
 
-			String message = "Pocket Trainer share button test, will be out soon!";
+			String message = "Pocket Trainer share button test. Stay tuned! will be out soon!";
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
@@ -119,7 +131,8 @@ public class TrainingResultActivity extends Activity implements
 		@Override
 		public void onError(SocialAuthError error) {
 			Log.d("ShareButton", "Authentication Error: " + error.getMessage());
-			adapter.signOut(getApplicationContext(), Provider.TWITTER.toString());
+			// adapter.signOut(getApplicationContext(),
+			// Provider.TWITTER.toString());
 		}
 
 		@Override
@@ -132,7 +145,7 @@ public class TrainingResultActivity extends Activity implements
 			Log.d("Share-Button", "Dialog Closed by pressing Back Key");
 			shared = false;
 		}
-		
+
 	}
 
 	// To get status of message after authentication
@@ -166,6 +179,15 @@ public class TrainingResultActivity extends Activity implements
 			startActivity(i);
 			break;
 
+		case R.id.notifDialog_ok:
+			adapter.authorize(TrainingResultActivity.this, Provider.TWITTER);
+			notifDialog.dismiss();
+			break;
+
+		case R.id.notifDialog_cancel:
+			notifDialog.dismiss();
+			shared = false;
+			break;
 		default:
 			break;
 		}
@@ -205,9 +227,9 @@ public class TrainingResultActivity extends Activity implements
 			float deltaZ = Math.abs(mLastZ - z);
 
 			if (deltaX > NOISE || deltaY > NOISE || deltaZ > NOISE) {
-				if(!shared) {
+				if (!shared) {
 					shared = true;
-					adapter.authorize(TrainingResultActivity.this, Provider.TWITTER);
+					notifDialog.show();
 				}
 			}
 

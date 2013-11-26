@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="140dp" >
+
+        <TextView
+            android:id="@+id/notifDialog_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:minHeight="75dp"
+            android:padding="8dp"
+            android:text="100"
+            android:textSize="18sp" />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:weightSum="100" >
+
+        <Button
+            android:id="@+id/notifDialog_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/rect_button_states"
+            android:text="Cancel"
+            android:textColor="@drawable/text_states_blue" />
+
+        <Button
+            android:id="@+id/notifDialog_ok"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rect_button_states"
+            android:text="OK"
+            android:textColor="@drawable/text_states_blue" />
+    </LinearLayout>
+
+</LinearLayout>
