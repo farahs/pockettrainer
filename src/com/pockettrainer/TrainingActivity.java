@@ -8,6 +8,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.LineOverlay;
 import com.mapquest.android.maps.MapActivity;
@@ -43,7 +45,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	Button stopBtn;
 	List<LatLng> trackedPoint;
 	protected GoogleMap myMap;
-	protected MyLocationOverlay myLocationOverlay;
+//	protected MyLocationOverlay myLocationOverlay;
 
 	private long startTime = 0L;
 
@@ -158,12 +160,12 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 					+ String.format("%02d", milliseconds));
 			customHandler.postDelayed(this, 0);
 
-			if (secs % 10 == 0) {
-				GeoPoint currentLocation = myLocationOverlay.getMyLocation();
-//				trackedPoint.add(currentLocation);
-				// Toast.makeText(TrainingActivity.this,
-				// currentLocation.toString(), Toast.LENGTH_SHORT).show();
-				// drawTrackLine();
+			if (secs % 5 == 0) {
+				LatLng currentLocation = new LatLng(myMap.getMyLocation().getLatitude(), myMap.getMyLocation().getLongitude());
+				trackedPoint.add(currentLocation);
+				
+				Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
+				route.setPoints(trackedPoint);
 			}
 		}
 
@@ -193,7 +195,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
@@ -220,7 +222,5 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		}
 
 	}
-	
-	
 
 }
