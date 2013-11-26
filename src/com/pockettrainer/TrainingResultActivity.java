@@ -17,7 +17,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,8 +33,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class TrainingResultActivity extends Activity implements OnClickListener {
+public class TrainingResultActivity extends Activity implements
+		OnClickListener, SensorEventListener {
 
+	private float mLastX, mLastY, mLastZ;
+	private SensorManager mSensorManager;
+	private Sensor mAccelerometer;
+	private boolean mInitialized;
+	private final float NOISE = (float) 5.0;
+	private boolean shared = false;
 	SocialAuthAdapter adapter;
 	Button share;
 	Button cont;
@@ -41,13 +53,24 @@ public class TrainingResultActivity extends Activity implements OnClickListener 
 
 		share = (Button) findViewById(R.id.share_button);
 		cont = (Button) findViewById(R.id.continue_button);
-		
+
+		mInitialized = false;
+
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+		mAccelerometer = mSensorManager
+				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+		mSensorManager.registerListener(this, mAccelerometer,
+				SensorManager.SENSOR_DELAY_NORMAL);
+
 		cont.setOnClickListener(this);
-		
+
 		adapter = new SocialAuthAdapter(new ResponseListener());
-		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+		// adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-		adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+		adapter.addCallBack(Provider.TWITTER,
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 		adapter.enable(share);
 	}
 
@@ -85,7 +108,7 @@ public class TrainingResultActivity extends Activity implements OnClickListener 
 			final String providerName = values
 					.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
-			
+
 			String message = "Pocket Trainer share button test, will be out soon!";
 
 			// Please avoid sending duplicate message. Social Media Providers
@@ -107,6 +130,7 @@ public class TrainingResultActivity extends Activity implements OnClickListener 
 		@Override
 		public void onBack() {
 			Log.d("Share-Button", "Dialog Closed by pressing Back Key");
+			shared = false;
 		}
 
 	}
@@ -137,15 +161,83 @@ public class TrainingResultActivity extends Activity implements OnClickListener 
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.continue_button:
-			Intent i = new Intent(getApplicationContext(),
-					TestGMaps.class);
-			
+			Intent i = new Intent(getApplicationContext(), TestGMaps.class);
+
 			startActivity(i);
 			break;
 
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		// TODO Auto-generated method stub
+		float x = event.values[0];
+
+		float y = event.values[1];
+
+		float z = event.values[2];
+
+		if (!mInitialized) {
+
+			mLastX = x;
+
+			mLastY = y;
+
+			mLastZ = z;
+
+			mInitialized = true;
+
+		} else {
+
+			float deltaX = Math.abs(mLastX - x);
+
+			float deltaY = Math.abs(mLastY - y);
+
+			float deltaZ = Math.abs(mLastZ - z);
+
+			if (deltaX > NOISE || deltaY > NOISE || deltaZ > NOISE) {
+				if(!shared) {
+					shared = true;
+					share.performClick();
+				}
+			}
+
+			mLastX = x;
+
+			mLastY = y;
+
+			mLastZ = z;
+
+		}
+
+	}
+
+	@Override
+	protected void onResume() {
+
+		super.onResume();
+
+		mSensorManager.registerListener(this, mAccelerometer,
+				SensorManager.SENSOR_DELAY_NORMAL);
+
+	}
+
+	@Override
+	protected void onPause() {
+
+		super.onPause();
+
+		mSensorManager.unregisterListener(this);
+
 	}
 
 }

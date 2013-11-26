@@ -432,10 +432,10 @@ public class MainDashboard extends SurfaceView implements
 			try {
 				beginTime = System.currentTimeMillis();
 				framesSkipped = 0; // resetting the frames skipped
-				if (isTouched && isTouchBath) {
+				if (isTouchBath && bathing) {
 					// nambah hygiene
 					incHygiene += 1;
-				} else if (isTouched && !isTouchBath) {
+				} else if (isTouchBath && !bathing) {
 					// nambah relationship
 					incRel += 1;
 				}
