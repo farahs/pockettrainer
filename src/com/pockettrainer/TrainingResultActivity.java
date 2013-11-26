@@ -68,10 +68,9 @@ public class TrainingResultActivity extends Activity implements
 
 		adapter = new SocialAuthAdapter(new ResponseListener());
 		// adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
-		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
 		adapter.addCallBack(Provider.TWITTER,
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
-		adapter.enable(share);
+		// adapter.enable(share);
 	}
 
 	@Override
@@ -120,6 +119,7 @@ public class TrainingResultActivity extends Activity implements
 		@Override
 		public void onError(SocialAuthError error) {
 			Log.d("ShareButton", "Authentication Error: " + error.getMessage());
+			adapter.signOut(getApplicationContext(), Provider.TWITTER.toString());
 		}
 
 		@Override
@@ -132,7 +132,7 @@ public class TrainingResultActivity extends Activity implements
 			Log.d("Share-Button", "Dialog Closed by pressing Back Key");
 			shared = false;
 		}
-
+		
 	}
 
 	// To get status of message after authentication
@@ -207,7 +207,7 @@ public class TrainingResultActivity extends Activity implements
 			if (deltaX > NOISE || deltaY > NOISE || deltaZ > NOISE) {
 				if(!shared) {
 					shared = true;
-					share.performClick();
+					adapter.authorize(TrainingResultActivity.this, Provider.TWITTER);
 				}
 			}
 
