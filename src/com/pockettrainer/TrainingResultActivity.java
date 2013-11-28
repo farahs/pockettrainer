@@ -40,7 +40,7 @@ public class TrainingResultActivity extends Activity implements
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private boolean mInitialized;
-	private final float NOISE = (float) 5.0;
+	private final float NOISE = (float) 7.0;
 	private boolean shared = false;
 	NotificationDialog notifDialog;
 	SocialAuthAdapter adapter;

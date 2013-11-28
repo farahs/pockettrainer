@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.pockettrainer.R;
+import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -16,6 +17,9 @@ import com.mapquest.android.maps.MapActivity;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -29,6 +33,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +41,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TrainingActivity extends MapActivity implements OnClickListener {
+public class TrainingActivity extends MapActivity implements OnClickListener, LocationListener {
 
 	TextView timerTV;
 	Button startBtn;
@@ -45,8 +50,18 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 	Button stopBtn;
 	List<LatLng> trackedPoint;
 	protected GoogleMap myMap;
-//	protected MyLocationOverlay myLocationOverlay;
-
+	Location lastLocation;
+	Location initialLocation;
+	Location finalLocation;
+	float speed;
+	int point;
+	float totalDistance;
+	LocationManager locationManager;
+	boolean running;
+//	LocationListener myLocationListener;
+//	protected MyLocationOverlay myLocation;
+	
+	
 	private long startTime = 0L;
 
 	private Handler customHandler = new Handler();
@@ -105,6 +120,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 			if (networkInfo != null && networkInfo.isConnected()) {
+				running = true;
 				startBtn.setVisibility(View.GONE);
 				pauseBtn.setVisibility(View.VISIBLE);
 				resumeBtn.setVisibility(View.GONE);
@@ -124,6 +140,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			resumeBtn.setVisibility(View.VISIBLE);
 			stopBtn.setVisibility(View.VISIBLE);
 			timeSwapBuff += timeInMilliseconds;
+			running = false;
 			customHandler.removeCallbacks(updateTimerThread);
 			break;
 		case R.id.training_resume:
@@ -132,9 +149,13 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			resumeBtn.setVisibility(View.GONE);
 			stopBtn.setVisibility(View.GONE);
 			startTime = SystemClock.uptimeMillis();
+			running = true;
 			customHandler.postDelayed(updateTimerThread, 0);
 			break;
 		case R.id.training_stop:
+			running = false;
+			stopTrain();
+			trainingSummary();
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
 			startActivity(i);
@@ -159,17 +180,135 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 			timerTV.setText("" + mins + ":" + String.format("%02d", secs) + ":"
 					+ String.format("%02d", milliseconds));
 			customHandler.postDelayed(this, 0);
-
-			if (secs % 5 == 0) {
-				LatLng currentLocation = new LatLng(myMap.getMyLocation().getLatitude(), myMap.getMyLocation().getLongitude());
-				trackedPoint.add(currentLocation);
-				
-				Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
-				route.setPoints(trackedPoint);
-			}
+			
+			
+//			onLocationChanged(myMap.getMyLocation());
+//			if (secs % 5 == 0) {
+//				LatLng currentLocation = new LatLng(myMap.getMyLocation().getLatitude(), myMap.getMyLocation().getLongitude());
+//				trackedPoint.add(currentLocation);
+//				
+//				Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
+//				route.setPoints(trackedPoint);
+//				
+//				
+//			}
 		}
 
 	};
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+
+		return false;
+	}
+
+	private void initializeMap() {
+
+		if (myMap == null) {
+
+			myMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+			
+			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, this);
+			
+			myMap.setMyLocationEnabled(true);
+			
+			Location now = locationManager.getLastKnownLocation("gps");
+			
+			double latitude = now.getLatitude();
+			double longitude = now.getLongitude();
+			
+			initialLocation = now;
+			lastLocation = now;
+			finalLocation = now;
+			Log.i("POCKETTRAINER", "" + latitude + " " + longitude);
+			speed = 0f;
+			point = 0;
+			running = false;
+//			
+//			MarkerOptions marker = new MarkerOptions().position(
+//					new LatLng(latitude, longitude)).title("My Position").snippet("Rumah");
+//			myMap.addMarker(marker);
+
+			if (myMap == null) {
+				Toast.makeText(getApplicationContext(),
+						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
+						.show();
+			}
+		}
+
+	}
+
+	private void stopTrain() {
+		finalLocation = myMap.getMyLocation();
+		totalDistance = calculateDistance(initialLocation, finalLocation);
+	}
+
+
+	@Override
+	public void onLocationChanged(Location location) {
+		
+		Log.i("POCKETTRAINER", "locationchanged luar");
+		if(running) {
+			Log.i("POCKETTRAINER", "locationchanged dalam");
+	//		kalo jaraknya lebih dari 1 meter, baru gambar
+			Log.i("POCKETTRAINER", "" + calculateDistance(lastLocation, location));
+			if(calculateDistance(lastLocation, location) > 0.05) {
+
+				LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());	
+				trackedPoint.add(currentLocation);
+				Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
+				route.setPoints(trackedPoint);
+//				new LatLng(myMap.getMyLocation().getLatitude(), myMap.getMyLocation().getLongitude());
+				point++;
+				
+				calculateSpeed(location);
+				lastLocation = location;
+//				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, TrainingActivity.this);
+			}	
+		}
+	}
+
+	private float calculateDistance(Location last, Location now) {
+		float dist =  now.distanceTo(last);
+		float [] c = new float[1];
+		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
+//		Location.dis
+		return c[0];
+	}
+
+	private float calculateSpeed(Location loc){
+		
+		float s = loc.getSpeed();
+		
+		float avg = ((speed * (point-1)) + s)/point;
+		return avg;
+	}
+	
+
+	private void trainingSummary() {
+		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance, Toast.LENGTH_SHORT)
+				.show();
+	}
+
+	
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private void setupNotification() {
 		Intent intent = new Intent(this, TrainingActivity.class);
@@ -192,35 +331,5 @@ public class TrainingActivity extends MapActivity implements OnClickListener {
 		NotificationManager notificationManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.notify(01, notification);
 	}
-
-	@Override
-	protected boolean isRouteDisplayed() {
-
-		return false;
-	}
-
-	private void initializeMap() {
-
-		if (myMap == null) {
-			myMap = ((MapFragment) getFragmentManager().findFragmentById(
-					R.id.map)).getMap();
-
-			myMap.setMyLocationEnabled(true);
-
-			double latitude = myMap.getMyLocation().getLatitude();
-			double longitude = myMap.getMyLocation().getLongitude();
-
-			MarkerOptions marker = new MarkerOptions().position(
-					new LatLng(latitude, longitude)).title("My Position").snippet("Rumah");
-			myMap.addMarker(marker);
-
-			if (myMap == null) {
-				Toast.makeText(getApplicationContext(),
-						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
-						.show();
-			}
-		}
-
-	}
-
+	
 }

@@ -270,7 +270,7 @@ public class SpriteAnimation {
 		// define the rectangle to cut out sprite
 		this.sourceRect.left = currentFrame * spriteWidth;
 		this.sourceRect.right = this.sourceRect.left + spriteWidth;
-		Log.i("RECT", this.sourceRect.left + " x " + this.sourceRect.right);
+//		Log.i("RECT", this.sourceRect.left + " x " + this.sourceRect.right);
 	}
 
 	public void draw(Canvas canvas) {
