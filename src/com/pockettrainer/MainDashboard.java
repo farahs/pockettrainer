@@ -122,7 +122,7 @@ public class MainDashboard extends SurfaceView implements
 		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
 				100, 100), context);
 		setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
-				R.drawable.sprite_egg_remove, 20, 10, 10, 10, 10);
+				R.drawable.sprite_egg_remove, 10, 10, 10, 10, 10);
 
 		setFocusable(true);
 	}

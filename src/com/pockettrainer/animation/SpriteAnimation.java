@@ -34,8 +34,10 @@ public class SpriteAnimation {
 	private int frameEnd;
 	private int frameEat;
 	private int frameSleep;
-	private int repeat=0;
+	private int repeat = 0;
+	private boolean isIdle = true;
 	private boolean isFinish = true;
+	private boolean reversed = false;
 	private int currentFrame; // the current frame
 	private long frameTicker; // the time of the last frame update
 	private int framePeriod; // milliseconds between each frame (1000/fps)
@@ -79,7 +81,7 @@ public class SpriteAnimation {
 		ActivityManager am = (ActivityManager) context
 				.getSystemService(Context.ACTIVITY_SERVICE);
 		int memoryClassBytes = am.getMemoryClass() * 1024 * 1024;
-		bitCache = new BitmapCache(memoryClassBytes / 6);
+		bitCache = new BitmapCache(memoryClassBytes / 4);
 	}
 
 	public void setIdle(Bitmap b, int frameCount) {
@@ -112,6 +114,7 @@ public class SpriteAnimation {
 
 	public void goIdle() {
 		currentFrame = 0;
+		isIdle = true;
 		looped = true;
 		frameNr = frameIdle;
 		cachedResult = bitCache.get(idle);
@@ -120,7 +123,8 @@ public class SpriteAnimation {
 	}
 
 	public void goMove() {
-		if(isFinish) {
+		isIdle = false;
+		if (isFinish) {
 			currentFrame = 0;
 			looped = true;
 			frameNr = frameMove;
@@ -131,7 +135,8 @@ public class SpriteAnimation {
 	}
 
 	public void goEnd() {
-		if(isFinish) {
+		isIdle = false;
+		if (isFinish) {
 			currentFrame = 0;
 			looped = false;
 			frameNr = frameEnd;
@@ -143,8 +148,9 @@ public class SpriteAnimation {
 	}
 
 	public void goEat() {
+		isIdle = false;
 		currentFrame = 0;
-		repeat=4;
+		repeat = 4;
 		looped = false;
 		frameNr = frameEat;
 		isFinish = false;
@@ -155,6 +161,7 @@ public class SpriteAnimation {
 	}
 
 	public void goSleep() {
+		isIdle = false;
 		currentFrame = 0;
 		looped = true;
 		frameNr = frameSleep;
@@ -248,19 +255,34 @@ public class SpriteAnimation {
 		if (gameTime > frameTicker + framePeriod) {
 			frameTicker = gameTime;
 			// increment the frame
-			currentFrame++;
+			if (isIdle && reversed)
+				currentFrame--;
+			else
+				currentFrame++;
 			if (looped) {
-				if (currentFrame >= frameNr) {
-					currentFrame = 0;
+				if (isIdle && !reversed) {
+					if (currentFrame >= frameNr) {
+						currentFrame = frameNr-1;
+						reversed = true;
+					}
+				} else if (isIdle && reversed) {
+					if (currentFrame <= 1) {
+						currentFrame = 1;
+						reversed = false;
+					}
+				} else {
+					if (currentFrame >= frameNr) {
+						currentFrame = 0;
+					}
 				}
-			} else if(repeat>0) {
+			} else if (repeat > 0) {
 				if (currentFrame >= frameNr) {
-					repeat-=1;
+					repeat -= 1;
 					currentFrame = 0;
 				}
 			} else {
 				if (currentFrame >= frameNr) {
-					isFinish=true;
+					isFinish = true;
 					goIdle();
 					looped = true;
 				}
@@ -270,7 +292,7 @@ public class SpriteAnimation {
 		// define the rectangle to cut out sprite
 		this.sourceRect.left = currentFrame * spriteWidth;
 		this.sourceRect.right = this.sourceRect.left + spriteWidth;
-//		Log.i("RECT", this.sourceRect.left + " x " + this.sourceRect.right);
+		// Log.i("RECT", this.sourceRect.left + " x " + this.sourceRect.right);
 	}
 
 	public void draw(Canvas canvas) {
