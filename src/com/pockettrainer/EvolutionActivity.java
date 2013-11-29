@@ -224,7 +224,7 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 	}
 	
 	protected void initializePet(){
-		String myPetID = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
+		String myPetID = UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID);
 		if(!myPetID.equals("0")) {
 			this.myPet = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(myPetID));
 		}
