@@ -51,6 +51,7 @@ import android.widget.Toast;
 public class TrainingActivity extends Activity implements OnClickListener, LocationListener {
 
 	TextView timerTV;
+	TextView timerMsTV;
 	Button startBtn;
 	Button pauseBtn;
 	Button resumeBtn;
@@ -68,16 +69,19 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	NotificationDialog dialog;
 	Button setting;
 	float sumDistance;
+
 //	LocationListener myLocationListener;
 //	protected MyLocationOverlay myLocation;
 	
-	private long startTime = 0L;
-
+	private long secs,mins,hrs,msecs;
+	private String hours,minutes,seconds,milliseconds;
+	private long startTime = 0l;
 	private Handler customHandler = new Handler();
-
+	private long updatedTime = 0L;
+	private final int REFRESH_RATE = 50;
 	long timeInMilliseconds = 0L;
 	long timeSwapBuff = 0L;
-	long updatedTime = 0L;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +102,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 
 	private void setupView() {
 		timerTV = (TextView) this.findViewById(R.id.train_timer);
+		timerMsTV = (TextView) this.findViewById(R.id.train_timer_ms);
 		startBtn = (Button) this.findViewById(R.id.training_start);
 		pauseBtn = (Button) this.findViewById(R.id.training_pause);
 		resumeBtn = (Button) this.findViewById(R.id.training_resume);
@@ -184,6 +189,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
 			startActivity(i);
+			this.finish();
 			break;
 		default:
 			break;
@@ -198,16 +204,54 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 
 			updatedTime = timeSwapBuff + timeInMilliseconds;
 
-			int secs = (int) (updatedTime / 1000);
-			int mins = secs / 60;
+			secs = (long) (updatedTime/1000);
+			mins = (long) ((updatedTime/1000)/60);
+			hrs = (long) (((updatedTime/1000)/60)/60);
+			
 			secs = secs % 60;
-			int milliseconds = (int) (updatedTime % 1000);
-			timerTV.setText("" + mins + ":" + String.format("%02d", secs) + ":"
-					+ String.format("%02d", milliseconds));
-			customHandler.postDelayed(this, 0);
+			seconds = String.valueOf(secs);
 			
+			if (secs == 0) {
+				seconds = "00";
+			} 
+			if (secs < 10 && secs > 0) {
+				seconds = "0" + seconds;
+			}
 			
-//			onLocationChanged(myMap.getMyLocation());
+			mins = mins % 60;
+			minutes = String.valueOf(mins);
+			
+			if (mins == 0) {
+				minutes = "00";
+			} 
+			if (mins < 10 && mins > 0) {
+				minutes = "0" + minutes;
+			}
+			
+			hours = String.valueOf(hrs);
+			if (hrs == 0) {
+				hours = "00";
+			} 
+			if (hrs < 10 && hrs > 0) {
+				hours = "0" + hours;
+			}
+			
+			milliseconds = String.valueOf((long)updatedTime);
+			
+			if(milliseconds.length() == 2) {
+				milliseconds = "0" + milliseconds;
+			}
+			if (milliseconds.length() <= 1) {
+				milliseconds = "00";
+			}
+			
+			milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
+			
+			timerTV.setText(hours + ":" + minutes + ":" + seconds);
+			timerMsTV.setText("." + milliseconds);
+			
+			customHandler.postDelayed(this, REFRESH_RATE);
+			
 //			if (secs % 5 == 0) {
 //				LatLng currentLocation = new LatLng(myMap.getMyLocation().getLatitude(), myMap.getMyLocation().getLongitude());
 //				trackedPoint.add(currentLocation);
@@ -219,7 +263,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 //			}
 		}
 
-	};
+	};	
 	
 	private void initializeMap() {
 
@@ -291,26 +335,20 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		Log.i("POCKETTRAINER", "locationchanged luar");
 		if(running) {
 			Log.i("POCKETTRAINER", "locationchanged dalam");
-	//		kalo jaraknya lebih dari 1 meter, baru gambar
 			Log.i("POCKETTRAINER", "" + calculateDistance(lastLocation, location));
-//			if(calculateDistance(lastLocation, location) > 0.05) {
 
 				LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());	
 				trackedPoint.add(currentLocation);
 				Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
 				route.setPoints(trackedPoint);
-//				new LatLng(myMap.getMyLocation().getLatitude(), myMap.getMyLocation().getLongitude());
 				point++;
 				
 				calculateSpeed(location);
-//				lastLocation = location;
-//				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, TrainingActivity.this);
-//			}	
 		}
 	}
 
 	private float calculateDistance(Location last, Location now) {
-		float dist =  now.distanceTo(last);
+//		float dist =  now.distanceTo(last);
 		float [] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
 		sumDistance += c[0];
@@ -327,7 +365,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	
 
 	private void trainingSummary() {
-		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance, Toast.LENGTH_SHORT)
+		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance + " sumdistance: " + sumDistance, Toast.LENGTH_SHORT)
 				.show();
 	}
 

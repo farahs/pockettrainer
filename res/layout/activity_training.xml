@@ -16,16 +16,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/blue_light"
-            android:gravity="center_horizontal" >
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_gravity="center"
+            android:textAlignment="center" >
 
             <TextView
                 android:id="@+id/train_timer"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="20dp"
+                android:layout_height="wrap_content"
                 android:text="00:00:00"
                 android:textColor="@color/white"
-                android:textSize="70sp" />
+                android:textSize="65sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp" 
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/train_timer_ms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="40dp"
+                android:text=".0"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
         </LinearLayout>
 
         <Button
