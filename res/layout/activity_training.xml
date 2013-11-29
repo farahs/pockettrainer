@@ -9,7 +9,8 @@
         android:id="@+id/layoutAtas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:gravity="center" >
 
         <LinearLayout
             android:id="@+id/layoutAtasAtas"
@@ -18,7 +19,7 @@
             android:background="@color/blue_light"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:textAlignment="center" >
 
             <TextView

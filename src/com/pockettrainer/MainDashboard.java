@@ -113,6 +113,7 @@ public class MainDashboard extends SurfaceView implements
 		super(context);
 		// adding the callback (this) to the surface holder to intercept events
 		getHolder().addCallback(this);
+		getHolder().setFormat(0x00000004);
 
 		bHelper = new BitmapHelper(this, context);
 

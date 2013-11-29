@@ -85,6 +85,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.pockettrainer.EvolutionActivity"
+            android:configChanges="orientation"
+            android:label="@string/train"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.pockettrainer.TestAccelerometerActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_test_accelerometer"
