@@ -1,6 +1,9 @@
 package com.pockettrainer;
 
 import com.example.pockettrainer.R;
+import com.pockettrainer.database.dal.PET_DAL;
+import com.pockettrainer.database.model.PET;
+import com.pockettrainer.helper.UserSession;
 
 import android.app.Activity;
 import android.content.Context;
@@ -44,10 +47,15 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 	int frame = 0;
 	private Display mDisplay;
 
+	PET myPet;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		myPet = new PET();
+		initializePet();
+		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -214,5 +222,9 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		mSensorManager.unregisterListener(this);
 
 	}
-
+	
+	protected void initializePet(){
+		String myPetID = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
+		this.myPet = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(myPetID)); 
+	}
 }

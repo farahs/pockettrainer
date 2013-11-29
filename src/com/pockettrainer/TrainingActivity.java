@@ -69,11 +69,8 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	NotificationDialog dialog;
 	Button setting;
 	float sumDistance;
-
-//	LocationListener myLocationListener;
-//	protected MyLocationOverlay myLocation;
 	
-	private long secs,mins,hrs,msecs;
+	private long secs,mins,hrs;
 	private String hours,minutes,seconds,milliseconds;
 	private long startTime = 0l;
 	private Handler customHandler = new Handler();
