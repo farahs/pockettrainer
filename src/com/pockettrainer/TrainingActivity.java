@@ -5,8 +5,11 @@ import java.util.List;
 
 import com.example.pockettrainer.R;
 import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -14,9 +17,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.LineOverlay;
 import com.mapquest.android.maps.MapActivity;
+import com.mapquest.android.maps.MapController;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
 
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +30,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -41,7 +48,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TrainingActivity extends MapActivity implements OnClickListener, LocationListener {
+public class TrainingActivity extends Activity implements OnClickListener, LocationListener {
 
 	TextView timerTV;
 	Button startBtn;
@@ -58,9 +65,11 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 	float totalDistance;
 	LocationManager locationManager;
 	boolean running;
+	NotificationDialog dialog;
+	Button setting;
+	float sumDistance;
 //	LocationListener myLocationListener;
 //	protected MyLocationOverlay myLocation;
-	
 	
 	private long startTime = 0L;
 
@@ -75,12 +84,13 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training);
 		trackedPoint = new ArrayList<LatLng>();
-
+		
 		setupView();
 		setupEvent();
 
 		try {
 			initializeMap();
+			running = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,6 +107,12 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 		pauseBtn.setVisibility(View.GONE);
 		resumeBtn.setVisibility(View.GONE);
 		stopBtn.setVisibility(View.GONE);
+		
+		dialog = new NotificationDialog(this);
+		dialog.setTitle("Oops!");
+		dialog.setMessage("GPS is not enabled");
+		setting = (Button) dialog.findViewById(R.id.notifDialog_ok);
+		setting.setText("Setting");
 	}
 
 	private void setupEvent() {
@@ -104,6 +120,14 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 		pauseBtn.setOnClickListener(this);
 		resumeBtn.setOnClickListener(this);
 		stopBtn.setOnClickListener(this);
+		setting.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent in = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				getApplicationContext().startActivity(in);
+			}
+		});
 	}
 
 	@Override
@@ -117,9 +141,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.training_start:
-			ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-			if (networkInfo != null && networkInfo.isConnected()) {
+			if(readyToRun()) {
 				running = true;
 				startBtn.setVisibility(View.GONE);
 				pauseBtn.setVisibility(View.VISIBLE);
@@ -128,6 +150,8 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 				startTime = SystemClock.uptimeMillis();
 				customHandler.postDelayed(updateTimerThread, 0);
 			} else {
+//				dialog.show();
+			
 				Intent i = new Intent(getApplicationContext(),
 						TrainingResultActivity.class);
 
@@ -142,6 +166,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 			timeSwapBuff += timeInMilliseconds;
 			running = false;
 			customHandler.removeCallbacks(updateTimerThread);
+			stopTrain();
 			break;
 		case R.id.training_resume:
 			startBtn.setVisibility(View.GONE);
@@ -196,54 +221,69 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 
 	};
 	
-	@Override
-	protected boolean isRouteDisplayed() {
-
-		return false;
-	}
-
 	private void initializeMap() {
 
 		if (myMap == null) {
 
 			myMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-			
-			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, this);
-			
 			myMap.setMyLocationEnabled(true);
 			
-			Location now = locationManager.getLastKnownLocation("gps");
+			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			Criteria crit = new Criteria();
+			Location loc = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
 			
-			double latitude = now.getLatitude();
-			double longitude = now.getLongitude();
+			CameraPosition camPos = new CameraPosition.Builder().target(new LatLng(loc.getLatitude(), loc.getLongitude())).zoom(15.8f).build();
+			CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
 			
-			initialLocation = now;
-			lastLocation = now;
-			finalLocation = now;
-			Log.i("POCKETTRAINER", "" + latitude + " " + longitude);
-			speed = 0f;
-			point = 0;
-			running = false;
-//			
-//			MarkerOptions marker = new MarkerOptions().position(
-//					new LatLng(latitude, longitude)).title("My Position").snippet("Rumah");
-//			myMap.addMarker(marker);
+			myMap.moveCamera(camUpdate);
+			
+			initialLocation = loc;
+			lastLocation = loc;
+			finalLocation = loc;
+		}	
 
-			if (myMap == null) {
-				Toast.makeText(getApplicationContext(),
-						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
-						.show();
+	}
+
+	private boolean readyToRun() {
+
+		boolean isNetworkOK = isNetworkEnabled();
+		boolean isGPSOK = isGPSEnabled();
+		speed = 0f;
+		point = 0;
+		sumDistance = 0f;
+		
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		
+		if (networkInfo != null && networkInfo.isConnected()) {
+		
+			if(isNetworkOK && isGPSOK) {
+				
+				if(isNetworkOK) {
+					locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, this);
+				}
+				if(isGPSOK) {
+					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
+				}
+				running = true;
+				makeMarker(initialLocation, "START");
+				return true;
+			} else {
+				return false;
 			}
 		}
-
+		else {
+			return false;
+		}
+		
 	}
-
+	
 	private void stopTrain() {
-		finalLocation = myMap.getMyLocation();
+		Criteria crit = new Criteria();
+		finalLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
 		totalDistance = calculateDistance(initialLocation, finalLocation);
+		makeMarker(finalLocation, "FINISH");
 	}
-
 
 	@Override
 	public void onLocationChanged(Location location) {
@@ -253,7 +293,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 			Log.i("POCKETTRAINER", "locationchanged dalam");
 	//		kalo jaraknya lebih dari 1 meter, baru gambar
 			Log.i("POCKETTRAINER", "" + calculateDistance(lastLocation, location));
-			if(calculateDistance(lastLocation, location) > 0.05) {
+//			if(calculateDistance(lastLocation, location) > 0.05) {
 
 				LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());	
 				trackedPoint.add(currentLocation);
@@ -263,9 +303,9 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 				point++;
 				
 				calculateSpeed(location);
-				lastLocation = location;
+//				lastLocation = location;
 //				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, TrainingActivity.this);
-			}	
+//			}	
 		}
 	}
 
@@ -273,7 +313,7 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 		float dist =  now.distanceTo(last);
 		float [] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
-//		Location.dis
+		sumDistance += c[0];
 		return c[0];
 	}
 
@@ -330,6 +370,19 @@ public class TrainingActivity extends MapActivity implements OnClickListener, Lo
 		Notification notification = builder.build();
 		NotificationManager notificationManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManger.notify(01, notification);
+	}
+	
+	private boolean isGPSEnabled(){
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
+	
+	private boolean isNetworkEnabled(){
+		return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+	}
+	
+	private void makeMarker(Location l, String title){
+		MarkerOptions marker = new MarkerOptions().position(new LatLng(l.getLatitude(), l.getLongitude())).title(title);
+		myMap.addMarker(marker);
 	}
 	
 }

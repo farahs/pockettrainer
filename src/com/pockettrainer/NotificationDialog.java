@@ -44,6 +44,9 @@ public class NotificationDialog extends Dialog implements
 		this.setMessage(message);
 	}
 
+	public void setOkText(String s) {
+		okBtn.setText(s);
+	}
 	public void setNotificationTitle(String title) {
 		this.setTitle(title);
 	}
@@ -57,6 +60,7 @@ public class NotificationDialog extends Dialog implements
 		this.setContentView(R.layout.notification_dialog);
 		this.nMessageTv = (TextView) this.findViewById(R.id.notifDialog_text);
 		this.cancelBtn = (Button) this.findViewById(R.id.notifDialog_cancel);
+		this.okBtn = (Button) this.findViewById(R.id.notifDialog_ok);
 	}
 
 	private void setupEvent() {
