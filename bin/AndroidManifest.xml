@@ -4,19 +4,37 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <supports-screens android:anyDensity="true" />
+
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="16" />
 
     <application
         android:allowBackup="true"
+        android:configChanges="orientation"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/MainTheme" >
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:largeHeap="true"
+            android:value="AIzaSyAc5FaVz5uy3Hd8_Zp4L53hoH6gwkDikEo" />
+
         <activity
-            android:name="com.example.pockettrainer.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.pockettrainer.SplashScreenActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +42,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pockettrainer.MainDashboard"
-            android:label="@string/dashboard" >
+            android:name="com.pockettrainer.WelcomeActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_welcome"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.pockettrainer.TrainingResultActivity"
-            android:label="@string/training_result" >
+            android:name="com.pockettrainer.SelectEnvironmentActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_select_environment"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.PetIdentityActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_pet_identity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.MainActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.MainDashboard"
+            android:configChanges="orientation"
+            android:label="@string/dashboard"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.TrainingResultActivity"
+            android:configChanges="orientation"
+            android:label="@string/training_result"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.TrainingActivity"
+            android:configChanges="orientation"
+            android:label="@string/train"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.EvolutionActivity"
+            android:configChanges="orientation"
+            android:label="@string/train"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.pockettrainer.TestAccelerometerActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_test_accelerometer"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <service
+            android:name="com.pockettrainer.helper.MyService"
+            android:enabled="true" >
+        </service>
+
+        <activity
+            android:name="com.pockettrainer.TestGMaps"
+            android:label="@string/title_activity_test_gmaps" >
         </activity>
     </application>
 

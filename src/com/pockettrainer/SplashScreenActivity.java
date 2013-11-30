@@ -83,8 +83,7 @@ public class SplashScreenActivity extends Activity implements AnimationListener 
 				myPet = new PET();
 
 				try {
-					myUser = USER_DAL.getUSER_All(getApplicationContext()).get(
-							0);
+					myUser = USER_DAL.getUSER_All(getApplicationContext()).get(0);
 					UserSession.setUserSession(getApplicationContext(), ""
 							+ myUser.getID());
 					if (myUser != null) {
