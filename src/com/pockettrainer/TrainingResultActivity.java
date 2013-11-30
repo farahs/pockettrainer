@@ -1,5 +1,8 @@
 package com.pockettrainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
@@ -7,7 +10,9 @@ import org.brickred.socialauth.android.SocialAuthListener;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 
 import com.example.pockettrainer.R;
+import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.dal.PET_DAL;
+import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.TRAINING;
 import com.pockettrainer.helper.UserSession;
@@ -47,22 +52,27 @@ public class TrainingResultActivity extends Activity implements
 	Button cancel;
 	TRAINING myTraining;
 	PET myPet;
+	List<MONSTER> monster;
+	int[] noMonster = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	TextView runningTimeTV;
 	TextView distanceTV;
 	TextView burnedCaloriesTV;
 	TextView numOfStepsTV;
 	TextView monsterDefeatedTV;
+	TextView monstersTV;
 	TextView trainingExpTV;
 	TextView totalExpTV;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training_result);
-		
+
 		myTraining = new TRAINING();
 		myPet = new PET();
+		monster = new ArrayList<MONSTER>();
+
 		Intent i = getIntent();
 
 		if (i != null) {
@@ -74,7 +84,7 @@ public class TrainingResultActivity extends Activity implements
 		} else {
 			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
 		}
-		
+
 		processPet();
 		setView();
 		setEvent();
@@ -84,10 +94,10 @@ public class TrainingResultActivity extends Activity implements
 	}
 
 	private void processPet() {
-		String petId = UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID);
-		if(!petId.equals("0")){
-			myPet = PET_DAL.getPET_Single(getApplicationContext(),Integer.parseInt(petId));
-		}
+		String myPetID = UserSession.getPetSession(getApplicationContext())
+				.get(UserSession.PET_ID);
+		this.myPet = PET_DAL.getPET_Single(getApplicationContext(),
+				Integer.parseInt(myPetID));
 	}
 
 	private void setView() {
@@ -100,24 +110,25 @@ public class TrainingResultActivity extends Activity implements
 		cancel = (Button) notifDialog.findViewById(R.id.notifDialog_cancel);
 		share = (Button) findViewById(R.id.share_button);
 		cont = (Button) findViewById(R.id.continue_button);
-		
+
 		runningTimeTV = (TextView) findViewById(R.id.training_result_running_time);
 		distanceTV = (TextView) findViewById(R.id.training_result_distance);
 		burnedCaloriesTV = (TextView) findViewById(R.id.training_result_cal_burned);
 		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
+		monstersTV = (TextView) findViewById(R.id.training_result_monsters);
 		trainingExpTV = (TextView) findViewById(R.id.training_result_exp);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
 	}
-	
+
 	private void setEvent() {
 		cont.setOnClickListener(this);
 		tweet.setOnClickListener(this);
 		cancel.setOnClickListener(this);
 	}
-	
-	private void setSensor(){
+
+	private void setSensor() {
 		mInitialized = false;
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -127,7 +138,7 @@ public class TrainingResultActivity extends Activity implements
 		mSensorManager.registerListener(this, mAccelerometer,
 				SensorManager.SENSOR_DELAY_NORMAL);
 	}
-	
+
 	private void setAdapter() {
 		adapter = new SocialAuthAdapter(new ResponseListener());
 		// adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
@@ -135,18 +146,29 @@ public class TrainingResultActivity extends Activity implements
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 		// adapter.enable(share);
 	}
-	
+
 	private void setData() {
-		if(myTraining != null) {
+		if (myTraining != null) {
+
 			setTime(myTraining.getDURATION());
-			
+			setDistance(myTraining.getDISTANCE());
+			int monsterDefeated = randomMonster(myTraining.getDISTANCE());
+			monsterDefeatedTV.setText("" + monsterDefeated);
+
+			if (myPet != null) {
+				int level = Integer.parseInt(myPet.getLEVEL());
+				int exp = calculateExperience(myTraining.getDISTANCE(),
+						myTraining.getSTEPS(), level);
+				totalExpTV.setText("" + exp);
+
+				String monsterList = listOfMonster();
+				monstersTV.setText(monsterList);
+			}
+
 		}
-		
-		if(myPet != null) {
-			
-		}
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -323,66 +345,157 @@ public class TrainingResultActivity extends Activity implements
 		mSensorManager.unregisterListener(this);
 
 	}
-	
+
 	protected void setTime(float time) {
-		
+
 		long secs, mins, hrs;
 		String seconds, minutes, hours;
-		
-		secs = (long) (time/1000);
-		mins = (long) ((time/1000)/60);
-		hrs = (long) (((time/1000)/60)/60);
-		
+
+		secs = (long) (time / 1000);
+		mins = (long) ((time / 1000) / 60);
+		hrs = (long) (((time / 1000) / 60) / 60);
+
 		secs = secs % 60;
 		seconds = String.valueOf(secs);
-		
+
 		if (secs == 0) {
 			seconds = "00";
-		} 
+		}
 		if (secs < 10 && secs > 0) {
 			seconds = "0" + seconds;
 		}
-		
+
 		mins = mins % 60;
 		minutes = String.valueOf(mins);
-		
+
 		if (mins == 0) {
 			minutes = "00";
-		} 
+		}
 		if (mins < 10 && mins > 0) {
 			minutes = "0" + minutes;
 		}
-		
+
 		hours = String.valueOf(hrs);
 		if (hrs == 0) {
 			hours = "00";
-		} 
+		}
 		if (hrs < 10 && hrs > 0) {
 			hours = "0" + hours;
 		}
 
-		runningTimeTV.setText(hours + ":" + minutes + ":" + seconds);		
+		runningTimeTV.setText(hours + ":" + minutes + ":" + seconds);
 	}
-	
+
+	protected int randomMonster(float jarak) {
+		int numberOfMonster = (int) jarak / 100;
+		int monsterDefeated = 0;
+		MONSTER myMonster = new MONSTER();
+
+		for (int i = 0; i <= numberOfMonster; i++) {
+
+			monsterDefeated++;
+			int monsterAppearance = (int) (Math.random() * 10 + 1);
+
+			if (monsterAppearance <= 6) {
+				int random = (int) (Math.random() * 100 + 1);
+
+				if (random <= 10) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 1);
+					monster.add(myMonster);
+				} else if (random <= 20 && random > 10) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 2);
+					monster.add(myMonster);
+				} else if (random <= 20 && random > 10) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 3);
+					monster.add(myMonster);
+				} else if (random <= 30 && random > 20) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 4);
+					monster.add(myMonster);
+				} else if (random <= 45 && random > 30) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 5);
+					monster.add(myMonster);
+				} else if (random <= 60 && random > 45) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 6);
+					monster.add(myMonster);
+				} else if (random <= 65 && random > 60) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 7);
+					monster.add(myMonster);
+				} else if (random <= 85 && random > 65) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 8);
+					monster.add(myMonster);
+				} else if (random <= 99 && random > 85) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 9);
+					monster.add(myMonster);
+				} else if (random == 100) {
+					myMonster = MONSTER_DAL.getTRAINING_Single(
+							getApplicationContext(), 10);
+					monster.add(myMonster);
+				}
+			}
+		}
+
+		return monsterDefeated;
+	}
+
+	protected String listOfMonster() {
+		String listMonster = "";
+		MONSTER myMonster = new MONSTER();
+
+		for (MONSTER momon : monster) {
+			noMonster[momon.getID()] += 1;
+		}
+
+		for (int i = 1; i < 11; i++) {
+			myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(),
+					i);
+			listMonster = listMonster.concat(myMonster.getNAME() + " "
+					+ noMonster[i] + " ");
+
+		}
+
+		return listMonster;
+	}
+
+	protected int calculateExperience(float jarak, float langkah, int level) {
+
+		int exp = 0;
+		for (MONSTER momon : monster) {
+			exp += ((momon.getBASE_EXPERIENCE() * level) / 2)
+					+ ((jarak + langkah) / 5);
+		}
+
+		return exp;
+
+	}
+
 	protected void setDistance(float dist) {
-//		
+		//
 		float ms, kms;
-//		String meters, kilos;
-//		
+		// String meters, kilos;
+		//
 		ms = dist;
-		kms = ms/1000f;
-		
+		kms = ms / 1000f;
+
 		distanceTV.setText(String.format("%.2f Km", kms));
-//		
-//		ms = ms % 1000;
-//		meters = String.valueOf(ms);
-//		if(ms == 0) {
-//			meters = "000";
-//		}
-//		
-//		
-//		kilos = String.valueOf(kms);
-		
+		//
+		// ms = ms % 1000;
+		// meters = String.valueOf(ms);
+		// if(ms == 0) {
+		// meters = "000";
+		// }
+		//
+		//
+		// kilos = String.valueOf(kms);
+
 	}
-	
+
 }

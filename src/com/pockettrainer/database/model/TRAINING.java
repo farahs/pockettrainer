@@ -34,13 +34,16 @@ public class TRAINING implements Parcelable {
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String MONSTER_DEFEATED;	
 	
+	@DatabaseField(dataType = DataType.INTEGER, canBeNull = true)
+	private int EXPERIENCE;
+	
 	public TRAINING() {
 
 	}
-	
+
 	public TRAINING(int iD, int uSER_ID, float dURATION, float dISTANCE,
 			float sPEED, float bURNED_CALORIES, float sTEPS,
-			String mONSTER_DEFEATED) {
+			String mONSTER_DEFEATED, int eXPERIENCE) {
 		super();
 		ID = iD;
 		USER_ID = uSER_ID;
@@ -50,6 +53,7 @@ public class TRAINING implements Parcelable {
 		BURNED_CALORIES = bURNED_CALORIES;
 		STEPS = sTEPS;
 		MONSTER_DEFEATED = mONSTER_DEFEATED;
+		EXPERIENCE = eXPERIENCE;
 	}
 
 	public TRAINING(Parcel in) {
@@ -72,6 +76,7 @@ public class TRAINING implements Parcelable {
 		dest.writeFloat(BURNED_CALORIES);
 		dest.writeFloat(STEPS);
 		dest.writeString(MONSTER_DEFEATED);
+		dest.writeInt(EXPERIENCE);
 	}
 	
 	private void readFromParcel(Parcel in) {
@@ -83,6 +88,7 @@ public class TRAINING implements Parcelable {
 		BURNED_CALORIES = in.readFloat();
 		STEPS = in.readFloat();
 		MONSTER_DEFEATED = in.readString();
+		EXPERIENCE = in.readInt();
 	}
 	
 	public static final Parcelable.Creator	CREATOR	= new Parcelable.Creator() {
@@ -164,4 +170,12 @@ public class TRAINING implements Parcelable {
 		MONSTER_DEFEATED = mONSTER_DEFEATED;
 	}
 
+	public int getEXPERIENCE() {
+		return EXPERIENCE;
+	}
+
+	public void setEXPERIENCE(int eXPERIENCE) {
+		EXPERIENCE = eXPERIENCE;
+	}
+	
 }

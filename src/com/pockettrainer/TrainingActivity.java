@@ -61,6 +61,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	boolean running;
 	NotificationDialog dialog;
 	Button setting;
+	float distanceTo;
 	
 	private long secs,mins,hrs;
 	private String hours,minutes,seconds,milliseconds;
@@ -346,7 +347,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	}
 
 	private float calculateDistance(Location last, Location now) {
-//		float dist =  now.distanceTo(last);
+		distanceTo =  now.distanceTo(last);
 		float [] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
 		return c[0];
@@ -362,7 +363,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	
 
 	private void trainingSummary() {
-		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance, Toast.LENGTH_SHORT)
+		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance + " distanceto: " + distanceTo, Toast.LENGTH_SHORT)
 				.show();
 	}
 
@@ -424,7 +425,8 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		String userId = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-		myTraining.setDISTANCE(0f);
+		myTraining.setDISTANCE(1000);
+//		myTraining.setDISTANCE(totalDistance);
 		myTraining.setSPEED(0f);
 		myTraining.setBURNED_CALORIES(0f);
 		myTraining.setSTEPS(0f);

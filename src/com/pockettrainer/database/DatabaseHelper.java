@@ -1,9 +1,7 @@
 package com.pockettrainer.database;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -25,7 +23,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pockettrainer_db.sqlite";
 	private Context context;
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	private static DatabaseConnection databaseConnection;
 
@@ -185,18 +183,68 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		MONSTER a = new MONSTER();
 		a.setCODE("01");
 		a.setNAME("POOH");
+		a.setBASE_EXPERIENCE(100);
 		listMonster.add(a);
 		
 		MONSTER b = new MONSTER();
 		b.setCODE("02");
 		b.setNAME("TIGGER");
+		b.setBASE_EXPERIENCE(200);
 		listMonster.add(b);
+		
+		MONSTER c = new MONSTER();
+		c.setCODE("03");
+		c.setNAME("RABBIT");
+		c.setBASE_EXPERIENCE(300);
+		listMonster.add(c);
+		
+		MONSTER d = new MONSTER();
+		d.setCODE("04");
+		d.setNAME("OWL");
+		d.setBASE_EXPERIENCE(400);
+		listMonster.add(d);
+		
+		MONSTER e = new MONSTER();
+		e.setCODE("05");
+		e.setNAME("KANGA");
+		e.setBASE_EXPERIENCE(500);
+		listMonster.add(e);
+		
+		MONSTER f = new MONSTER();
+		f.setCODE("06");
+		f.setNAME("ROO");
+		f.setBASE_EXPERIENCE(600);
+		listMonster.add(f);
+		
+		MONSTER g = new MONSTER();
+		g.setCODE("07");
+		g.setNAME("PIGLETT");
+		g.setBASE_EXPERIENCE(700);
+		listMonster.add(g);
+		
+		MONSTER h = new MONSTER();
+		h.setCODE("08");
+		h.setNAME("EEYORE");
+		h.setBASE_EXPERIENCE(800);
+		listMonster.add(h);
+		
+		MONSTER i = new MONSTER();
+		i.setCODE("09");
+		i.setNAME("HEFFALUMP");
+		i.setBASE_EXPERIENCE(900);
+		listMonster.add(i);
+		
+		MONSTER j = new MONSTER();
+		j.setCODE("10");
+		j.setNAME("CHRISTOPHER ROBIN");
+		j.setBASE_EXPERIENCE(1000);
+		listMonster.add(j);
 		
 		for (MONSTER monster : listMonster) {
 			try {
 				MONSTER_DAL.insertMONSTER(context, monster);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 		}
 		
