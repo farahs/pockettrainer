@@ -456,11 +456,13 @@ public class TrainingResultActivity extends Activity implements
 		}
 
 		for (int i = 1; i < 11; i++) {
+			if(noMonster[i] != 0) {
 			myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(),
 					i);
-			listMonster = listMonster.concat(myMonster.getNAME() + " "
+			listMonster = listMonster.concat(myMonster.getNAME() + " x"
 					+ noMonster[i] + " ");
 
+			}
 		}
 
 		return listMonster;
