@@ -19,11 +19,11 @@ public class MONSTER implements Parcelable {
 	@DatabaseField(dataType = DataType.STRING, canBeNull = false)
 	private String NAME;	
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = false)
+	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String IMAGE;
 	
 	@DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
-	private int BASEEXP;
+	private int BASE_EXPERIENCE;
 	
 	public MONSTER() {
 		
@@ -35,7 +35,7 @@ public class MONSTER implements Parcelable {
 		CODE = cODE;
 		NAME = nAME;
 		IMAGE = iMAGE;
-		BASEEXP = bASEEXP;
+		BASE_EXPERIENCE = bASEEXP;
 		
 	}
 
@@ -54,6 +54,8 @@ public class MONSTER implements Parcelable {
 		dest.writeInt(ID);
 		dest.writeString(CODE);
 		dest.writeString(NAME);
+		dest.writeString(IMAGE);
+		dest.writeInt(BASE_EXPERIENCE);
 	}
 	
 	private void readFromParcel(Parcel in) {
@@ -84,7 +86,7 @@ public class MONSTER implements Parcelable {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	
+
 	public String getCODE() {
 		return CODE;
 	}
@@ -100,5 +102,23 @@ public class MONSTER implements Parcelable {
 	public void setNAME(String nAME) {
 		NAME = nAME;
 	}
+
+	public String getIMAGE() {
+		return IMAGE;
+	}
+
+	public void setIMAGE(String iMAGE) {
+		IMAGE = iMAGE;
+	}
+
+	public int getBASEEXP() {
+		return BASE_EXPERIENCE;
+	}
+
+	public void setBASEEXP(int bASEEXP) {
+		BASE_EXPERIENCE = bASEEXP;
+	}
+
+	
 	
 }
