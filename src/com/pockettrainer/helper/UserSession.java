@@ -15,10 +15,6 @@ public class UserSession {
 	public static String LOGIN_ID = "LOGIN_ID";
 	public static String HAVE_PET = "HAVE_PET";
 	public static String PET_ID = "PET_ID";
-//	public static String PET_HUNGER = "PET_HUNGER";
-//	public static String PET_SLEEP = "PET_SLEEP";
-//	public static String PET_HYGIENE = "PET_HYGIENE";
-//	public static String PET_RELATIONSHIP = "PET_RELATIONSHIP";
 	public static String SLEEP_FLAG = "SLEEP_FLAG";
 	public static int HUNGER = 0;
 	public static int SLEEP = 0;
@@ -87,6 +83,11 @@ public class UserSession {
 	public static boolean isLoggedIn(Context context) {
 		SharedPreferences sp = getSharedPreference(context);
 		return sp.getBoolean(IS_LOGGED_IN, false);
+	}
+
+	public static boolean isHavePet(Context context) {
+		SharedPreferences sp = getSharedPreference(context);
+		return sp.getBoolean(HAVE_PET, false);
 	}
 	
 	public static HashMap<String, String> getPetSession(Context context)

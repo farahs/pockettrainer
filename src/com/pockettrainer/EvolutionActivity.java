@@ -15,6 +15,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -120,7 +121,7 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				frame = 5;
 				cont.setVisibility(View.GONE);
 			} else if (frame == 6) {
-				String a = "" + (Integer.parseInt(myPet.getENVIRONMENT() + 1));
+				String a = "" + (Integer.parseInt(myPet.getTYPE()) + 1);
 				myPet.setTYPE(a);
 				try {
 					PET_DAL.updatePET(getApplicationContext(), myPet);
@@ -128,6 +129,8 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				PET uhuy = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID)));
+				Log.i("POCKETTRAINER", uhuy.getTYPE() + " " + uhuy.getID());
 				finish();
 			}
 			break;

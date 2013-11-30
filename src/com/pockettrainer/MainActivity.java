@@ -71,6 +71,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			if (bund != null) {
 				myPet = bund.getParcelable("PET");
+				initializePet();
 				myUser = bund.getParcelable("USER");
 				Log.i("POCKETTRAINER", "MainActivity" + myPet.getNAME());
 			}
@@ -146,8 +147,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		setupExperience(this.myPet.getLEVEL());
 
 		environment = Integer.parseInt(this.myPet.getENVIRONMENT());
-
+		
 		dashboard.setEnvironment(environment);
+		
+//		dashboard.setPet(Integer.parseInt(this.myPet.getTYPE()));
 		
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
@@ -258,6 +261,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		dashboard.resumeThread();
 		service = new Intent(MainActivity.this, MyService.class);
 		stopService(service);
+		
+		initializePet();
+		setupData();
+		dashboard.setPet(Integer.parseInt(myPet.getTYPE()));
 	}
 
 	@Override
@@ -449,4 +456,20 @@ public class MainActivity extends Activity implements OnClickListener {
 		setupBarIndikator(hunger, energy, hygiene, love);
 	}
 
+	protected void initializePet() {
+		String myPetID = UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID);
+		this.myPet = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(myPetID));
+		Log.i("POCKETTRAINER", myPet.getTYPE());
+	}
+
+	public PET getMyPet() {
+		return myPet;
+	}
+
+	public void setMyPet(PET myPet) {
+		this.myPet = myPet;
+	}
+	
+	
+	
 }

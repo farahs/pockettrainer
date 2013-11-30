@@ -123,9 +123,9 @@ public class MainDashboard extends SurfaceView implements
 		
 		myPet = new PET();
 		initializePet();
-		
 		setPet(Integer.parseInt(myPet.getTYPE()));
-
+		Log.i("POCKETTRAINER", myPet.getTYPE() + " " + myPet.getID());
+		
 		brushAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.sikat,
 				100, 100), context);
 		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
@@ -141,18 +141,22 @@ public class MainDashboard extends SurfaceView implements
 					R.drawable.sprite_egg_remove, R.drawable.sprite_egg_eat,
 					R.drawable.sprite_egg_sleep, 1);
 		} else if(type == 2) {
-			setSprite(context, R.drawable.sprite_fire, R.drawable.sprite_fire_move,
-					R.drawable.sprite_fire_remove, R.drawable.sprite_fire_eat,
-					R.drawable.sprite_fire_sleep, 2);
-		} else if(type == 3) {
-			setSprite(context, R.drawable.sprite_grass, R.drawable.sprite_grass_move,
-					R.drawable.sprite_grass_removed, R.drawable.sprite_grass_eat,
-					R.drawable.sprite_grass_sleep, 2);
-		} else if(type == 4) {
-			setSprite(context, R.drawable.sprite_water, R.drawable.sprite_water_move,
-					R.drawable.sprite_water_remove, R.drawable.sprite_water_eat,
-					R.drawable.sprite_water_sleep, 2);
-		}
+			if(myPet.getENVIRONMENT().equals("1")) {
+				setSprite(context, R.drawable.sprite_fire, R.drawable.sprite_fire_move,
+						R.drawable.sprite_fire_remove, R.drawable.sprite_fire_eat,
+						R.drawable.sprite_fire_sleep, 2);
+			} 
+			else if(myPet.getENVIRONMENT().equals("2")) {
+				setSprite(context, R.drawable.sprite_grass, R.drawable.sprite_grass_move,
+						R.drawable.sprite_grass_removed, R.drawable.sprite_grass_eat,
+						R.drawable.sprite_grass_sleep, 2);
+			}
+			else if(myPet.getENVIRONMENT().equals("3")) {
+				setSprite(context, R.drawable.sprite_water, R.drawable.sprite_water_move,
+						R.drawable.sprite_water_remove, R.drawable.sprite_water_eat,
+						R.drawable.sprite_water_sleep, 2);
+			}
+		} 
 	}
 
 	public void setSprite(Context context, int idle, int move, int end,
@@ -556,9 +560,7 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	protected void initializePet() {
-		String myPetID = UserSession.getPetSession(getContext())
-				.get(UserSession.PET_ID);
-		this.myPet = PET_DAL.getPET_Single(getContext(),
-				Integer.parseInt(myPetID));
+		String myPetID = UserSession.getPetSession(getContext()).get(UserSession.PET_ID);
+		this.myPet = PET_DAL.getPET_Single(getContext(), Integer.parseInt(myPetID));
 	}
 }

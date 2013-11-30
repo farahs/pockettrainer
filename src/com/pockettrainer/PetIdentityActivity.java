@@ -52,7 +52,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 	
 	String clause = "You decided to grow your pet on ";
 	
-	boolean loginStatus;
+	boolean loginStatus, havePet;
 	Date nowDate;
 
 	@Override
@@ -220,6 +220,9 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 			UserSession.setUserSession(getApplicationContext(),
 					"" + myUser.getID());
 			UserSession.setIdUser("" + myUser.getID());
+			
+			UserSession.setPetSession(getApplicationContext(), "" + myPet.getID());
+			
 			return true;
 		}
 
