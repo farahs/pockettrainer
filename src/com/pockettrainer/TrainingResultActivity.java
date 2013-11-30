@@ -393,10 +393,11 @@ public class TrainingResultActivity extends Activity implements
 
 		for (int i = 0; i <= numberOfMonster; i++) {
 
-			monsterDefeated++;
+			
 			int monsterAppearance = (int) (Math.random() * 10 + 1);
 
 			if (monsterAppearance <= 6) {
+				monsterDefeated++;
 				int random = (int) (Math.random() * 100 + 1);
 
 				if (random <= 10) {
