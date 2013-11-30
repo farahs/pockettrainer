@@ -1,9 +1,7 @@
 package com.pockettrainer.database;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -25,7 +23,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pockettrainer_db.sqlite";
 	private Context context;
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	private static DatabaseConnection databaseConnection;
 
