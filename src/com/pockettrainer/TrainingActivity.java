@@ -33,6 +33,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -41,7 +45,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TrainingActivity extends Activity implements OnClickListener, LocationListener {
+public class TrainingActivity extends Activity implements OnClickListener, LocationListener, SensorEventListener {
 
 	TextView timerTV;
 	TextView timerMsTV;
@@ -49,19 +53,22 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	Button pauseBtn;
 	Button resumeBtn;
 	Button stopBtn;
-	List<LatLng> trackedPoint;
+	Button setting;
+	
+	NotificationDialog dialog;
+
 	protected GoogleMap myMap;
+	LocationManager locationManager;
+	List<LatLng> trackedPoint;
 	Location lastLocation;
 	Location initialLocation;
 	Location finalLocation;
 	float speed;
 	int point;
 	float totalDistance;
-	LocationManager locationManager;
-	boolean running;
-	NotificationDialog dialog;
-	Button setting;
+	float initFinalDistance;
 	float distanceTo;
+	boolean running;
 	
 	private long secs,mins,hrs;
 	private String hours,minutes,seconds,milliseconds;
@@ -73,8 +80,13 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	long timeSwapBuff = 0L;
 	
 	TRAINING myTraining;
-
-
+	
+	private boolean mInitialized;
+	private SensorManager mSensorManager;
+	private Sensor mAccelerometer;
+	private final float NOISE = (float) 2.0;
+	int stepsCount;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,6 +103,8 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		setupSensor();
 	}
 
 	private void setupView() {
@@ -128,6 +142,12 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		});
 	}
 
+	private void setupSensor() {
+		mInitialized = false;
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -141,6 +161,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		case R.id.training_start:
 			if(readyToRun()) {
 				running = true;
+				startSensor();
 				startBtn.setVisibility(View.GONE);
 				pauseBtn.setVisibility(View.VISIBLE);
 				resumeBtn.setVisibility(View.GONE);
@@ -179,7 +200,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 			running = false;
 			stopTrain();
 			trainingSummary();
-			processTraining();
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
 			Bundle bund = new Bundle();
@@ -191,6 +211,10 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		default:
 			break;
 		}
+	}
+
+	private void startSensor() {
+		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	private Runnable updateTimerThread = new Runnable() {
@@ -306,9 +330,17 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 				if(isGPSOK) {
 					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
 				}
-				running = true;
-				makeMarker(initialLocation, "START");
-				return true;
+				
+				if(initialLocation != null) {
+					totalDistance = 0f;
+					running = true;
+					stepsCount = 0;
+					makeMarker(initialLocation, "START");
+					return true;
+				} else {
+					return false;
+				}
+
 			} else {
 				return false;
 			}
@@ -323,7 +355,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		Criteria crit = new Criteria();
 		finalLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
 		if(initialLocation != null && finalLocation != null) {
-			totalDistance = calculateDistance(initialLocation, finalLocation);
+			initFinalDistance = calculateDistance(initialLocation, finalLocation);
 			makeMarker(finalLocation, "FINISH");
 		}
 	}
@@ -335,19 +367,24 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		if(running) {
 			Log.i("POCKETTRAINER", "locationchanged dalam");
 			Log.i("POCKETTRAINER", "" + calculateDistance(lastLocation, location));
-
-				LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());	
-				trackedPoint.add(currentLocation);
-				Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
-				route.setPoints(trackedPoint);
-				point++;
-				
+			LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());	
+			trackedPoint.add(currentLocation);
+			Polyline route = myMap.addPolyline(new PolylineOptions().geodesic(true));
+			route.setPoints(trackedPoint);
+			point++;
+			
+			totalDistance += calculateDistance(lastLocation, location);
+			lastLocation = location;
+			
+			if(location.hasSpeed()) {
 				calculateSpeed(location);
+			}
 		}
+		
 	}
 
 	private float calculateDistance(Location last, Location now) {
-		distanceTo =  now.distanceTo(last);
+		distanceTo +=  now.distanceTo(last);
 		float [] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
 		return c[0];
@@ -363,8 +400,18 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	
 
 	private void trainingSummary() {
-		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance + " distanceto: " + distanceTo, Toast.LENGTH_SHORT)
+		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance + " distanceto: " + distanceTo + " initFinalDistance: " + initFinalDistance, Toast.LENGTH_SHORT)
 				.show();
+		
+		String userId = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
+		myTraining.setUSER_ID(Integer.parseInt(userId));
+		myTraining.setDURATION(timeInMilliseconds);
+//		myTraining.setDISTANCE(1000);
+		myTraining.setDISTANCE(totalDistance);
+		myTraining.setSPEED(speed);
+		myTraining.setBURNED_CALORIES(0f);
+		myTraining.setSTEPS(stepsCount);
+		myTraining.setMONSTER_DEFEATED("");
 	}
 
 	
@@ -420,17 +467,68 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		MarkerOptions marker = new MarkerOptions().position(new LatLng(l.getLatitude(), l.getLongitude())).title(title);
 		myMap.addMarker(marker);
 	}
-	
-	private void processTraining() {
-		String userId = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
-		myTraining.setUSER_ID(Integer.parseInt(userId));
-		myTraining.setDURATION(timeInMilliseconds);
-		myTraining.setDISTANCE(1000);
-//		myTraining.setDISTANCE(totalDistance);
-		myTraining.setSPEED(0f);
-		myTraining.setBURNED_CALORIES(0f);
-		myTraining.setSTEPS(0f);
-		myTraining.setMONSTER_DEFEATED("");
+
+	@Override
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+
+		double x = 0d, y = 0d, z = 0d;
+		double mLastX = 0d, mLastY = 0d, mLastZ = 0d;
+		double deltaX = 0d, deltaY = 0d, deltaZ = 0d;
+		final double alpha = 0.8;
+		
+		x = event.values[0];
+		y = event.values[1];
+		z = event.values[2];
+		
+		double[] gravity = {0,0,0};
+		
+		gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+		gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+		gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+		
+		x = event.values[0] - gravity[0];
+		y = event.values[1] - gravity[1];
+		z = event.values[2] - gravity[2];
+		
+		if (!mInitialized) {
+			mLastX = x;
+			mLastY = y;
+			mLastZ = z;
+			mInitialized = true;
+		}
+		else {
+			deltaX = Math.abs(mLastX - x);
+			deltaY = Math.abs(mLastY - y);
+			deltaZ = Math.abs(mLastZ - z);
+			
+			if(deltaX < NOISE) {
+				deltaX = 0f;
+			}
+			
+			if(deltaY < NOISE) {
+				deltaY = 0f;
+			}
+			
+			if(deltaZ < NOISE) {
+				deltaZ = 0f;
+			}
+			
+			mLastX = x;
+			mLastY = y;
+			mLastZ = z;
+			
+			if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
+				// Z shake
+				stepsCount = stepsCount + 1;
+			}
+		}
+		
 	}
 	
 }

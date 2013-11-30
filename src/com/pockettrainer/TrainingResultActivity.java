@@ -18,6 +18,7 @@ import com.pockettrainer.database.model.TRAINING;
 import com.pockettrainer.helper.UserSession;
 
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +43,7 @@ public class TrainingResultActivity extends Activity implements
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private boolean mInitialized;
-	private final float NOISE = (float) 7.0;
+	private final float NOISE = (float) 9.0;
 	private boolean shared = false;
 	NotificationDialog notifDialog;
 	SocialAuthAdapter adapter;
@@ -64,6 +65,8 @@ public class TrainingResultActivity extends Activity implements
 	TextView trainingExpTV;
 	TextView totalExpTV;
 
+	Vibrator v;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -137,6 +140,8 @@ public class TrainingResultActivity extends Activity implements
 
 		mSensorManager.registerListener(this, mAccelerometer,
 				SensorManager.SENSOR_DELAY_NORMAL);
+		
+		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	private void setAdapter() {
@@ -313,6 +318,7 @@ public class TrainingResultActivity extends Activity implements
 			if (deltaX > NOISE || deltaY > NOISE || deltaZ > NOISE) {
 				if (!shared) {
 					shared = true;
+					v.vibrate(500);
 					notifDialog.show();
 				}
 			}
