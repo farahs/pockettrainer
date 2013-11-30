@@ -1,17 +1,10 @@
 package com.pockettrainer;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.example.pockettrainer.R;
-import com.example.pockettrainer.R.id;
-import com.example.pockettrainer.R.layout;
-import com.example.pockettrainer.R.menu;
-import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.dal.PET_DAL;
-import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.USER;
 import com.pockettrainer.helper.MyService;
@@ -19,19 +12,14 @@ import com.pockettrainer.helper.UserSession;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -95,7 +83,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		setupView();
 		setupEvent();
-		
+
 		if (b) {
 			dashboard.goSleep();
 			MainActivity.setActEnergy();
@@ -113,7 +101,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		gameView = (RelativeLayout) this.findViewById(R.id.gameView);
 		gameView.addView(dashboard);
 
-		myBtn = (Button) this.findViewById(R.id.main_button);
+		myBtn = (Button) this.findViewById(R.id.train_button);
 		hungerBtn = (RelativeLayout) this.findViewById(R.id.eat_button);
 		energyBtn = (RelativeLayout) this.findViewById(R.id.sleep_button);
 		hygieneBtn = (RelativeLayout) this.findViewById(R.id.bath_button);
@@ -252,10 +240,10 @@ public class MainActivity extends Activity implements OnClickListener {
 						// UserSession.LOGIN_ID),
 						// Toast.LENGTH_SHORT).show();
 						// return true;
-						 Intent intent = new
-						 Intent(MainActivity.this, EvolutionActivity.class);
-						 startActivity(intent);
-						 return true;
+						Intent intent = new Intent(MainActivity.this,
+								EvolutionActivity.class);
+						startActivity(intent);
+						return true;
 					}
 				});
 
@@ -283,74 +271,59 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.main_button:
-			Intent i = new Intent(getApplicationContext(),
-					TrainingActivity.class);
-			startActivity(i);
+		case R.id.train_button:
+			if (canDoTraining()) {
+				Intent i = new Intent(getApplicationContext(),
+						TrainingActivity.class);
+				startActivity(i);
+			} else {
+				Toast.makeText(
+						getApplicationContext(), "Your pet not ready to Train!", Toast.LENGTH_SHORT)
+						.show();
+			}
 			break;
 		case R.id.eat_button:
 			if (!dashboard.getSleep()) {
 				dashboard.goEat();
 				setActHunger();
-				// hunger = hunger + 5;
-				// myPet.setHUNGER_INDICATOR(hunger);
-				// try {
-				// PET_DAL.updatePET(getApplicationContext(), myPet);
-				// } catch (SQLException e) {
-				// e.printStackTrace();
-				// }
-				// setupBarIndikator(hunger, energy, hygiene, love);
-				// setupMood(hunger, energy, hygiene, love);
 			}
 
 			break;
 		case R.id.sleep_button:
 			dashboard.goSleep();
 			setActEnergy();
-			// energy = energy + 5;
-			// myPet.setSLEEP_INDICATOR(energy);
-			// try {
-			// PET_DAL.updatePET(getApplicationContext(), myPet);
-			// } catch (SQLException e) {
-			// e.printStackTrace();
-			// }
-			// setupBarIndikator(hunger, energy, hygiene, love);
-			// setupMood(hunger, energy, hygiene, love);
 			break;
 		case R.id.bath_button:
 			if (!dashboard.getSleep()) {
 				dashboard.setIsBath();
 				setActHygiene();
-				// hygiene = hygiene + 5;
-				// myPet.setHYGIENE_INDICATOR(hygiene);
-				// try {
-				// PET_DAL.updatePET(getApplicationContext(), myPet);
-				// } catch (SQLException e) {
-				// e.printStackTrace();
-				// }
-				// setupBarIndikator(hunger, energy, hygiene, love);
-				// setupMood(hunger, energy, hygiene, love);
 			}
-
 			break;
 		case R.id.pet_button:
-			// love = love + 5;
-			// myPet.setRELATIONSHIP_INDICATOR(love);
-			// try {
-			// PET_DAL.updatePET(getApplicationContext(), myPet);
-			// } catch (SQLException e) {
-			// e.printStackTrace();
-			// }
-			// setupBarIndikator(hunger, energy, hygiene, love);
-			// setupMood(hunger, energy, hygiene, love);
 			break;
 		default:
 			break;
 		}
 	}
-	
+
+	public boolean canDoTraining() {
+
+		if (Integer.parseInt(myPet.getMOOD()) <= 2) {
+			return false;
+		}
+		if (UserSession.getPetSleepSession(getApplicationContext()).get(
+				UserSession.SLEEP_FLAG)) {
+			return false;
+		}
+		if (energy < 30) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public static void setActHunger() {
-		if(hungBtn) {
+		if (hungBtn) {
 			hungBtn = !hungBtn;
 			hungerBtn.setBackgroundResource(R.drawable.top_hunger_color);
 		} else {
@@ -358,9 +331,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			hungerBtn.setBackgroundResource(R.drawable.top_default_color);
 		}
 	}
-	
+
 	public static void setActHygiene() {
-		if(hyBtn) {
+		if (hyBtn) {
 			hyBtn = !hyBtn;
 			hygieneBtn.setBackgroundResource(R.drawable.top_hygiene_color);
 		} else {
@@ -368,9 +341,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			hygieneBtn.setBackgroundResource(R.drawable.top_default_color);
 		}
 	}
-	
+
 	public static void setActEnergy() {
-		if(enBtn) {
+		if (enBtn) {
 			enBtn = !enBtn;
 			energyBtn.setBackgroundResource(R.drawable.top_sleep_color);
 		} else {

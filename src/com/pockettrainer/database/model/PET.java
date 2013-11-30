@@ -26,6 +26,9 @@ public class PET implements Parcelable {
 	private Date BIRTH_DATE;
 
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	private String TYPE;
+	
+	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String LEVEL;
 
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
@@ -49,46 +52,28 @@ public class PET implements Parcelable {
 	@DatabaseField(dataType = DataType.INTEGER, canBeNull = true)
 	private int RELATIONSHIP_INDICATOR;
 
-	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
-	private Date LAST_UPDATE_HUNGER_INDICATOR;
-
-	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
-	private Date LAST_UPDATE_SLEEP_INDICATOR;
-
-	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
-	private Date LAST_UPDATE_HYGIENE_INDICATOR;
-
-	@DatabaseField(dataType = DataType.DATE, canBeNull = true)
-	private Date LAST_UPDATE_RELATIONSHIP_INDICATOR;
-
 	public PET() {
 
 	}
 
-	public PET(int iD, int uSER_ID, String nAME, Date bIRTH_DATE, String lEVEL,
-			String eNVIRONMENT, int eXPERIENCE, String mOOD,
-			int hUNGER_INDICATOR, int sLEEP_INDICATOR, int hYGIENE_INDICATOR,
-			int rELATIONSHIP_INDICATOR, Date lAST_UPDATE_HUNGER_INDICATOR,
-			Date lAST_UPDATE_SLEEP_INDICATOR,
-			Date lAST_UPDATE_HYGIENE_INDICATOR,
-			Date lAST_UPDATE_RELATIONSHIP_INDICATOR) {
+	public PET(int iD, int uSER_ID, String nAME, Date bIRTH_DATE, String tYPE,
+			String lEVEL, String eNVIRONMENT, int cURRENT_EXPERIENCE,
+			String mOOD, int hUNGER_INDICATOR, int sLEEP_INDICATOR,
+			int hYGIENE_INDICATOR, int rELATIONSHIP_INDICATOR) {
 		super();
 		ID = iD;
 		USER_ID = uSER_ID;
 		NAME = nAME;
 		BIRTH_DATE = bIRTH_DATE;
+		TYPE = tYPE;
 		LEVEL = lEVEL;
 		ENVIRONMENT = eNVIRONMENT;
-		CURRENT_EXPERIENCE = eXPERIENCE;
+		CURRENT_EXPERIENCE = cURRENT_EXPERIENCE;
 		MOOD = mOOD;
 		HUNGER_INDICATOR = hUNGER_INDICATOR;
 		SLEEP_INDICATOR = sLEEP_INDICATOR;
 		HYGIENE_INDICATOR = hYGIENE_INDICATOR;
 		RELATIONSHIP_INDICATOR = rELATIONSHIP_INDICATOR;
-		LAST_UPDATE_HUNGER_INDICATOR = lAST_UPDATE_HUNGER_INDICATOR;
-		LAST_UPDATE_SLEEP_INDICATOR = lAST_UPDATE_SLEEP_INDICATOR;
-		LAST_UPDATE_HYGIENE_INDICATOR = lAST_UPDATE_HYGIENE_INDICATOR;
-		LAST_UPDATE_RELATIONSHIP_INDICATOR = lAST_UPDATE_RELATIONSHIP_INDICATOR;
 	}
 
 	public PET(Parcel in) {
@@ -106,7 +91,8 @@ public class PET implements Parcelable {
 		dest.writeInt(ID);
 		dest.writeInt(USER_ID);
 		dest.writeString(NAME);
-
+		dest.writeString(TYPE);
+		
 		if (BIRTH_DATE != null) {
 			dest.writeString(FormatHelper.getFormattedStringDate(BIRTH_DATE,
 					FormatHelper.SYSTEM_DATE_FORMAT));
@@ -123,43 +109,14 @@ public class PET implements Parcelable {
 		dest.writeInt(HYGIENE_INDICATOR);
 		dest.writeInt(RELATIONSHIP_INDICATOR);
 
-		if (LAST_UPDATE_HUNGER_INDICATOR != null) {
-			dest.writeString(FormatHelper.getFormattedStringDate(
-					LAST_UPDATE_HUNGER_INDICATOR,
-					FormatHelper.SYSTEM_DATE_FORMAT));
-		} else {
-			dest.writeString("");
-		}
-
-		if (LAST_UPDATE_SLEEP_INDICATOR != null) {
-			dest.writeString(FormatHelper.getFormattedStringDate(
-					LAST_UPDATE_SLEEP_INDICATOR,
-					FormatHelper.SYSTEM_DATE_FORMAT));
-		} else {
-			dest.writeString("");
-		}
-
-		if (LAST_UPDATE_HYGIENE_INDICATOR != null) {
-			dest.writeString(FormatHelper.getFormattedStringDate(
-					LAST_UPDATE_HYGIENE_INDICATOR,
-					FormatHelper.SYSTEM_DATE_FORMAT));
-		} else {
-			dest.writeString("");
-		}
-
-		if (LAST_UPDATE_RELATIONSHIP_INDICATOR != null) {
-			dest.writeString(FormatHelper.getFormattedStringDate(
-					LAST_UPDATE_RELATIONSHIP_INDICATOR,
-					FormatHelper.SYSTEM_DATE_FORMAT));
-		} else {
-			dest.writeString("");
-		}
 	}
 
 	private void readFromParcel(Parcel in) {
 		ID = in.readInt();
 		USER_ID = in.readInt();
 		NAME = in.readString();
+		TYPE = in.readString();
+		
 		String birthDate = in.readString();
 		BIRTH_DATE = ((birthDate != null) && !birthDate.isEmpty()) ? FormatHelper
 				.getFormattedDate(birthDate, FormatHelper.SYSTEM_DATE_FORMAT)
@@ -173,26 +130,6 @@ public class PET implements Parcelable {
 		SLEEP_INDICATOR = in.readInt();
 		HYGIENE_INDICATOR = in.readInt();
 		RELATIONSHIP_INDICATOR = in.readInt();
-
-		String hungInd = in.readString();
-		LAST_UPDATE_HUNGER_INDICATOR = ((hungInd != null) && !hungInd.isEmpty()) ? FormatHelper
-				.getFormattedDate(hungInd, FormatHelper.SYSTEM_DATE_FORMAT)
-				: null;
-
-		String sleepInd = in.readString();
-		LAST_UPDATE_SLEEP_INDICATOR = ((sleepInd != null) && !sleepInd
-				.isEmpty()) ? FormatHelper.getFormattedDate(sleepInd,
-				FormatHelper.SYSTEM_DATE_FORMAT) : null;
-
-		String hygInd = in.readString();
-		LAST_UPDATE_HYGIENE_INDICATOR = ((hygInd != null) && !hygInd.isEmpty()) ? FormatHelper
-				.getFormattedDate(hygInd, FormatHelper.SYSTEM_DATE_FORMAT)
-				: null;
-
-		String relInd = in.readString();
-		LAST_UPDATE_RELATIONSHIP_INDICATOR = ((relInd != null) && !relInd
-				.isEmpty()) ? FormatHelper.getFormattedDate(relInd,
-				FormatHelper.SYSTEM_DATE_FORMAT) : null;
 
 	}
 
@@ -239,6 +176,14 @@ public class PET implements Parcelable {
 
 	public void setBIRTH_DATE(Date bIRTH_DATE) {
 		BIRTH_DATE = bIRTH_DATE;
+	}
+
+	public String getTYPE() {
+		return TYPE;
+	}
+
+	public void setTYPE(String tYPE) {
+		TYPE = tYPE;
 	}
 
 	public String getLEVEL() {
@@ -303,41 +248,6 @@ public class PET implements Parcelable {
 
 	public void setRELATIONSHIP_INDICATOR(int rELATIONSHIP_INDICATOR) {
 		RELATIONSHIP_INDICATOR = rELATIONSHIP_INDICATOR;
-	}
-
-	public Date getLAST_UPDATE_HUNGER_INDICATOR() {
-		return LAST_UPDATE_HUNGER_INDICATOR;
-	}
-
-	public void setLAST_UPDATE_HUNGER_INDICATOR(
-			Date lAST_UPDATE_HUNGER_INDICATOR) {
-		LAST_UPDATE_HUNGER_INDICATOR = lAST_UPDATE_HUNGER_INDICATOR;
-	}
-
-	public Date getLAST_UPDATE_SLEEP_INDICATOR() {
-		return LAST_UPDATE_SLEEP_INDICATOR;
-	}
-
-	public void setLAST_UPDATE_SLEEP_INDICATOR(Date lAST_UPDATE_SLEEP_INDICATOR) {
-		LAST_UPDATE_SLEEP_INDICATOR = lAST_UPDATE_SLEEP_INDICATOR;
-	}
-
-	public Date getLAST_UPDATE_HYGIENE_INDICATOR() {
-		return LAST_UPDATE_HYGIENE_INDICATOR;
-	}
-
-	public void setLAST_UPDATE_HYGIENE_INDICATOR(
-			Date lAST_UPDATE_HYGIENE_INDICATOR) {
-		LAST_UPDATE_HYGIENE_INDICATOR = lAST_UPDATE_HYGIENE_INDICATOR;
-	}
-
-	public Date getLAST_UPDATE_RELATIONSHIP_INDICATOR() {
-		return LAST_UPDATE_RELATIONSHIP_INDICATOR;
-	}
-
-	public void setLAST_UPDATE_RELATIONSHIP_INDICATOR(
-			Date lAST_UPDATE_RELATIONSHIP_INDICATOR) {
-		LAST_UPDATE_RELATIONSHIP_INDICATOR = lAST_UPDATE_RELATIONSHIP_INDICATOR;
 	}
 
 }

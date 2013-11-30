@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.pockettrainer.R;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,12 +13,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.mapquest.android.maps.GeoPoint;
-import com.mapquest.android.maps.LineOverlay;
-import com.mapquest.android.maps.MapActivity;
-import com.mapquest.android.maps.MapController;
-import com.mapquest.android.maps.MapView;
-import com.mapquest.android.maps.MyLocationOverlay;
+import com.pockettrainer.database.model.TRAINING;
+import com.pockettrainer.helper.UserSession;
 
 import android.location.Criteria;
 import android.location.Location;
@@ -38,8 +33,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -68,7 +61,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	boolean running;
 	NotificationDialog dialog;
 	Button setting;
-	float sumDistance;
 	
 	private long secs,mins,hrs;
 	private String hours,minutes,seconds,milliseconds;
@@ -78,6 +70,8 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	private final int REFRESH_RATE = 50;
 	long timeInMilliseconds = 0L;
 	long timeSwapBuff = 0L;
+	
+	TRAINING myTraining;
 
 
 	@Override
@@ -85,6 +79,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training);
 		trackedPoint = new ArrayList<LatLng>();
+		myTraining = new TRAINING();
 		
 		setupView();
 		setupEvent();
@@ -183,10 +178,14 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 			running = false;
 			stopTrain();
 			trainingSummary();
+			processTraining();
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
+			Bundle bund = new Bundle();
+			bund.putParcelable("TRAINING", this.myTraining);
+			i.putExtras(bund);
 			startActivity(i);
-			this.finish();
+//			this.finish();
 			break;
 		default:
 			break;
@@ -242,8 +241,9 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 				milliseconds = "00";
 			}
 			
-			milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
-			
+			if(milliseconds.length() >= 2) {
+				milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
+			}
 			timerTV.setText(hours + ":" + minutes + ":" + seconds);
 			timerMsTV.setText("." + milliseconds);
 			
@@ -291,7 +291,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		boolean isGPSOK = isGPSEnabled();
 		speed = 0f;
 		point = 0;
-		sumDistance = 0f;
 		
 		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -322,8 +321,10 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	private void stopTrain() {
 		Criteria crit = new Criteria();
 		finalLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
-		totalDistance = calculateDistance(initialLocation, finalLocation);
-		makeMarker(finalLocation, "FINISH");
+		if(initialLocation != null && finalLocation != null) {
+			totalDistance = calculateDistance(initialLocation, finalLocation);
+			makeMarker(finalLocation, "FINISH");
+		}
 	}
 
 	@Override
@@ -348,7 +349,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 //		float dist =  now.distanceTo(last);
 		float [] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
-		sumDistance += c[0];
 		return c[0];
 	}
 
@@ -362,7 +362,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	
 
 	private void trainingSummary() {
-		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance + " sumdistance: " + sumDistance, Toast.LENGTH_SHORT)
+		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance, Toast.LENGTH_SHORT)
 				.show();
 	}
 
@@ -418,6 +418,17 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	private void makeMarker(Location l, String title){
 		MarkerOptions marker = new MarkerOptions().position(new LatLng(l.getLatitude(), l.getLongitude())).title(title);
 		myMap.addMarker(marker);
+	}
+	
+	private void processTraining() {
+		String userId = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
+		myTraining.setUSER_ID(Integer.parseInt(userId));
+		myTraining.setDURATION(timeInMilliseconds);
+		myTraining.setDISTANCE(0f);
+		myTraining.setSPEED(0f);
+		myTraining.setBURNED_CALORIES(0f);
+		myTraining.setSTEPS(0f);
+		myTraining.setMONSTER_DEFEATED("");
 	}
 	
 }

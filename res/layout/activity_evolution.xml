@@ -43,6 +43,16 @@
         android:layout_marginRight="40dp"
         android:src="@drawable/star"
         android:visibility="gone" />
+    
+    <ImageView
+        android:id="@+id/evolution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:src="@drawable/fire_single"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/contBtn"

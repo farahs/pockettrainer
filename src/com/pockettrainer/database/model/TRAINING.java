@@ -16,8 +16,8 @@ public class TRAINING implements Parcelable {
 	@DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
 	private int USER_ID;
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
-	private String DURATION;	
+	@DatabaseField(dataType = DataType.FLOAT, canBeNull = true)
+	private float DURATION;	
 	
 	@DatabaseField(dataType = DataType.FLOAT, canBeNull = true)
 	private float DISTANCE;
@@ -38,7 +38,7 @@ public class TRAINING implements Parcelable {
 
 	}
 	
-	public TRAINING(int iD, int uSER_ID, String dURATION, float dISTANCE,
+	public TRAINING(int iD, int uSER_ID, float dURATION, float dISTANCE,
 			float sPEED, float bURNED_CALORIES, float sTEPS,
 			String mONSTER_DEFEATED) {
 		super();
@@ -66,7 +66,7 @@ public class TRAINING implements Parcelable {
 		
 		dest.writeInt(ID);
 		dest.writeInt(USER_ID);
-		dest.writeString(DURATION);
+		dest.writeFloat(DURATION);
 		dest.writeFloat(DISTANCE);
 		dest.writeFloat(SPEED);
 		dest.writeFloat(BURNED_CALORIES);
@@ -77,7 +77,7 @@ public class TRAINING implements Parcelable {
 	private void readFromParcel(Parcel in) {
 		ID = in.readInt();
 		USER_ID = in.readInt();
-		DURATION = in.readString();
+		DURATION = in.readFloat();
 		DISTANCE = in.readFloat();
 		SPEED = in.readFloat();
 		BURNED_CALORIES = in.readFloat();
@@ -116,11 +116,11 @@ public class TRAINING implements Parcelable {
 		USER_ID = uSER_ID;
 	}
 
-	public String getDURATION() {
+	public float getDURATION() {
 		return DURATION;
 	}
 
-	public void setDURATION(String dURATION) {
+	public void setDURATION(float dURATION) {
 		DURATION = dURATION;
 	}
 

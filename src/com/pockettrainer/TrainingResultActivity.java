@@ -1,7 +1,5 @@
 package com.pockettrainer;
 
-import java.io.File;
-
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
@@ -9,13 +7,12 @@ import org.brickred.socialauth.android.SocialAuthListener;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 
 import com.example.pockettrainer.R;
-import com.example.pockettrainer.R.id;
-import com.example.pockettrainer.R.layout;
-import com.example.pockettrainer.R.menu;
+import com.pockettrainer.database.dal.PET_DAL;
+import com.pockettrainer.database.model.PET;
+import com.pockettrainer.database.model.TRAINING;
+import com.pockettrainer.helper.UserSession;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +27,7 @@ import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TrainingResultActivity extends Activity implements
@@ -48,12 +45,52 @@ public class TrainingResultActivity extends Activity implements
 	Button cont;
 	Button tweet;
 	Button cancel;
+	TRAINING myTraining;
+	PET myPet;
 
+	TextView runningTimeTV;
+	TextView distanceTV;
+	TextView burnedCaloriesTV;
+	TextView numOfStepsTV;
+	TextView monsterDefeatedTV;
+	TextView trainingExpTV;
+	TextView totalExpTV;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training_result);
+		
+		myTraining = new TRAINING();
+		myPet = new PET();
+		Intent i = getIntent();
 
+		if (i != null) {
+			Bundle bund = i.getExtras();
+
+			if (bund != null) {
+				myTraining = bund.getParcelable("TRAINING");
+			}
+		} else {
+			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
+		}
+		
+		processPet();
+		setView();
+		setEvent();
+		setSensor();
+		setAdapter();
+		setData();
+	}
+
+	private void processPet() {
+		String petId = UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID);
+		if(!petId.equals("0")){
+			myPet = PET_DAL.getPET_Single(getApplicationContext(),Integer.parseInt(petId));
+		}
+	}
+
+	private void setView() {
 		notifDialog = new NotificationDialog(this);
 		notifDialog.setCanceledOnTouchOutside(false);
 		notifDialog.setTitle("Confirm Share");
@@ -63,9 +100,25 @@ public class TrainingResultActivity extends Activity implements
 		cancel = (Button) notifDialog.findViewById(R.id.notifDialog_cancel);
 		share = (Button) findViewById(R.id.share_button);
 		cont = (Button) findViewById(R.id.continue_button);
+		
+		runningTimeTV = (TextView) findViewById(R.id.training_result_running_time);
+		distanceTV = (TextView) findViewById(R.id.training_result_distance);
+		burnedCaloriesTV = (TextView) findViewById(R.id.training_result_cal_burned);
+		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
+		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
+		trainingExpTV = (TextView) findViewById(R.id.training_result_exp);
+		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
+	}
+	
+	private void setEvent() {
+		cont.setOnClickListener(this);
+		tweet.setOnClickListener(this);
+		cancel.setOnClickListener(this);
+	}
+	
+	private void setSensor(){
 		mInitialized = false;
-
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
 		mAccelerometer = mSensorManager
@@ -73,18 +126,27 @@ public class TrainingResultActivity extends Activity implements
 
 		mSensorManager.registerListener(this, mAccelerometer,
 				SensorManager.SENSOR_DELAY_NORMAL);
-
-		cont.setOnClickListener(this);
-		tweet.setOnClickListener(this);
-		cancel.setOnClickListener(this);
-
+	}
+	
+	private void setAdapter() {
 		adapter = new SocialAuthAdapter(new ResponseListener());
 		// adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addCallBack(Provider.TWITTER,
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 		// adapter.enable(share);
 	}
-
+	
+	private void setData() {
+		if(myTraining != null) {
+			setTime(myTraining.getDURATION());
+			
+		}
+		
+		if(myPet != null) {
+			
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -261,5 +323,66 @@ public class TrainingResultActivity extends Activity implements
 		mSensorManager.unregisterListener(this);
 
 	}
+	
+	protected void setTime(float time) {
+		
+		long secs, mins, hrs;
+		String seconds, minutes, hours;
+		
+		secs = (long) (time/1000);
+		mins = (long) ((time/1000)/60);
+		hrs = (long) (((time/1000)/60)/60);
+		
+		secs = secs % 60;
+		seconds = String.valueOf(secs);
+		
+		if (secs == 0) {
+			seconds = "00";
+		} 
+		if (secs < 10 && secs > 0) {
+			seconds = "0" + seconds;
+		}
+		
+		mins = mins % 60;
+		minutes = String.valueOf(mins);
+		
+		if (mins == 0) {
+			minutes = "00";
+		} 
+		if (mins < 10 && mins > 0) {
+			minutes = "0" + minutes;
+		}
+		
+		hours = String.valueOf(hrs);
+		if (hrs == 0) {
+			hours = "00";
+		} 
+		if (hrs < 10 && hrs > 0) {
+			hours = "0" + hours;
+		}
 
+		runningTimeTV.setText(hours + ":" + minutes + ":" + seconds);		
+	}
+	
+	protected void setDistance(float dist) {
+//		
+		float ms, kms;
+//		String meters, kilos;
+//		
+		ms = dist;
+		kms = ms/1000f;
+		
+		distanceTV.setText(String.format("%.2f Km", kms));
+//		
+//		ms = ms % 1000;
+//		meters = String.valueOf(ms);
+//		if(ms == 0) {
+//			meters = "000";
+//		}
+//		
+//		
+//		kilos = String.valueOf(kms);
+		
+	}
+	
 }
