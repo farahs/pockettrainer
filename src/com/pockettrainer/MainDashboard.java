@@ -121,9 +121,9 @@ public class MainDashboard extends SurfaceView implements
 				100, 100), context);
 		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
 				100, 100), context);
-		setSprite(context, R.drawable.sprite_water, R.drawable.sprite_water_move,
-				R.drawable.sprite_water_remove, R.drawable.sprite_water_eat,
-				R.drawable.sprite_water_sleep, 2);
+		setSprite(context, R.drawable.sprite_fire, R.drawable.sprite_fire_move,
+				R.drawable.sprite_fire_remove, R.drawable.sprite_fire_eat,
+				R.drawable.sprite_fire_sleep, 2);
 
 		setFocusable(true);
 	}
