@@ -16,19 +16,27 @@ public class MONSTER implements Parcelable {
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String CODE;	
 	
-	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
+	@DatabaseField(dataType = DataType.STRING, canBeNull = false)
 	private String NAME;	
 	
+	@DatabaseField(dataType = DataType.STRING, canBeNull = false)
+	private String IMAGE;
+	
+	@DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
+	private int BASEEXP;
 	
 	public MONSTER() {
-
+		
 	}
 	
-	public MONSTER(int iD, String cODE, String nAME) {
+	public MONSTER(int iD, String cODE, String nAME,String iMAGE, int bASEEXP, int bASERANDOMRANGE, int tOPRANDOMRANGE) {
 		super();
 		ID = iD;
 		CODE = cODE;
 		NAME = nAME;
+		IMAGE = iMAGE;
+		BASEEXP = bASEEXP;
+		
 	}
 
 	public MONSTER(Parcel in) {
