@@ -9,6 +9,8 @@ import java.text.DecimalFormat;
 import com.example.pockettrainer.R;
 import com.pockettrainer.animation.DragAnimation;
 import com.pockettrainer.animation.SpriteAnimation;
+import com.pockettrainer.database.dal.PET_DAL;
+import com.pockettrainer.database.model.PET;
 import com.pockettrainer.helper.BitmapCache;
 import com.pockettrainer.helper.BitmapHelper;
 import com.pockettrainer.helper.UserSession;
@@ -99,6 +101,8 @@ public class MainDashboard extends SurfaceView implements
 	private BitmapHelper bHelper;
 	private DragAnimation brushAnim;
 	private DragAnimation foodAnim;
+	
+	PET myPet;
 
 	// the fps to be displayed
 	private String avgFps;
@@ -116,16 +120,39 @@ public class MainDashboard extends SurfaceView implements
 		getHolder().setFormat(0x00000004);
 
 		bHelper = new BitmapHelper(this, context);
+		
+		myPet = new PET();
+		initializePet();
+		
+		setPet(Integer.parseInt(myPet.getTYPE()));
 
 		brushAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.sikat,
 				100, 100), context);
 		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
 				100, 100), context);
-		setSprite(context, R.drawable.sprite_fire, R.drawable.sprite_fire_move,
-				R.drawable.sprite_fire_remove, R.drawable.sprite_fire_eat,
-				R.drawable.sprite_fire_sleep, 2);
-
+		
 		setFocusable(true);
+	}
+	
+	public void setPet(int type) {
+		Context context = getContext();
+		if(type == 1) {
+			setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
+					R.drawable.sprite_egg_remove, R.drawable.sprite_egg_eat,
+					R.drawable.sprite_egg_sleep, 1);
+		} else if(type == 2) {
+			setSprite(context, R.drawable.sprite_fire, R.drawable.sprite_fire_move,
+					R.drawable.sprite_fire_remove, R.drawable.sprite_fire_eat,
+					R.drawable.sprite_fire_sleep, 2);
+		} else if(type == 3) {
+			setSprite(context, R.drawable.sprite_grass, R.drawable.sprite_grass_move,
+					R.drawable.sprite_grass_removed, R.drawable.sprite_grass_eat,
+					R.drawable.sprite_grass_sleep, 2);
+		} else if(type == 4) {
+			setSprite(context, R.drawable.sprite_water, R.drawable.sprite_water_move,
+					R.drawable.sprite_water_remove, R.drawable.sprite_water_eat,
+					R.drawable.sprite_water_sleep, 2);
+		}
 	}
 
 	public void setSprite(Context context, int idle, int move, int end,
@@ -528,4 +555,10 @@ public class MainDashboard extends SurfaceView implements
 				"Timing elements for stats initialised");
 	}
 
+	protected void initializePet() {
+		String myPetID = UserSession.getPetSession(getContext())
+				.get(UserSession.PET_ID);
+		this.myPet = PET_DAL.getPET_Single(getContext(),
+				Integer.parseInt(myPetID));
+	}
 }

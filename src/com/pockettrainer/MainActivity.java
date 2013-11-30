@@ -148,6 +148,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		environment = Integer.parseInt(this.myPet.getENVIRONMENT());
 
 		dashboard.setEnvironment(environment);
+		
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
 

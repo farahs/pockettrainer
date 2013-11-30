@@ -1,5 +1,7 @@
 package com.pockettrainer;
 
+import java.sql.SQLException;
+
 import com.example.pockettrainer.R;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.model.PET;
@@ -118,7 +120,14 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				frame = 5;
 				cont.setVisibility(View.GONE);
 			} else if (frame == 6) {
-				//set pet
+				String a = "" + (Integer.parseInt(myPet.getENVIRONMENT() + 1));
+				myPet.setTYPE(a);
+				try {
+					PET_DAL.updatePET(getApplicationContext(), myPet);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				finish();
 			}
 			break;
