@@ -25,7 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pockettrainer_db.sqlite";
 	private Context context;
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	private static DatabaseConnection databaseConnection;
 

@@ -165,6 +165,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 			return false;
 		}
 
+		this.myPet.setTYPE("1");
 		this.myPet.setLEVEL("1");
 		this.myPet.setCURRENT_EXPERIENCE(0);
 		this.myPet.setMOOD("4");
@@ -172,10 +173,6 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 		this.myPet.setSLEEP_INDICATOR(100);
 		this.myPet.setHYGIENE_INDICATOR(100);
 		this.myPet.setRELATIONSHIP_INDICATOR(100);
-		this.myPet.setLAST_UPDATE_HUNGER_INDICATOR(nowDate);
-		this.myPet.setLAST_UPDATE_SLEEP_INDICATOR(nowDate);
-		this.myPet.setLAST_UPDATE_HYGIENE_INDICATOR(nowDate);
-		this.myPet.setLAST_UPDATE_RELATIONSHIP_INDICATOR(nowDate);
 		
 		return true;
 	}

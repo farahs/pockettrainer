@@ -61,7 +61,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	boolean running;
 	NotificationDialog dialog;
 	Button setting;
-	float sumDistance;
 	
 	private long secs,mins,hrs;
 	private String hours,minutes,seconds,milliseconds;
@@ -242,8 +241,9 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 				milliseconds = "00";
 			}
 			
-			milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
-			
+			if(milliseconds.length() >= 2) {
+				milliseconds = milliseconds.substring(milliseconds.length()-3, milliseconds.length()-2);
+			}
 			timerTV.setText(hours + ":" + minutes + ":" + seconds);
 			timerMsTV.setText("." + milliseconds);
 			
@@ -291,7 +291,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		boolean isGPSOK = isGPSEnabled();
 		speed = 0f;
 		point = 0;
-		sumDistance = 0f;
 		
 		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -350,7 +349,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 //		float dist =  now.distanceTo(last);
 		float [] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(), now.getLatitude(), now.getLongitude(), c);
-		sumDistance += c[0];
 		return c[0];
 	}
 
@@ -364,7 +362,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	
 
 	private void trainingSummary() {
-		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance + " sumdistance: " + sumDistance, Toast.LENGTH_SHORT)
+		Toast.makeText(getApplicationContext(),"speed: " + speed + " distance: " + totalDistance, Toast.LENGTH_SHORT)
 				.show();
 	}
 
