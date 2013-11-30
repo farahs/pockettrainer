@@ -9,19 +9,29 @@ import java.text.DecimalFormat;
 import com.example.pockettrainer.R;
 import com.pockettrainer.animation.DragAnimation;
 import com.pockettrainer.animation.SpriteAnimation;
+import com.pockettrainer.helper.BitmapCache;
 import com.pockettrainer.helper.BitmapHelper;
 import com.pockettrainer.helper.UserSession;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.util.LruCache;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 /**
  * @author impaler This is the main surface that handles the ontouch events and
@@ -79,8 +89,6 @@ public class MainDashboard extends SurfaceView implements
 	private int selEnv = 0;
 	private int incHygiene = 0;
 	private int incRel = 0;
-	private float f_Hygiene = 0f;
-	private float f_Rel = 0f;
 
 	private boolean isTouched;
 	private boolean isSleep = false;
@@ -114,31 +122,36 @@ public class MainDashboard extends SurfaceView implements
 		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
 				100, 100), context);
 		setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
-				R.drawable.sprite_egg_remove, 10, 10, 10, 10, 10);
+				R.drawable.sprite_egg_remove, R.drawable.sprite_egg_eat,
+				R.drawable.sprite_egg_sleep, 2);
 
 		setFocusable(true);
 	}
 
 	public void setSprite(Context context, int idle, int move, int end,
-			int frameIdle, int frameMove, int frameEnd, int frameEat,
-			int frameSleep) {
-		spriteOptimalSize = bHelper.getSize().x / 2;
+			int eat, int sleep, int sz) {
+		if(sz==1)
+			spriteOptimalSize = bHelper.getSize().x / 2;
+		else if(sz==2)
+			spriteOptimalSize = bHelper.getSize().x / 2 + 100;
+		else if(sz==3)
+			spriteOptimalSize = bHelper.getSize().x / 2 + 200;
+		
 
 		sprite = new SpriteAnimation(bHelper.resizeBitmap(idle,
-				spriteOptimalSize * frameIdle, spriteOptimalSize),
-				bHelper.getSize().x / 2, 200 // initial position
-				, spriteOptimalSize, spriteOptimalSize // width and height of
-														// sprite
-				, 30, frameIdle // FPS and number of frames in the animation
+				spriteOptimalSize * 10, spriteOptimalSize),
+				bHelper.getSize().x / 2, 200
+				, spriteOptimalSize, spriteOptimalSize
+				, 30, 10
 				, true, context);
-		sprite.setMove(bHelper.resizeBitmap(R.drawable.sprite_egg_move,
-				spriteOptimalSize * frameMove, spriteOptimalSize), frameMove);
-		sprite.setEnd(bHelper.resizeBitmap(R.drawable.sprite_egg_remove,
-				spriteOptimalSize * frameEnd, spriteOptimalSize), frameEnd);
-		sprite.setEat(bHelper.resizeBitmap(R.drawable.sprite_egg_eat,
-				spriteOptimalSize * frameEnd, spriteOptimalSize), frameEnd);
-		sprite.setSleep(bHelper.resizeBitmap(R.drawable.sprite_egg_sleep,
-				spriteOptimalSize * frameEnd, spriteOptimalSize), frameEnd);
+		sprite.setMove(bHelper.resizeBitmap(move, spriteOptimalSize * 10,
+				spriteOptimalSize), 10);
+		sprite.setEnd(bHelper.resizeBitmap(end, spriteOptimalSize * 10,
+				spriteOptimalSize), 10);
+		sprite.setEat(bHelper.resizeBitmap(eat, spriteOptimalSize * 10,
+				spriteOptimalSize), 10);
+		sprite.setSleep(bHelper.resizeBitmap(sleep, spriteOptimalSize * 10,
+				spriteOptimalSize), 10);
 	}
 
 	public void setEnvironment(int env) {
@@ -156,13 +169,17 @@ public class MainDashboard extends SurfaceView implements
 	public void goEat() {
 		if (isEat) {
 			isEat = false;
+			int hunger = MainActivity.getInstance().getHunger();
+			int energy = MainActivity.getInstance().getEnergy();
+			int hygiene = MainActivity.getInstance().getHygiene();
+			int love = MainActivity.getInstance().getLove();
 
-			MainActivity.getInstance().setHunger(8);
-			
+			MainActivity.getInstance().setHunger(10);
+
 			MainActivity.setActHunger();
 		} else {
 			isEat = true;
-			if(bathing) {
+			if (bathing) {
 				bathing = false;
 				MainActivity.setActHygiene();
 			}
@@ -192,16 +209,16 @@ public class MainDashboard extends SurfaceView implements
 			EnergyRecharger er = new EnergyRecharger();
 			er.start();
 			UserSession.setPetSleepSession(getContext(), isSleep);
-			
-			if(bathing) {
+
+			if (bathing) {
 				bathing = false;
 				MainActivity.setActHygiene();
 			}
-			if(isEat) {
+			if (isEat) {
 				isEat = false;
 				MainActivity.setActHunger();
 			}
-			
+
 		} else {
 			isSleep = false;
 			sprite.goIdle();
@@ -223,7 +240,7 @@ public class MainDashboard extends SurfaceView implements
 				int love = MainActivity.getInstance().getLove();
 
 				Thread.sleep(1000);
-				MainActivity.getInstance().setEnergy(5);
+				MainActivity.getInstance().setEnergy(10);
 
 				Log.i("POCKETTRAINER", " " + hunger + " " + energy + " "
 						+ hygiene + " " + love);
@@ -243,7 +260,7 @@ public class MainDashboard extends SurfaceView implements
 		else
 			bathing = true;
 
-		if(isEat) {
+		if (isEat) {
 			isEat = false;
 			MainActivity.setActHunger();
 		}
@@ -327,16 +344,22 @@ public class MainDashboard extends SurfaceView implements
 
 			if (isTouched) {
 				isTouched = false;
+				int hunger = MainActivity.getInstance().getHunger();
+				int energy = MainActivity.getInstance().getEnergy();
+				int hygiene = MainActivity.getInstance().getHygiene();
+				int love = MainActivity.getInstance().getLove();
 
-				incRel = (int) f_Rel;
 				MainActivity.getInstance().setLove(incRel);
 				incRel = 0;
 				sprite.goEnd();
 			}
 			if (isTouchBath) {
 				isTouchBath = false;
-				
-				incHygiene = (int) f_Hygiene;
+				int hunger = MainActivity.getInstance().getHunger();
+				int energy = MainActivity.getInstance().getEnergy();
+				int hygiene = MainActivity.getInstance().getHygiene();
+				int love = MainActivity.getInstance().getLove();
+
 				MainActivity.getInstance().setHygiene(incHygiene);
 				incHygiene = 0;
 			}
@@ -417,12 +440,10 @@ public class MainDashboard extends SurfaceView implements
 				framesSkipped = 0; // resetting the frames skipped
 				if (isTouchBath && bathing) {
 					// nambah hygiene
-					f_Hygiene += 0.2;
-//					incHygiene += 1;
+					incHygiene += 1;
 				} else if (isTouchBath && !bathing) {
 					// nambah relationship
-					f_Rel += 0.2;
-//					incRel += 1;
+					incRel += 1;
 				}
 				update();
 				render(canvas);
