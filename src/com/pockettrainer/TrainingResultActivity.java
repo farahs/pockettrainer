@@ -1,5 +1,8 @@
 package com.pockettrainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
@@ -7,7 +10,9 @@ import org.brickred.socialauth.android.SocialAuthListener;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 
 import com.example.pockettrainer.R;
+import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.dal.PET_DAL;
+import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.TRAINING;
 import com.pockettrainer.helper.UserSession;
@@ -47,6 +52,8 @@ public class TrainingResultActivity extends Activity implements
 	Button cancel;
 	TRAINING myTraining;
 	PET myPet;
+	List<MONSTER>  monster; 
+	int[] noMonster = {0,0,0,0,0,0,0,0,0,0,0};
 
 	TextView runningTimeTV;
 	TextView distanceTV;
@@ -63,6 +70,9 @@ public class TrainingResultActivity extends Activity implements
 		
 		myTraining = new TRAINING();
 		myPet = new PET();
+		monster = new ArrayList<MONSTER>();
+		
+		
 		Intent i = getIntent();
 
 		if (i != null) {
@@ -362,6 +372,63 @@ public class TrainingResultActivity extends Activity implements
 		}
 
 		runningTimeTV.setText(hours + ":" + minutes + ":" + seconds);		
+	}
+	
+	protected void randomMonster(float jarak) {
+		int numberOfMonster = (int )jarak/10;
+		MONSTER myMonster = new MONSTER();
+		
+		for(int i=0;i<=numberOfMonster;i++){
+			int monsterAppearance = (int )(Math.random() * 10 + 1);
+			if(monsterAppearance <= 60){
+				int random = (int )(Math.random() * 100 + 1);
+			
+				if (random <= 10){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 1);
+					monster.add(myMonster);
+						
+				}else if(random <= 20 && random > 10){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 2);
+					monster.add(myMonster);	
+				}else if(random <= 20 && random > 10){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 3);
+					monster.add(myMonster);
+				}else if(random <= 30 && random > 20){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 4);
+					monster.add(myMonster);
+				}else if(random <= 45 && random > 30){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 5);
+					monster.add(myMonster);
+				}else if(random <= 60 && random > 45){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 6);
+					monster.add(myMonster);
+				}else if(random <= 65 && random > 60){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 7);
+					monster.add(myMonster);
+				}else if(random <= 85 && random > 65){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 8);
+					monster.add(myMonster);
+				}else if(random <= 99 && random > 85){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 9);
+					monster.add(myMonster);
+				}else if(random == 100){
+					myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), 10);
+					monster.add(myMonster);
+				}
+			}
+		}
+	}
+	
+	protected int calculateExperience(float jarak, float langkah, int level) {
+		
+		int exp = 0;
+		for(MONSTER momon : monster) {
+			noMonster[momon.getID()] += 1;
+			exp += ((momon.getBASE_EXPERIENCE()*level)/2) + ((jarak+langkah)/2);
+		}
+		
+		return exp;
+		
 	}
 	
 	protected void setDistance(float dist) {
