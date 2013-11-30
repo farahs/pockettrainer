@@ -121,9 +121,9 @@ public class MainDashboard extends SurfaceView implements
 				100, 100), context);
 		foodAnim = new DragAnimation(bHelper.resizeBitmap(R.drawable.burger,
 				100, 100), context);
-		setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
-				R.drawable.sprite_egg_remove, R.drawable.sprite_egg_eat,
-				R.drawable.sprite_egg_sleep, 2);
+		setSprite(context, R.drawable.sprite_water, R.drawable.sprite_water_move,
+				R.drawable.sprite_water_remove, R.drawable.sprite_water_eat,
+				R.drawable.sprite_water_sleep, 2);
 
 		setFocusable(true);
 	}
@@ -133,9 +133,9 @@ public class MainDashboard extends SurfaceView implements
 		if(sz==1)
 			spriteOptimalSize = bHelper.getSize().x / 2;
 		else if(sz==2)
-			spriteOptimalSize = bHelper.getSize().x / 2 + 100;
+			spriteOptimalSize = bHelper.getSize().x / 2 + 50;
 		else if(sz==3)
-			spriteOptimalSize = bHelper.getSize().x / 2 + 200;
+			spriteOptimalSize = bHelper.getSize().x / 2 + 100;
 		
 
 		sprite = new SpriteAnimation(bHelper.resizeBitmap(idle,
@@ -325,7 +325,7 @@ public class MainDashboard extends SurfaceView implements
 				}
 			} else {
 				if (isTouched)
-					sprite.goEnd();
+					sprite.setEnd();
 				isTouched = false;
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -351,7 +351,6 @@ public class MainDashboard extends SurfaceView implements
 
 				MainActivity.getInstance().setLove(incRel);
 				incRel = 0;
-				sprite.goEnd();
 			}
 			if (isTouchBath) {
 				isTouchBath = false;
@@ -366,6 +365,8 @@ public class MainDashboard extends SurfaceView implements
 			if (isTouchEat) {
 				isTouchEat = false;
 			}
+			
+			sprite.setEnd();
 		}
 		return true;
 	}

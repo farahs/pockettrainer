@@ -43,6 +43,8 @@ public class SpriteAnimation {
 	private int framePeriod; // milliseconds between each frame (1000/fps)
 	private boolean looped;
 
+	private boolean isEnd = false;
+
 	private int spriteWidth; // the width of the sprite to calculate the cut out
 								// rectangle
 	private int spriteHeight; // the height of the sprite
@@ -112,6 +114,10 @@ public class SpriteAnimation {
 		an_sleep = b;
 	}
 
+	public void setEnd() {
+		isEnd = true;
+	}
+
 	public void goIdle() {
 		currentFrame = 0;
 		isIdle = true;
@@ -162,6 +168,7 @@ public class SpriteAnimation {
 
 	public void goSleep() {
 		isIdle = false;
+		isEnd = false;
 		currentFrame = 0;
 		looped = true;
 		frameNr = frameSleep;
@@ -262,7 +269,7 @@ public class SpriteAnimation {
 			if (looped) {
 				if (isIdle && !reversed) {
 					if (currentFrame >= frameNr) {
-						currentFrame = frameNr-1;
+						currentFrame = frameNr - 1;
 						reversed = true;
 					}
 				} else if (isIdle && reversed) {
@@ -273,6 +280,10 @@ public class SpriteAnimation {
 				} else {
 					if (currentFrame >= frameNr) {
 						currentFrame = 0;
+						if (isEnd) {
+							isEnd = false;
+							goEnd();
+						}
 					}
 				}
 			} else if (repeat > 0) {
