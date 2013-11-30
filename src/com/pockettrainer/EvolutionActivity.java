@@ -38,6 +38,7 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 
 	Button cont;
 	ImageView egg;
+	ImageView evl;
 	ImageView star;
 	TextView txt;
 	Animation animBounce;
@@ -48,14 +49,14 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 	private Display mDisplay;
 
 	PET myPet;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		myPet = new PET();
 		initializePet();
-		
+
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -78,7 +79,16 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 
 		txt = (TextView) findViewById(R.id.text_evolve);
 		egg = (ImageView) findViewById(R.id.egg);
+		evl = (ImageView) findViewById(R.id.evolution);
 		star = (ImageView) findViewById(R.id.star);
+
+		if (myPet.getENVIRONMENT().equals("1")) {
+			evl.setImageResource(R.drawable.fire_single);
+		} else if (myPet.getENVIRONMENT().equals("2")) {
+			evl.setImageResource(R.drawable.grass_single);
+		} else if (myPet.getENVIRONMENT().equals("3")) {
+			evl.setImageResource(R.drawable.water_single);
+		}
 
 		animBounce = AnimationUtils.loadAnimation(getApplicationContext(),
 				R.anim.idle);
@@ -101,8 +111,16 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.contBtn:
-			frame = 1;
-			cont.setVisibility(View.GONE);
+			if (frame == 0) {
+				frame = 1;
+				cont.setVisibility(View.GONE);
+			} else if (frame == 4) {
+				frame = 5;
+				cont.setVisibility(View.GONE);
+			} else if (frame == 6) {
+				//set pet
+				finish();
+			}
 			break;
 
 		default:
@@ -129,12 +147,21 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		} else if (frame == 3) {
 			star.startAnimation(animRotate);
 			txt.setText("Shake your device to make your pet evolve!");
-			frame = 4;
 			enableShake = true;
 		} else if (frame == 4) {
+			txt.setText("It's done! Tap the button to continue!");
+			cont.setVisibility(View.VISIBLE);
 			star.startAnimation(animRotate);
 		} else if (frame == 5) {
-
+			txt.setText("Congratulation! Your pet has evolved!");
+			evl.setVisibility(View.VISIBLE);
+			evl.startAnimation(animFadeIn);
+			star.startAnimation(animFadeOut);
+			frame=6;
+		} else if (frame == 6) {
+			if (anim == animFadeOut)
+				star.setVisibility(View.GONE);
+			cont.setVisibility(View.VISIBLE);
 		}
 
 	}
@@ -196,8 +223,11 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 
 				mLastZ = z;
 
-				if (shaked > 40) {
+				if (shaked > 20 && shaked < 40) {
 					txt.setText("Not enough! Shake more!");
+				} else if(shaked > 40) {
+					frame=4;
+					enableShake=false;
 				}
 			}
 
@@ -222,9 +252,11 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		mSensorManager.unregisterListener(this);
 
 	}
-	
-	protected void initializePet(){
-		String myPetID = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
-		this.myPet = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(myPetID)); 
+
+	protected void initializePet() {
+		String myPetID = UserSession.getUserSession(getApplicationContext())
+				.get(UserSession.LOGIN_ID);
+		this.myPet = PET_DAL.getPET_Single(getApplicationContext(),
+				Integer.parseInt(myPetID));
 	}
 }
