@@ -185,18 +185,38 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		MONSTER a = new MONSTER();
 		a.setCODE("01");
 		a.setNAME("POOH");
+		a.setBASE_EXPERIENCE(100);
 		listMonster.add(a);
 		
 		MONSTER b = new MONSTER();
 		b.setCODE("02");
 		b.setNAME("TIGGER");
+		b.setBASE_EXPERIENCE(200);
 		listMonster.add(b);
+		
+		MONSTER c = new MONSTER();
+		c.setCODE("03");
+		c.setNAME("POOH");
+		c.setBASE_EXPERIENCE(300);
+		listMonster.add(c);
+		
+		MONSTER d = new MONSTER();
+		d.setCODE("04");
+		d.setNAME("TIGGER");
+		d.setBASE_EXPERIENCE(400);
+		listMonster.add(d);
+		
+		MONSTER e = new MONSTER();
+		e.setCODE("04");
+		e.setNAME("TIGGER");
+		e.setBASE_EXPERIENCE(400);
+		listMonster.add(e);
 		
 		for (MONSTER monster : listMonster) {
 			try {
 				MONSTER_DAL.insertMONSTER(context, monster);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 		}
 		

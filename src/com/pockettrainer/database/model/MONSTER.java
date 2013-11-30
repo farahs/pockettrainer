@@ -111,14 +111,12 @@ public class MONSTER implements Parcelable {
 		IMAGE = iMAGE;
 	}
 
-	public int getBASEEXP() {
+	public int getBASE_EXPERIENCE() {
 		return BASE_EXPERIENCE;
 	}
 
-	public void setBASEEXP(int bASEEXP) {
-		BASE_EXPERIENCE = bASEEXP;
+	public void setBASE_EXPERIENCE(int bASE_EXPERIENCE) {
+		BASE_EXPERIENCE = bASE_EXPERIENCE;
 	}
-
-	
 	
 }
