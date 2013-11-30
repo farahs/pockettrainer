@@ -43,7 +43,7 @@ public class TrainingResultActivity extends Activity implements
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private boolean mInitialized;
-	private final float NOISE = (float) 9.0;
+	private final float NOISE = (float) 11.0;
 	private boolean shared = false;
 	NotificationDialog notifDialog;
 	SocialAuthAdapter adapter;
@@ -58,11 +58,9 @@ public class TrainingResultActivity extends Activity implements
 
 	TextView runningTimeTV;
 	TextView distanceTV;
-	TextView burnedCaloriesTV;
 	TextView numOfStepsTV;
 	TextView monsterDefeatedTV;
 	TextView monstersTV;
-	TextView trainingExpTV;
 	TextView totalExpTV;
 
 	Vibrator v;
@@ -116,11 +114,9 @@ public class TrainingResultActivity extends Activity implements
 
 		runningTimeTV = (TextView) findViewById(R.id.training_result_running_time);
 		distanceTV = (TextView) findViewById(R.id.training_result_distance);
-		burnedCaloriesTV = (TextView) findViewById(R.id.training_result_cal_burned);
 		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
 		monstersTV = (TextView) findViewById(R.id.training_result_monsters);
-		trainingExpTV = (TextView) findViewById(R.id.training_result_exp);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
 	}
@@ -157,6 +153,7 @@ public class TrainingResultActivity extends Activity implements
 
 			setTime(myTraining.getDURATION());
 			setDistance(myTraining.getDISTANCE());
+			numOfStepsTV.setText("" + myTraining.getSTEPS());
 			int monsterDefeated = randomMonster(myTraining.getDISTANCE());
 			monsterDefeatedTV.setText("" + monsterDefeated);
 

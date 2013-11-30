@@ -55,16 +55,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/training_result_stats_title"
                 android:layout_marginTop="65dp"
-                android:text="Burned Calories"
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="90dp"
                 android:text="Number of Steps"
                 android:textColor="@color/card_text"
                 android:textSize="20sp" />
@@ -92,23 +82,12 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/training_result_cal_burned"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="65dp"
-                android:text="203 cal"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-
-            <TextView
                 android:id="@+id/training_result_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="65dp"
                 android:text="213"
                 android:textColor="@color/card_text_light"
                 android:textSize="20sp" />
@@ -152,16 +131,6 @@
                 android:text="MONSTERS"
                 android:textColor="@color/card_text"
                 android:textSize="30sp" />
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_pet_title"
-                android:layout_marginTop="80dp"
-                android:text="Training Exp."
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -181,17 +150,6 @@
                 android:layout_below="@+id/training_result_pet_title"
                 android:layout_marginTop="15dp"
                 android:text="5"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/training_result_exp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_pet_title"
-                android:layout_marginTop="80dp"
-                android:text="213.024 pt"
                 android:textColor="@color/card_text_light"
                 android:textSize="20sp" />
 

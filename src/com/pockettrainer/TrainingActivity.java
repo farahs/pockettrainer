@@ -302,10 +302,6 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 			CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
 			
 			myMap.moveCamera(camUpdate);
-			
-			initialLocation = loc;
-			lastLocation = loc;
-			finalLocation = loc;
 		}	
 
 	}
@@ -330,6 +326,11 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 				if(isGPSOK) {
 					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
 				}
+				
+				Criteria crit = new Criteria();
+				initialLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
+				lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
+				finalLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(crit, false));
 				
 				if(initialLocation != null) {
 					totalDistance = 0f;

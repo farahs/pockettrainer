@@ -14,8 +14,10 @@ import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.TRAINING;
 import com.pockettrainer.database.model.USER;
+import com.pockettrainer.helper.UserSession;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -23,7 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pockettrainer_db.sqlite";
 	private Context context;
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 
 	private static DatabaseConnection databaseConnection;
 
@@ -74,7 +76,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			Log.i(DatabaseHelper.class.getName(), "onUpgrade");
 
 			this.dropAllTable();
-
 			this.onCreate(db, connectionSource);
 		} catch (SQLException e) {
 			e.printStackTrace();
