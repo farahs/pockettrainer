@@ -60,6 +60,7 @@ public class TrainingResultActivity extends Activity implements
 	TextView burnedCaloriesTV;
 	TextView numOfStepsTV;
 	TextView monsterDefeatedTV;
+	TextView monstersTV;
 	TextView trainingExpTV;
 	TextView totalExpTV;
 	
@@ -116,6 +117,7 @@ public class TrainingResultActivity extends Activity implements
 		burnedCaloriesTV = (TextView) findViewById(R.id.training_result_cal_burned);
 		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
+		monstersTV = (TextView) findViewById(R.id.training_result_monsters);
 		trainingExpTV = (TextView) findViewById(R.id.training_result_exp);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
@@ -148,8 +150,14 @@ public class TrainingResultActivity extends Activity implements
 	
 	private void setData() {
 		if(myTraining != null) {
+			int level = Integer.parseInt(myPet.getLEVEL());
 			setTime(myTraining.getDURATION());
-			
+			int monsterDefeated = randomMonster(myTraining.getDISTANCE());
+			int exp = calculateExperience(myTraining.getDISTANCE(), myTraining.getSTEPS(), level);
+			totalExpTV.setText(""+exp);
+			monsterDefeatedTV.setText("" + monsterDefeated);
+			String monsterList = listOfMonster(); 
+			monstersTV.setText(monsterList);
 		}
 		
 		if(myPet != null) {
@@ -374,12 +382,16 @@ public class TrainingResultActivity extends Activity implements
 		runningTimeTV.setText(hours + ":" + minutes + ":" + seconds);		
 	}
 	
-	protected void randomMonster(float jarak) {
+	protected int randomMonster(float jarak) {
 		int numberOfMonster = (int )jarak/10;
+		int monsterDefeated = 0;
 		MONSTER myMonster = new MONSTER();
 		
 		for(int i=0;i<=numberOfMonster;i++){
+			
+			monsterDefeated++;
 			int monsterAppearance = (int )(Math.random() * 10 + 1);
+			
 			if(monsterAppearance <= 60){
 				int random = (int )(Math.random() * 100 + 1);
 			
@@ -417,13 +429,30 @@ public class TrainingResultActivity extends Activity implements
 				}
 			}
 		}
+		
+		return monsterDefeated;
 	}
 	
+	protected String listOfMonster(){
+		String listMonster = "";
+		MONSTER myMonster = new MONSTER();
+		
+		for(MONSTER momon : monster) {
+			noMonster[momon.getID()] += 1;
+		}
+		
+		for(int i = 1;  i < 11; i++) {
+			myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(), i);
+			listMonster = listMonster.concat(myMonster.getNAME()+ " " + noMonster[i] + " ");
+			
+		}
+		
+		return listMonster;
+	}
 	protected int calculateExperience(float jarak, float langkah, int level) {
 		
 		int exp = 0;
 		for(MONSTER momon : monster) {
-			noMonster[momon.getID()] += 1;
 			exp += ((momon.getBASE_EXPERIENCE()*level)/2) + ((jarak+langkah)/2);
 		}
 		
