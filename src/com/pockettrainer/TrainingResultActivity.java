@@ -396,7 +396,7 @@ public class TrainingResultActivity extends Activity implements
 			monsterDefeated++;
 			int monsterAppearance = (int) (Math.random() * 10 + 1);
 
-			if (monsterAppearance <= 60) {
+			if (monsterAppearance <= 6) {
 				int random = (int) (Math.random() * 100 + 1);
 
 				if (random <= 10) {
@@ -470,7 +470,7 @@ public class TrainingResultActivity extends Activity implements
 		int exp = 0;
 		for (MONSTER momon : monster) {
 			exp += ((momon.getBASE_EXPERIENCE() * level) / 2)
-					+ ((jarak + langkah) / 2);
+					+ ((jarak + langkah) / 5);
 		}
 
 		return exp;
