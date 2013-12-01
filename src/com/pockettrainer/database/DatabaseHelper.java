@@ -184,14 +184,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		MONSTER a = new MONSTER();
 		a.setCODE("01");
 		a.setNAME("Cyclops");
-		a.setBASE_EXPERIENCE(100);
+		a.setBASE_EXPERIENCE(300);
 		a.setIMAGE("monster_cyclops");
 		listMonster.add(a);
 		
 		MONSTER b = new MONSTER();
 		b.setCODE("02");
 		b.setNAME("Observer");
-		b.setBASE_EXPERIENCE(200);
+		b.setBASE_EXPERIENCE(300);
 		b.setIMAGE("monster_observer");
 		listMonster.add(b);
 		
@@ -205,49 +205,49 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		MONSTER d = new MONSTER();
 		d.setCODE("04");
 		d.setNAME("Darkness");
-		d.setBASE_EXPERIENCE(400);
+		d.setBASE_EXPERIENCE(300);
 		d.setIMAGE("monster_darkness");
 		listMonster.add(d);
 		
 		MONSTER e = new MONSTER();
 		e.setCODE("05");
 		e.setNAME("Gillian");
-		e.setBASE_EXPERIENCE(500);
+		e.setBASE_EXPERIENCE(125);
 		e.setIMAGE("monster_gillian");
 		listMonster.add(e);
 		
 		MONSTER f = new MONSTER();
 		f.setCODE("06");
 		f.setNAME("Frogger");
-		f.setBASE_EXPERIENCE(600);
+		f.setBASE_EXPERIENCE(125);
 		f.setIMAGE("monster_frogger");
 		listMonster.add(f);
 		
 		MONSTER g = new MONSTER();
 		g.setCODE("07");
 		g.setNAME("Papabear");
-		g.setBASE_EXPERIENCE(700);
+		g.setBASE_EXPERIENCE(500);
 		g.setIMAGE("monster_papabear");
 		listMonster.add(g);
 		
 		MONSTER h = new MONSTER();
 		h.setCODE("08");
 		h.setNAME("Slime");
-		h.setBASE_EXPERIENCE(800);
+		h.setBASE_EXPERIENCE(100);
 		h.setIMAGE("monster_slime");
 		listMonster.add(h);
 		
 		MONSTER i = new MONSTER();
 		i.setCODE("09");
 		i.setNAME("Ogre");
-		i.setBASE_EXPERIENCE(900);
+		i.setBASE_EXPERIENCE(150);
 		i.setIMAGE("monster_ogre");
 		listMonster.add(i);
 		
 		MONSTER j = new MONSTER();
 		j.setCODE("10");
 		j.setNAME("Owl");
-		j.setBASE_EXPERIENCE(1000);
+		j.setBASE_EXPERIENCE(650);
 		j.setIMAGE("monster_owl");
 		listMonster.add(j);
 		
