@@ -3,7 +3,8 @@
     package="com.example.pockettrainer"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-feature android:name="android.hardware.gyroscope"/>
+
+    <uses-feature android:name="android.hardware.gyroscope" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION" />

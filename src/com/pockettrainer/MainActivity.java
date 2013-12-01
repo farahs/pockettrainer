@@ -56,6 +56,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		System.gc();
 		dashboard = new MainDashboard(this);
 		// setContentView(dashboard);
 		setContentView(R.layout.activity_main);

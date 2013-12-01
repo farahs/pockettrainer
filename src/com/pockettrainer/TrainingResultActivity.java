@@ -64,6 +64,7 @@ public class TrainingResultActivity extends Activity implements
 	TextView runningTimeTV;
 	TextView distanceTV;
 	TextView numOfStepsTV;
+	TextView speedTV;
 	TextView monsterDefeatedTV;
 	TextView monstersTV;
 	TextView totalExpTV;
@@ -131,6 +132,7 @@ public class TrainingResultActivity extends Activity implements
 		runningTimeTV = (TextView) findViewById(R.id.training_result_running_time);
 		distanceTV = (TextView) findViewById(R.id.training_result_distance);
 		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
+		speedTV = (TextView) findViewById(R.id.training_result_speed);
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
@@ -187,11 +189,16 @@ public class TrainingResultActivity extends Activity implements
 
 	private void setData() {
 		if (myTraining != null) {
+
 			int exp = 0;
 			createArrayOfExp();
+			
 			setTime(myTraining.getDURATION());
 			setDistance(myTraining.getDISTANCE());
 			numOfStepsTV.setText("" + myTraining.getSTEPS());
+			
+			setSpeed(myTraining.getSPEED());
+			
 			int monsterDefeated = randomMonster(myTraining.getDISTANCE());
 			monsterDefeatedTV.setText("" + monsterDefeated);
 
@@ -305,7 +312,7 @@ public class TrainingResultActivity extends Activity implements
 					.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
 
-			String message = "Pocket Trainer share button test. Stay tuned! will be out soon!";
+			String message = "I've been running with my pet " + myPet.getNAME() + " for " + getDistance() + "! Train yours today at Pocket Trainer!" ;
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
@@ -647,24 +654,29 @@ public class TrainingResultActivity extends Activity implements
 	}
 
 	protected void setDistance(float dist) {
-		//
+
 		float ms, kms;
-		// String meters, kilos;
-		//
 		ms = dist;
 		kms = ms / 1000f;
 
 		distanceTV.setText(String.format("%.2f Km", kms));
-		//
-		// ms = ms % 1000;
-		// meters = String.valueOf(ms);
-		// if(ms == 0) {
-		// meters = "000";
-		// }
-		//
-		//
-		// kilos = String.valueOf(kms);
 
+	}
+	
+	protected void setSpeed(float s) {
+		
+		float speed = s;
+		speedTV.setText(String.format("%.2f m/s", speed));
+	}
+	
+	protected String getDistance() {
+		
+		float ms, kms;
+		ms = myTraining.getDISTANCE();
+		kms = ms / 1000f;
+		String a = String.format("%.2f Km", kms);
+		
+		return a;
 	}
 
 }

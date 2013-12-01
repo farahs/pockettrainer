@@ -167,8 +167,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	private void setupSensor() {
 		mInitialized = false;
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mAccelerometer = mSensorManager
-				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 	}
 
@@ -181,7 +180,8 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-
+//						Intent x = new Intent(getApplicationContext(), TestGyroActivity.class);
+//						startActivity(x);
 						return true;
 					}
 				});
@@ -456,10 +456,20 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 		float s = loc.getSpeed();
 
-		float avg = ((speed * (point - 1)) + s) / point;
+		float avg = ((speed * (point -1)) + s) / point;
 		return avg;
 	}
-
+	
+	private void processSpeed(){
+		
+		float seconds = this.timeInMilliseconds/1000;
+		float distances = this.totalDistance;
+		
+		float s = distances / seconds;
+		
+		this.speed = s;
+	}
+	
 	private void trainingSummary() {
 		Toast.makeText(
 				getApplicationContext(),
@@ -473,6 +483,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		myTraining.setDURATION(timeInMilliseconds);
 		// myTraining.setDISTANCE(5000);
 		myTraining.setDISTANCE(totalDistance);
+		processSpeed();
 		myTraining.setSPEED(speed);
 		myTraining.setBURNED_CALORIES(0f);
 		myTraining.setSTEPS(stepsCount);
@@ -613,11 +624,10 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			float y = event.values[1];
 			float z = event.values[2];
 			
-			Toast.makeText(getApplicationContext(), "haha", 100).show();
+//			Toast.makeText(getApplicationContext(), "haha", 100).show();
 			
 			Log.i("SENSOR", x + " " + y + " " + z);
 		}
-
 	}
 
 	@Override

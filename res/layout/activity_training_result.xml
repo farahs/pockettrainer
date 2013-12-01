@@ -60,6 +60,16 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="90dp"
+                android:text="Speed"
+                android:textColor="@color/card_text"
+                android:textSize="20sp" />
+            
+            <TextView
                 android:id="@+id/training_result_running_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,6 +99,17 @@
                 android:layout_below="@+id/training_result_stats_title"
                 android:layout_marginTop="65dp"
                 android:text="213"
+                android:textColor="@color/card_text_light"
+                android:textSize="20sp" />
+            
+            <TextView
+                android:id="@+id/training_result_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/training_result_stats_title"
+                android:layout_marginTop="90dp"
+                android:text="100 km/s"
                 android:textColor="@color/card_text_light"
                 android:textSize="20sp" />
         </RelativeLayout>
