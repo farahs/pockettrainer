@@ -55,7 +55,7 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 	PET myPet;
 
 	Vibrator v;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,28 +68,41 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.setContentView(R.layout.activity_evolution);
 
+		setView();
+		setSensor();
+		setEvent();
+
 		this.mDisplay = this.getWindowManager().getDefaultDisplay();
 
-		mInitialized = false;
+		setEnvironment();
+		setAnimation();
+	}
 
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-		mAccelerometer = mSensorManager
-				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-		mSensorManager.registerListener(this, mAccelerometer,
-				SensorManager.SENSOR_DELAY_NORMAL);
-
-		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		
+	private void setView() {
 		cont = (Button) findViewById(R.id.contBtn);
-		cont.setOnClickListener(this);
 
 		txt = (TextView) findViewById(R.id.text_evolve);
 		egg = (ImageView) findViewById(R.id.egg);
 		evl = (ImageView) findViewById(R.id.evolution);
 		star = (ImageView) findViewById(R.id.star);
 
+	}
+
+	private void setSensor() {
+		mInitialized = false;
+
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+	}
+
+	private void setEvent() {
+		cont.setOnClickListener(this);
+	}
+
+	private void setEnvironment() {
 		if (myPet.getENVIRONMENT().equals("1")) {
 			evl.setImageResource(R.drawable.fire_single);
 		} else if (myPet.getENVIRONMENT().equals("2")) {
@@ -97,7 +110,9 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		} else if (myPet.getENVIRONMENT().equals("3")) {
 			evl.setImageResource(R.drawable.water_single);
 		}
+	}
 
+	private void setAnimation() {
 		animBounce = AnimationUtils.loadAnimation(getApplicationContext(),
 				R.anim.idle);
 		animBounce.setAnimationListener(this);
@@ -111,7 +126,6 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				R.anim.rotating);
 		animRotate.setAnimationListener(this);
 		egg.startAnimation(animBounce);
-
 	}
 
 	@Override
@@ -127,7 +141,8 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				cont.setVisibility(View.GONE);
 			} else if (frame == 6) {
 				petEvolve();
-				Intent x = new Intent(getApplicationContext(), MainActivity.class);
+				Intent x = new Intent(getApplicationContext(),
+						MainActivity.class);
 				startActivity(x);
 				this.finish();
 			}
@@ -137,7 +152,8 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 			break;
 		}
 	}
-	public void petEvolve(){
+
+	public void petEvolve() {
 		String a = "" + (Integer.parseInt(myPet.getTYPE()) + 1);
 		myPet.setTYPE(a);
 		myPet.setLEVEL("1");
@@ -148,17 +164,21 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		myPet.setSLEEP_INDICATOR(100);
 		myPet.setHYGIENE_INDICATOR(100);
 		myPet.setRELATIONSHIP_INDICATOR(100);
-		
+
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		PET uhuy = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID)));
+		PET uhuy = PET_DAL.getPET_Single(
+				getApplicationContext(),
+				Integer.parseInt(UserSession.getPetSession(
+						getApplicationContext()).get(UserSession.PET_ID)));
 		Log.i("POCKETTRAINER", uhuy.getTYPE() + " " + uhuy.getID());
-		
+
 	}
+
 	@Override
 	public void onAnimationEnd(Animation anim) {
 		// TODO Auto-generated method stub
@@ -188,7 +208,7 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 			evl.setVisibility(View.VISIBLE);
 			evl.startAnimation(animFadeIn);
 			star.startAnimation(animFadeOut);
-			frame=6;
+			frame = 6;
 		} else if (frame == 6) {
 			if (anim == animFadeOut)
 				star.setVisibility(View.GONE);
@@ -256,9 +276,9 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 
 				if (shaked > 20 && shaked < 40) {
 					txt.setText("Not enough! Shake more!");
-				} else if(shaked > 40) {
-					frame=4;
-					enableShake=false;
+				} else if (shaked > 40) {
+					frame = 4;
+					enableShake = false;
 					v.vibrate(500);
 				}
 			}
