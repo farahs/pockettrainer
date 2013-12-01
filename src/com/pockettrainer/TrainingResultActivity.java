@@ -262,7 +262,7 @@ public class TrainingResultActivity extends Activity implements
 
 	public int setupExperience(String level) {
 		double intLev = Double.parseDouble(level);
-		return (int) ((int) 1000 * Math.pow(2, intLev));
+		return (int) ((int) 1000 * Math.pow(1.7, intLev));
 	}
 
 	@Override
@@ -365,6 +365,7 @@ public class TrainingResultActivity extends Activity implements
 						EvolutionActivity.class);
 
 				startActivity(i);
+				this.finish();
 
 			} else {
 
@@ -372,6 +373,7 @@ public class TrainingResultActivity extends Activity implements
 						MainActivity.class);
 
 				startActivity(i);
+				this.finish();
 			}
 			break;
 

@@ -188,7 +188,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public void setupExperience(String level) {
 		double intLev = Double.parseDouble(level);
-		this.nowMaxExp = (int) ((int) 1000 * Math.pow(2, intLev));
+		this.nowMaxExp = (int) ((int) 1000 * Math.pow(1.7, intLev));
 	}
 
 	public void setupBarExperience(int a, int max_exp) {
