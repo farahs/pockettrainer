@@ -630,7 +630,7 @@ public class TrainingResultActivity extends Activity implements
 		int exp = 0;
 		for (MONSTER momon : monster) {
 			exp += ((momon.getBASE_EXPERIENCE() * level) / 2)
-					+ ((jarak + langkah) / 5);
+					+ ((jarak + langkah) / 10);
 		}
 
 		return exp;
