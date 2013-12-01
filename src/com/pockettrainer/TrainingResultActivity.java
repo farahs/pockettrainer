@@ -365,6 +365,7 @@ public class TrainingResultActivity extends Activity implements
 						EvolutionActivity.class);
 
 				startActivity(i);
+				this.finish();
 
 			} else {
 
@@ -372,6 +373,7 @@ public class TrainingResultActivity extends Activity implements
 						MainActivity.class);
 
 				startActivity(i);
+				this.finish();
 			}
 			break;
 

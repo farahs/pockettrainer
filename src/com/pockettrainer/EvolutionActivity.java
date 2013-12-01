@@ -127,7 +127,9 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				cont.setVisibility(View.GONE);
 			} else if (frame == 6) {
 				petEvolve();
-				finish();
+				Intent x = new Intent(getApplicationContext(), MainActivity.class);
+				startActivity(x);
+				this.finish();
 			}
 			break;
 
