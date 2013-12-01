@@ -362,7 +362,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 		if (networkInfo != null && networkInfo.isConnected()) {
 
-			if (isNetworkOK && isGPSOK) {
+			if (isNetworkOK || isGPSOK) {
 
 				if (isNetworkOK) {
 					locationManager.requestLocationUpdates(
