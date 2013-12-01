@@ -610,6 +610,9 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onBackPressed() {
 		super.onBackPressed();
 		destroyNotification();
+		Intent t = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(t);
+		this.finish();
 	}
 
 }

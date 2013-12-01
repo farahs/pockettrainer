@@ -283,6 +283,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				Intent i = new Intent(getApplicationContext(),
 						TrainingActivity.class);
 				startActivity(i);
+				this.finish();
 			} else {
 				Toast.makeText(
 						getApplicationContext(), "Your pet not ready to Train!", Toast.LENGTH_SHORT)
