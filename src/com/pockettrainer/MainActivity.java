@@ -154,7 +154,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
-
+		Log.i("POCKETTRAINER", "maincurrexp: " + myPet.getCURRENT_EXPERIENCE());
+		
 		// setup bar indikator
 		hunger = myPet.getHUNGER_INDICATOR();
 		energy = myPet.getSLEEP_INDICATOR();
@@ -192,6 +193,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void setupBarExperience(int a, int max_exp) {
+		Log.i("POCKETTRAINER", "" + myPet.getCURRENT_EXPERIENCE());
 		int experienceWidthMax = experienceMax.getWidth();
 		int experienceWidthNow = (experienceWidthMax * a) / max_exp;
 		experiences.setLayoutParams(new LinearLayout.LayoutParams(
