@@ -385,6 +385,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 		setupBarIndikator(hunger, energy, hygiene, love);
+		setupMood(hunger, energy, hygiene, love);
 	}
 
 	public int getEnergy() {
@@ -408,6 +409,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 		setupBarIndikator(hunger, energy, hygiene, love);
+		setupMood(hunger, energy, hygiene, love);
 	}
 
 	public int getHygiene() {
@@ -431,6 +433,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 		setupBarIndikator(hunger, energy, hygiene, love);
+		setupMood(hunger, energy, hygiene, love);
 	}
 
 	public int getLove() {
@@ -454,6 +457,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 		setupBarIndikator(hunger, energy, hygiene, love);
+		setupMood(hunger, energy, hygiene, love);
 	}
 
 	protected void initializePet() {

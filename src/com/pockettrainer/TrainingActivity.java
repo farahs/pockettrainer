@@ -1,5 +1,6 @@
 package com.pockettrainer;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.pockettrainer.database.dal.TRAINING_DAL;
 import com.pockettrainer.database.model.TRAINING;
 import com.pockettrainer.helper.UserSession;
 
@@ -37,6 +39,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -53,8 +56,9 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	Button pauseBtn;
 	Button resumeBtn;
 	Button stopBtn;
-	Button setting;
 	
+	Button setting;
+	Button cancel;
 	NotificationDialog dialog;
 
 	protected GoogleMap myMap;
@@ -87,6 +91,10 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	private final float NOISE = (float) 2.0;
 	int stepsCount;
 	
+	Notification.Builder builder;
+	NotificationManager notificationManager;
+	Notification notification;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,6 +113,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		}
 		
 		setupSensor();
+		setupNotification();
 	}
 
 	private void setupView() {
@@ -124,7 +133,9 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		dialog.setTitle("Oops!");
 		dialog.setMessage("GPS is not enabled");
 		setting = (Button) dialog.findViewById(R.id.notifDialog_ok);
-		setting.setText("Setting");
+		setting.setText("Settings");
+		cancel = (Button) dialog.findViewById(R.id.notifDialog_cancel);
+		cancel.setText("Cancel");
 	}
 
 	private void setupEvent() {
@@ -137,7 +148,15 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 			@Override
 			public void onClick(View v) {
 				Intent in = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				getApplicationContext().startActivity(in);
+			}
+		});
+		cancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
 			}
 		});
 	}
@@ -169,12 +188,12 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 				startTime = SystemClock.uptimeMillis();
 				customHandler.postDelayed(updateTimerThread, 0);
 			} else {
-//				dialog.show();
+				dialog.show();
 			
-				Intent i = new Intent(getApplicationContext(),
-						TrainingResultActivity.class);
-
-				startActivity(i);
+//				Intent i = new Intent(getApplicationContext(),
+//						TrainingResultActivity.class);
+//
+//				startActivity(i);
 			}
 			break;
 		case R.id.training_pause:
@@ -413,6 +432,14 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		myTraining.setBURNED_CALORIES(0f);
 		myTraining.setSTEPS(stepsCount);
 		myTraining.setMONSTER_DEFEATED("");
+		
+		try {
+			TRAINING_DAL.insertTRAINING(getApplicationContext(), myTraining);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		myTraining = TRAINING_DAL.getTRAINING_Single(getApplicationContext(), myTraining.getID());
 	}
 
 	
@@ -439,7 +466,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		Notification.Builder builder = new Notification.Builder(
+		builder = new Notification.Builder(
 				getApplicationContext());
 		builder.setContentTitle("Pocket Trainer");
 		builder.setContentText("You have an ongoing training");
@@ -451,9 +478,14 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		builder.setOngoing(true);
 		builder.setAutoCancel(true);
 		builder.setPriority(0);
-		Notification notification = builder.build();
-		NotificationManager notificationManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManger.notify(01, notification);
+		notification = builder.build();
+		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.notify(01, notification);
+	}
+	
+	private void destroyNotification() {
+		notificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+		notificationManager.cancel(01);
 	}
 	
 	private boolean isGPSEnabled(){
@@ -530,6 +562,12 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 			}
 		}
 		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		destroyNotification();
 	}
 	
 }

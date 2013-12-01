@@ -80,6 +80,8 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 		mSensorManager.registerListener(this, mAccelerometer,
 				SensorManager.SENSOR_DELAY_NORMAL);
 
+		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		
 		cont = (Button) findViewById(R.id.contBtn);
 		cont.setOnClickListener(this);
 
