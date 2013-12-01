@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -121,23 +121,231 @@
                 android:textColor="@color/card_text"
                 android:textSize="20sp" />
 
-            <TextView 
+            <com.pockettrainer.helper.FlowLayout
                 android:id="@+id/training_result_monsters"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_pet_title"
-                android:layout_marginTop="40dp"
-                android:text="MONSTERS"
-                android:textColor="@color/card_text"
-                android:textSize="30sp" />
+                android:layout_below="@+id/training_result_monster_defeated"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_slime_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_slime"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_slime" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_frogger_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_frogger"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_frogger" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_gillian_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_gillian"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_gillian" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_papabear_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_papabear"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_papabear" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_observer_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_observer"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_observer" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_cyclops_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_cyclops"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_cyclops" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_ogre_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_ogre"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_ogre" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_darkness_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_darkness"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_darkness" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_owl_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_owl"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_owl" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/monster_golem_qty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="2"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/monster_golem"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/monster_golem" />
+                </LinearLayout>
+            </com.pockettrainer.helper.FlowLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_pet_title"
-                android:layout_marginTop="105dp"
+                android:layout_below="@+id/training_result_monsters"
+                android:layout_marginTop="10dp"
                 android:text="Total Exp."
                 android:textColor="@color/card_text"
                 android:textSize="20sp" />
@@ -158,8 +366,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_pet_title"
-                android:layout_marginTop="105dp"
+                android:layout_below="@+id/training_result_monsters"
+                android:layout_marginTop="10dp"
                 android:text="311.203 pt"
                 android:textColor="@color/card_text_light"
                 android:textSize="20sp" />
@@ -174,23 +382,23 @@
 
             <Button
                 android:id="@+id/share_button"
-                android:layout_weight="50"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                android:layout_marginRight="5dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginRight="5dp"
+                android:layout_weight="50"
                 android:background="@drawable/default3_button_states"
                 android:text="Share"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-            
+
             <Button
                 android:id="@+id/continue_button"
-                android:layout_weight="50"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                android:layout_marginLeft="5dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="50"
                 android:background="@drawable/default_button_states"
                 android:text="Continue"
                 android:textColor="@color/white"
