@@ -90,6 +90,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	private boolean mInitialized;
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
+	private Sensor mGyroscope;
 	private final float NOISE = (float) 2.0;
 	int stepsCount;
 
@@ -168,6 +169,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		mAccelerometer = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 	}
 
 	@Override
@@ -249,6 +251,8 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 	private void startSensor() {
 		mSensorManager.registerListener(this, mAccelerometer,
+				SensorManager.SENSOR_DELAY_NORMAL);
+		mSensorManager.registerListener(this, mGyroscope,
 				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
@@ -553,55 +557,65 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 
-		double x = 0d, y = 0d, z = 0d;
-		double mLastX = 0d, mLastY = 0d, mLastZ = 0d;
-		double deltaX = 0d, deltaY = 0d, deltaZ = 0d;
-		final double alpha = 0.8;
+		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+			double x = 0d, y = 0d, z = 0d;
+			double mLastX = 0d, mLastY = 0d, mLastZ = 0d;
+			double deltaX = 0d, deltaY = 0d, deltaZ = 0d;
+			final double alpha = 0.8;
 
-		x = event.values[0];
-		y = event.values[1];
-		z = event.values[2];
+			x = event.values[0];
+			y = event.values[1];
+			z = event.values[2];
 
-		double[] gravity = { 0, 0, 0 };
+			double[] gravity = { 0, 0, 0 };
 
-		gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-		gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-		gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+			gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+			gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+			gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
 
-		x = event.values[0] - gravity[0];
-		y = event.values[1] - gravity[1];
-		z = event.values[2] - gravity[2];
+			x = event.values[0] - gravity[0];
+			y = event.values[1] - gravity[1];
+			z = event.values[2] - gravity[2];
 
-		if (!mInitialized) {
-			mLastX = x;
-			mLastY = y;
-			mLastZ = z;
-			mInitialized = true;
-		} else {
-			deltaX = Math.abs(mLastX - x);
-			deltaY = Math.abs(mLastY - y);
-			deltaZ = Math.abs(mLastZ - z);
+			if (!mInitialized) {
+				mLastX = x;
+				mLastY = y;
+				mLastZ = z;
+				mInitialized = true;
+			} else {
+				deltaX = Math.abs(mLastX - x);
+				deltaY = Math.abs(mLastY - y);
+				deltaZ = Math.abs(mLastZ - z);
 
-			if (deltaX < NOISE) {
-				deltaX = 0f;
+				if (deltaX < NOISE) {
+					deltaX = 0f;
+				}
+
+				if (deltaY < NOISE) {
+					deltaY = 0f;
+				}
+
+				if (deltaZ < NOISE) {
+					deltaZ = 0f;
+				}
+
+				mLastX = x;
+				mLastY = y;
+				mLastZ = z;
+
+				if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
+					// Z shake
+					stepsCount = stepsCount + 1;
+				}
 			}
-
-			if (deltaY < NOISE) {
-				deltaY = 0f;
-			}
-
-			if (deltaZ < NOISE) {
-				deltaZ = 0f;
-			}
-
-			mLastX = x;
-			mLastY = y;
-			mLastZ = z;
-
-			if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
-				// Z shake
-				stepsCount = stepsCount + 1;
-			}
+		} else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+			float x = event.values[0];
+			float y = event.values[1];
+			float z = event.values[2];
+			
+			Toast.makeText(getApplicationContext(), "haha", 100).show();
+			
+			Log.i("SENSOR", x + " " + y + " " + z);
 		}
 
 	}
