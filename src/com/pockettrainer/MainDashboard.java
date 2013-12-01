@@ -136,6 +136,7 @@ public class MainDashboard extends SurfaceView implements
 	
 	public void setPet(int type) {
 		Context context = getContext();
+		System.gc();
 		if(type == 1) {
 			setSprite(context, R.drawable.sprite_egg, R.drawable.sprite_egg_move,
 					R.drawable.sprite_egg_remove, R.drawable.sprite_egg_eat,

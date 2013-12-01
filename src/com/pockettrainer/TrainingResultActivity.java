@@ -678,5 +678,13 @@ public class TrainingResultActivity extends Activity implements
 		
 		return a;
 	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent t = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(t);
+		this.finish();
+	}
 
 }
