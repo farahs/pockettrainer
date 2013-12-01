@@ -168,6 +168,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 		this.myPet.setTYPE("1");
 		this.myPet.setLEVEL("1");
 		this.myPet.setCURRENT_EXPERIENCE(0);
+		this.myPet.setTOTAL_EXPERIENCE(0);
 		this.myPet.setMOOD("4");
 		this.myPet.setHUNGER_INDICATOR(100);
 		this.myPet.setSLEEP_INDICATOR(100);

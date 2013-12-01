@@ -36,6 +36,9 @@ public class PET implements Parcelable {
 	
 	@DatabaseField(dataType = DataType.INTEGER, canBeNull = true)
 	private int CURRENT_EXPERIENCE;
+	
+	@DatabaseField(dataType = DataType.INTEGER, canBeNull = true)
+	private int TOTAL_EXPERIENCE;
 
 	@DatabaseField(dataType = DataType.STRING, canBeNull = true)
 	private String MOOD;
@@ -58,7 +61,7 @@ public class PET implements Parcelable {
 
 	public PET(int iD, int uSER_ID, String nAME, Date bIRTH_DATE, String tYPE,
 			String lEVEL, String eNVIRONMENT, int cURRENT_EXPERIENCE,
-			String mOOD, int hUNGER_INDICATOR, int sLEEP_INDICATOR,
+			int tOTAL_EXPERIENCE, String mOOD, int hUNGER_INDICATOR, int sLEEP_INDICATOR,
 			int hYGIENE_INDICATOR, int rELATIONSHIP_INDICATOR) {
 		super();
 		ID = iD;
@@ -69,6 +72,7 @@ public class PET implements Parcelable {
 		LEVEL = lEVEL;
 		ENVIRONMENT = eNVIRONMENT;
 		CURRENT_EXPERIENCE = cURRENT_EXPERIENCE;
+		TOTAL_EXPERIENCE = tOTAL_EXPERIENCE;
 		MOOD = mOOD;
 		HUNGER_INDICATOR = hUNGER_INDICATOR;
 		SLEEP_INDICATOR = sLEEP_INDICATOR;
@@ -103,6 +107,7 @@ public class PET implements Parcelable {
 		dest.writeString(LEVEL);
 		dest.writeString(ENVIRONMENT);
 		dest.writeInt(CURRENT_EXPERIENCE);
+		dest.writeInt(TOTAL_EXPERIENCE);
 		dest.writeString(MOOD);
 		dest.writeInt(HUNGER_INDICATOR);
 		dest.writeInt(SLEEP_INDICATOR);
@@ -125,6 +130,7 @@ public class PET implements Parcelable {
 		LEVEL = in.readString();
 		ENVIRONMENT = in.readString();
 		CURRENT_EXPERIENCE = in.readInt();
+		TOTAL_EXPERIENCE = in.readInt();
 		MOOD = in.readString();
 		HUNGER_INDICATOR = in.readInt();
 		SLEEP_INDICATOR = in.readInt();
@@ -248,6 +254,14 @@ public class PET implements Parcelable {
 
 	public void setRELATIONSHIP_INDICATOR(int rELATIONSHIP_INDICATOR) {
 		RELATIONSHIP_INDICATOR = rELATIONSHIP_INDICATOR;
+	}
+
+	public int getTOTAL_EXPERIENCE() {
+		return TOTAL_EXPERIENCE;
+	}
+
+	public void setTOTAL_EXPERIENCE(int tOTAL_EXPERIENCE) {
+		TOTAL_EXPERIENCE = tOTAL_EXPERIENCE;
 	}
 
 }

@@ -105,6 +105,11 @@
             android:name="com.pockettrainer.helper.MyService"
             android:enabled="true" >
         </service>
+
+        <activity
+            android:name="com.example.pockettrainer.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

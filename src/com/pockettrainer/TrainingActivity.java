@@ -39,10 +39,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -171,7 +172,18 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		menu.findItem(R.id.action_settings).setOnMenuItemClickListener(
+				new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						
+						return true;
+					}
+				});
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -180,6 +192,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		case R.id.training_start:
 			if(readyToRun()) {
 				running = true;
+				totalDistance = 0f;
 				startSensor();
 				startBtn.setVisibility(View.GONE);
 				pauseBtn.setVisibility(View.VISIBLE);
@@ -426,8 +439,8 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		String userId = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-//		myTraining.setDISTANCE(1000);
-		myTraining.setDISTANCE(totalDistance);
+		myTraining.setDISTANCE(1000);
+//		myTraining.setDISTANCE(totalDistance);
 		myTraining.setSPEED(speed);
 		myTraining.setBURNED_CALORIES(0f);
 		myTraining.setSTEPS(stepsCount);
