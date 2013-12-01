@@ -225,6 +225,8 @@ public class TrainingResultActivity extends Activity implements
 		int tempLevel = 0;
 
 		int monsterExp = myPet.getTOTAL_EXPERIENCE();
+		int type = Integer.parseInt(myPet.getTYPE());
+		
 		monsterExp += exp;
 
 		for (int i = 10; i > 0; i--) {
@@ -235,6 +237,12 @@ public class TrainingResultActivity extends Activity implements
 			}
 
 		}
+		
+		if((type == 2) && (monsterExp > eachLvExp[10])) {
+			monsterExp = eachLvExp[10]-1;
+			tempExp = setupExperience("10")-1;
+			tempLevel = 10;
+		}
 
 		myPet.setTOTAL_EXPERIENCE(monsterExp);
 		myPet.setLEVEL("" + tempLevel);
@@ -243,8 +251,9 @@ public class TrainingResultActivity extends Activity implements
 
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
+			PET uy = PET_DAL.getPET_Single(getApplicationContext(), myPet.getID());
+			Log.i("POCKETTRAINER", "id: " + uy.getID()+ " currexp: " + myPet.getCURRENT_EXPERIENCE());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -349,9 +358,9 @@ public class TrainingResultActivity extends Activity implements
 	public boolean isTimeToEvolve() {
 		int tempExp = myPet.getTOTAL_EXPERIENCE();
 		int tempMaxExp = eachLvExp[10];
-		int lv = Integer.parseInt(myPet.getLEVEL());
+		int type = Integer.parseInt(myPet.getTYPE());
 		
-		if (tempExp >= tempMaxExp && lv != 2) {
+		if (tempExp >= tempMaxExp && type != 2) {
 			return true;
 
 		}
