@@ -9,6 +9,7 @@
     tools:context=".PetIdentityActivity" >
 
     <LinearLayout
+        android:id="@+id/id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -127,9 +128,9 @@
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/id"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/rect_button_states"
         android:paddingBottom="10dp"
         android:paddingLeft="50dp"
