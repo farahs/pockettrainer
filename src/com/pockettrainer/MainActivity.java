@@ -71,7 +71,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			if (bund != null) {
 				myPet = bund.getParcelable("PET");
-				initializePet();
 				myUser = bund.getParcelable("USER");
 				Log.i("POCKETTRAINER", "MainActivity" + myPet.getNAME());
 			}
@@ -79,6 +78,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
 		}
 
+		initializePet();
 		boolean b = UserSession.getPetSleepSession(getApplicationContext())
 				.get(UserSession.SLEEP_FLAG);
 
