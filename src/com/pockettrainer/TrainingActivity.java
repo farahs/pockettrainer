@@ -240,6 +240,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			i.putExtras(bund);
 			startActivity(i);
 			destroyNotification();
+			this.finish();
 			break;
 		default:
 			break;
@@ -466,7 +467,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				.get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-		myTraining.setDISTANCE(1000);
+		myTraining.setDISTANCE(5000);
 		// myTraining.setDISTANCE(totalDistance);
 		myTraining.setSPEED(speed);
 		myTraining.setBURNED_CALORIES(0f);
