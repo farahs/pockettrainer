@@ -239,6 +239,7 @@ public class TrainingResultActivity extends Activity implements
 		myPet.setTOTAL_EXPERIENCE(monsterExp);
 		myPet.setLEVEL("" + tempLevel);
 		myPet.setCURRENT_EXPERIENCE(tempExp);
+		Log.i("POCKETTRAINER", "" + myPet.getCURRENT_EXPERIENCE());
 
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
@@ -629,7 +630,7 @@ public class TrainingResultActivity extends Activity implements
 		int exp = 0;
 		for (MONSTER momon : monster) {
 			exp += ((momon.getBASE_EXPERIENCE() * level) / 2)
-					+ ((jarak + langkah) / 5);
+					+ ((jarak + langkah) / 10);
 		}
 
 		return exp;
