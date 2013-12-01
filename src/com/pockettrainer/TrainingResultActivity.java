@@ -125,7 +125,7 @@ public class TrainingResultActivity extends Activity implements
 		distanceTV = (TextView) findViewById(R.id.training_result_distance);
 		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
-		monstersTV = (TextView) findViewById(R.id.training_result_monsters);
+//		monstersTV = (TextView) findViewById(R.id.training_result_monsters);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
 	}
@@ -174,7 +174,7 @@ public class TrainingResultActivity extends Activity implements
 				totalExpTV.setText("" + exp);
 
 				String monsterList = listOfMonster();
-				monstersTV.setText(monsterList);
+//				monstersTV.setText(monsterList);
 			}
 
 			myTraining.setEXPERIENCE(exp);

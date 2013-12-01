@@ -107,7 +107,7 @@
         </service>
 
         <activity
-            android:name="com.example.pockettrainer.AboutActivity"
+            android:name="com.pockettrainer.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
     </application>
