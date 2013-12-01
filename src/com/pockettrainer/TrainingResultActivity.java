@@ -181,14 +181,9 @@ public class TrainingResultActivity extends Activity implements
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						// Toast.makeText(getApplicationContext(), "Setting",
-						// Toast.LENGTH_SHORT).show();
-						// return true;
-						Intent intent = new Intent(TrainingResultActivity.this
-								.getApplicationContext(),
-								TestAccelerometerActivity.class);
-						startActivity(intent);
-						return true;
+						 Toast.makeText(getApplicationContext(), "Setting",
+						 Toast.LENGTH_SHORT).show();
+						 return true;
 					}
 				});
 
@@ -260,7 +255,7 @@ public class TrainingResultActivity extends Activity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.continue_button:
-			Intent i = new Intent(getApplicationContext(), MainDashboard.class);
+			Intent i = new Intent(getApplicationContext(), MainActivity.class);
 
 			startActivity(i);
 			break;
