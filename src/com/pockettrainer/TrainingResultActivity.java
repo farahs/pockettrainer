@@ -1,5 +1,6 @@
 package com.pockettrainer;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 import com.example.pockettrainer.R;
 import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.dal.PET_DAL;
+import com.pockettrainer.database.dal.TRAINING_DAL;
 import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.TRAINING;
@@ -55,6 +57,7 @@ public class TrainingResultActivity extends Activity implements
 	PET myPet;
 	List<MONSTER> monster;
 	int[] noMonster = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	int[] eachLvExp = new int[11];
 
 	TextView runningTimeTV;
 	TextView distanceTV;
@@ -81,6 +84,7 @@ public class TrainingResultActivity extends Activity implements
 
 			if (bund != null) {
 				myTraining = bund.getParcelable("TRAINING");
+				processTraining();
 			}
 		} else {
 			Log.i("POCKETTRAINER", "Gak ada bundle di intent");
@@ -92,6 +96,10 @@ public class TrainingResultActivity extends Activity implements
 		setSensor();
 		setAdapter();
 		setData();
+	}
+
+	private void processTraining() {
+		this.myTraining = TRAINING_DAL.getTRAINING_Single(getApplicationContext(), myTraining.getID());
 	}
 
 	private void processPet() {
@@ -150,7 +158,8 @@ public class TrainingResultActivity extends Activity implements
 
 	private void setData() {
 		if (myTraining != null) {
-
+			int exp = 0;
+			createArrayOfExp();
 			setTime(myTraining.getDURATION());
 			setDistance(myTraining.getDISTANCE());
 			numOfStepsTV.setText("" + myTraining.getSTEPS());
@@ -159,16 +168,71 @@ public class TrainingResultActivity extends Activity implements
 
 			if (myPet != null) {
 				int level = Integer.parseInt(myPet.getLEVEL());
-				int exp = calculateExperience(myTraining.getDISTANCE(),
+				exp = calculateExperience(myTraining.getDISTANCE(),
 						myTraining.getSTEPS(), level);
 				totalExpTV.setText("" + exp);
 
 				String monsterList = listOfMonster();
 				monstersTV.setText(monsterList);
 			}
-
+			
+			myTraining.setEXPERIENCE(exp);
+			myTraining.setMONSTER_DEFEATED("" + monsterDefeated);
+			
+			updatePet(exp);
+			
+			try {
+				TRAINING_DAL.updateTRAINING(getApplicationContext(), myTraining);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
+	}
+	
+	public void updatePet(int exp) {
+		int tempExp = 0;
+		int tempLevel = 0;
+		
+		int monsterExp  = myPet.getTOTAL_EXPERIENCE();
+		monsterExp += exp;		
+		
+		for(int i = 10 ; i > 0 ; i--){
+			if(monsterExp > eachLvExp[i]) {
+				tempLevel = i;
+				tempExp = monsterExp - eachLvExp[i];
+				break;
+			}
+			
+		}
+		
+		myPet.setTOTAL_EXPERIENCE(monsterExp);
+		myPet.setLEVEL("" + tempLevel);
+		myPet.setCURRENT_EXPERIENCE(tempExp);
+		
+		try {
+			PET_DAL.updatePET(getApplicationContext(), myPet);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void createArrayOfExp() {
+		for(int i = 1 ; i < 11 ; i++){
+			if( i == 1 ){
+				eachLvExp[i] = setupExperience("" + i);
+			} else {
+				eachLvExp[i] = eachLvExp[i] + setupExperience("" + i);
+			}
+			
+		}
+		
+	}
+	public int setupExperience(String level) {
+		double intLev = Double.parseDouble(level);
+		return (int) ((int) 1000 * Math.pow(2, intLev));
 	}
 
 	@Override
@@ -389,7 +453,7 @@ public class TrainingResultActivity extends Activity implements
 		int monsterDefeated = 0;
 		MONSTER myMonster = new MONSTER();
 
-		for (int i = 0; i <= numberOfMonster; i++) {
+		for (int i = 0; i < numberOfMonster; i++) {
 
 			
 			int monsterAppearance = (int) (Math.random() * 10 + 1);

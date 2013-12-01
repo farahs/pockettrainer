@@ -62,6 +62,8 @@ public class MONSTER implements Parcelable {
 		ID = in.readInt();
 		CODE = in.readString();
 		NAME = in.readString();
+		IMAGE = in.readString();
+		BASE_EXPERIENCE = in.readInt();
 	}
 	
 	public static final Parcelable.Creator	CREATOR	= new Parcelable.Creator() {
