@@ -200,7 +200,7 @@ public class TrainingResultActivity extends Activity implements
 		
 		for(int i = 10 ; i > 0 ; i--){
 			if(monsterExp > eachLvExp[i]) {
-				tempLevel = i;
+				tempLevel = i+1;
 				tempExp = monsterExp - eachLvExp[i];
 				break;
 			}

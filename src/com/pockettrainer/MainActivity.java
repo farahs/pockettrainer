@@ -264,7 +264,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		initializePet();
 		setupData();
-		dashboard.setPet(Integer.parseInt(myPet.getTYPE()));
 	}
 
 	@Override

@@ -192,6 +192,7 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		case R.id.training_start:
 			if(readyToRun()) {
 				running = true;
+				totalDistance = 0f;
 				startSensor();
 				startBtn.setVisibility(View.GONE);
 				pauseBtn.setVisibility(View.VISIBLE);
@@ -438,8 +439,8 @@ public class TrainingActivity extends Activity implements OnClickListener, Locat
 		String userId = UserSession.getUserSession(getApplicationContext()).get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-//		myTraining.setDISTANCE(1000);
-		myTraining.setDISTANCE(totalDistance);
+		myTraining.setDISTANCE(1000);
+//		myTraining.setDISTANCE(totalDistance);
 		myTraining.setSPEED(speed);
 		myTraining.setBURNED_CALORIES(0f);
 		myTraining.setSTEPS(stepsCount);
