@@ -348,7 +348,9 @@ public class TrainingResultActivity extends Activity implements
 	public boolean isTimeToEvolve() {
 		int tempExp = myPet.getTOTAL_EXPERIENCE();
 		int tempMaxExp = eachLvExp[10];
-		if (tempExp >= tempMaxExp) {
+		int lv = Integer.parseInt(myPet.getLEVEL());
+		
+		if (tempExp >= tempMaxExp && lv != 2) {
 			return true;
 
 		}
