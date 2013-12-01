@@ -183,62 +183,72 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		
 		MONSTER a = new MONSTER();
 		a.setCODE("01");
-		a.setNAME("POOH");
+		a.setNAME("Cyclops");
 		a.setBASE_EXPERIENCE(100);
+		a.setIMAGE("monster_cyclops");
 		listMonster.add(a);
 		
 		MONSTER b = new MONSTER();
 		b.setCODE("02");
-		b.setNAME("TIGGER");
+		b.setNAME("Observer");
 		b.setBASE_EXPERIENCE(200);
+		b.setIMAGE("monster_observer");
 		listMonster.add(b);
 		
 		MONSTER c = new MONSTER();
 		c.setCODE("03");
-		c.setNAME("RABBIT");
+		c.setNAME("Golem");
 		c.setBASE_EXPERIENCE(300);
+		b.setIMAGE("monster_golem");
 		listMonster.add(c);
 		
 		MONSTER d = new MONSTER();
 		d.setCODE("04");
-		d.setNAME("OWL");
+		d.setNAME("Darkness");
 		d.setBASE_EXPERIENCE(400);
+		d.setIMAGE("monster_darkness");
 		listMonster.add(d);
 		
 		MONSTER e = new MONSTER();
 		e.setCODE("05");
-		e.setNAME("KANGA");
+		e.setNAME("Gillian");
 		e.setBASE_EXPERIENCE(500);
+		e.setIMAGE("monster_gillian");
 		listMonster.add(e);
 		
 		MONSTER f = new MONSTER();
 		f.setCODE("06");
-		f.setNAME("ROO");
+		f.setNAME("Frogger");
 		f.setBASE_EXPERIENCE(600);
+		f.setIMAGE("monster_frogger");
 		listMonster.add(f);
 		
 		MONSTER g = new MONSTER();
 		g.setCODE("07");
-		g.setNAME("PIGLETT");
+		g.setNAME("Papabear");
 		g.setBASE_EXPERIENCE(700);
+		g.setIMAGE("monster_papabear");
 		listMonster.add(g);
 		
 		MONSTER h = new MONSTER();
 		h.setCODE("08");
-		h.setNAME("EEYORE");
+		h.setNAME("Slime");
 		h.setBASE_EXPERIENCE(800);
+		h.setIMAGE("monster_slime");
 		listMonster.add(h);
 		
 		MONSTER i = new MONSTER();
 		i.setCODE("09");
-		i.setNAME("HEFFALUMP");
+		i.setNAME("Imp");
 		i.setBASE_EXPERIENCE(900);
+		i.setIMAGE("monster_imp");
 		listMonster.add(i);
 		
 		MONSTER j = new MONSTER();
 		j.setCODE("10");
-		j.setNAME("CHRISTOPHER ROBIN");
+		j.setNAME("Owl");
 		j.setBASE_EXPERIENCE(1000);
+		j.setIMAGE("monster_owl");
 		listMonster.add(j);
 		
 		for (MONSTER monster : listMonster) {

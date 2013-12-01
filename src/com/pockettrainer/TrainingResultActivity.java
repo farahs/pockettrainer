@@ -260,7 +260,7 @@ public class TrainingResultActivity extends Activity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.continue_button:
-			Intent i = new Intent(getApplicationContext(), TestGMaps.class);
+			Intent i = new Intent(getApplicationContext(), MainDashboard.class);
 
 			startActivity(i);
 			break;
