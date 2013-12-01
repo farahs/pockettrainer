@@ -467,8 +467,8 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				.get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-		myTraining.setDISTANCE(5000);
-		// myTraining.setDISTANCE(totalDistance);
+		// myTraining.setDISTANCE(5000);
+		myTraining.setDISTANCE(totalDistance);
 		myTraining.setSPEED(speed);
 		myTraining.setBURNED_CALORIES(0f);
 		myTraining.setSTEPS(stepsCount);
