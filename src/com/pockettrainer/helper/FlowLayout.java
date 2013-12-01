@@ -14,8 +14,8 @@ public class FlowLayout extends ViewGroup {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
 
-    private int horizontalSpacing = 0;
-    private int verticalSpacing = 0;
+    private int horizontalSpacing = 5;
+    private int verticalSpacing = 5;
     private int orientation = 0;
     private boolean debugDraw = false;
 

@@ -35,6 +35,8 @@ import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,11 @@ public class TrainingResultActivity extends Activity implements
 	TextView monsterDefeatedTV;
 	TextView monstersTV;
 	TextView totalExpTV;
+
+	LinearLayout slime, frogger, gillian, papabear, observer, cyclops, ogre,
+			darkness, owl, golem;
+	TextView slimeQty, froggerQty, gillianQty, papabearQty, observerQty,
+			cyclopsQty, ogreQty, darknessQty, owlQty, golemQty;
 
 	Vibrator v;
 
@@ -125,8 +132,29 @@ public class TrainingResultActivity extends Activity implements
 		distanceTV = (TextView) findViewById(R.id.training_result_distance);
 		numOfStepsTV = (TextView) findViewById(R.id.training_result_steps);
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
-		monstersTV = (TextView) findViewById(R.id.training_result_monsters);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
+
+		slime = (LinearLayout) findViewById(R.id.monster_slime);
+		frogger = (LinearLayout) findViewById(R.id.monster_frogger);
+		gillian = (LinearLayout) findViewById(R.id.monster_gillian);
+		papabear = (LinearLayout) findViewById(R.id.monster_papabear);
+		observer = (LinearLayout) findViewById(R.id.monster_observer);
+		cyclops = (LinearLayout) findViewById(R.id.monster_cyclops);
+		ogre = (LinearLayout) findViewById(R.id.monster_ogre);
+		darkness = (LinearLayout) findViewById(R.id.monster_darkness);
+		owl = (LinearLayout) findViewById(R.id.monster_owl);
+		golem = (LinearLayout) findViewById(R.id.monster_golem);
+
+		slimeQty = (TextView) findViewById(R.id.monster_slime_qty);
+		froggerQty = (TextView) findViewById(R.id.monster_frogger_qty);
+		gillianQty = (TextView) findViewById(R.id.monster_gillian_qty);
+		papabearQty = (TextView) findViewById(R.id.monster_papabear_qty);
+		observerQty = (TextView) findViewById(R.id.monster_observer_qty);
+		cyclopsQty = (TextView) findViewById(R.id.monster_cyclops_qty);
+		ogreQty = (TextView) findViewById(R.id.monster_ogre_qty);
+		darknessQty = (TextView) findViewById(R.id.monster_darkness_qty);
+		owlQty = (TextView) findViewById(R.id.monster_owl_qty);
+		golemQty = (TextView) findViewById(R.id.monster_golem_qty);
 
 	}
 
@@ -174,7 +202,6 @@ public class TrainingResultActivity extends Activity implements
 				totalExpTV.setText("" + exp);
 
 				String monsterList = listOfMonster();
-				monstersTV.setText(monsterList);
 			}
 
 			myTraining.setEXPERIENCE(exp);
@@ -544,8 +571,48 @@ public class TrainingResultActivity extends Activity implements
 			if (noMonster[i] != 0) {
 				myMonster = MONSTER_DAL.getTRAINING_Single(
 						getApplicationContext(), i);
-				listMonster = listMonster.concat(myMonster.getNAME() + " x"
-						+ noMonster[i] + " ");
+				if (myMonster.getNAME().equals("Slime")) {
+					slime.setVisibility(View.VISIBLE);
+					slimeQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Frogger")) {
+					frogger.setVisibility(View.VISIBLE);
+					froggerQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Gillian")) {
+					gillian.setVisibility(View.VISIBLE);
+					gillianQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Papabear")) {
+					papabear.setVisibility(View.VISIBLE);
+					papabearQty.setText("x" + "x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Observer")) {
+					observer.setVisibility(View.VISIBLE);
+					observerQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Cyclops")) {
+					cyclops.setVisibility(View.VISIBLE);
+					cyclopsQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Ogre")) {
+					ogre.setVisibility(View.VISIBLE);
+					ogreQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Darkness")) {
+					darkness.setVisibility(View.VISIBLE);
+					darknessQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Owl")) {
+					owl.setVisibility(View.VISIBLE);
+					owlQty.setText("x" + noMonster[i]);
+				}
+				if (myMonster.getNAME().equals("Golem")) {
+					golem.setVisibility(View.VISIBLE);
+					golemQty.setText("x" + noMonster[i]);
+				}
+				// listMonster = listMonster.concat(myMonster.getNAME() + " x"
+				// + noMonster[i] + " ");
 
 			}
 		}

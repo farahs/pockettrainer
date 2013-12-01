@@ -126,14 +126,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/training_result_monster_defeated"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/monster_slime"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_slime_qty"
@@ -144,17 +146,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_slime"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_slime" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_frogger"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_frogger_qty"
@@ -165,17 +168,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_frogger"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_frogger" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_gillian"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_gillian_qty"
@@ -186,17 +190,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_gillian"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_gillian" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_papabear"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_papabear_qty"
@@ -207,17 +212,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_papabear"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_papabear" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_observer"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_observer_qty"
@@ -228,17 +234,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_observer"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_observer" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_cyclops"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_cyclops_qty"
@@ -249,17 +256,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_cyclops"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_cyclops" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_ogre"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_ogre_qty"
@@ -270,17 +278,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_ogre"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_ogre" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_darkness"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_darkness_qty"
@@ -291,17 +300,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_darkness"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_darkness" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_owl"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_owl_qty"
@@ -312,17 +322,18 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_owl"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_owl" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/monster_golem"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/monster_golem_qty"
@@ -333,7 +344,6 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/monster_golem"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/monster_golem" />
@@ -345,7 +355,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/training_result_monsters"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="Total Exp."
                 android:textColor="@color/card_text"
                 android:textSize="20sp" />
