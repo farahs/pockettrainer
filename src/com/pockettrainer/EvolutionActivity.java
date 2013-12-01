@@ -126,16 +126,7 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 				frame = 5;
 				cont.setVisibility(View.GONE);
 			} else if (frame == 6) {
-				String a = "" + (Integer.parseInt(myPet.getTYPE()) + 1);
-				myPet.setTYPE(a);
-				try {
-					PET_DAL.updatePET(getApplicationContext(), myPet);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				PET uhuy = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID)));
-				Log.i("POCKETTRAINER", uhuy.getTYPE() + " " + uhuy.getID());
+				petEvolve();
 				finish();
 			}
 			break;
@@ -144,7 +135,28 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 			break;
 		}
 	}
-
+	public void petEvolve(){
+		String a = "" + (Integer.parseInt(myPet.getTYPE()) + 1);
+		myPet.setTYPE(a);
+		myPet.setLEVEL("1");
+		myPet.setCURRENT_EXPERIENCE(0);
+		myPet.setTOTAL_EXPERIENCE(0);
+		myPet.setMOOD("4");
+		myPet.setHUNGER_INDICATOR(100);
+		myPet.setSLEEP_INDICATOR(100);
+		myPet.setHYGIENE_INDICATOR(100);
+		myPet.setRELATIONSHIP_INDICATOR(100);
+		
+		try {
+			PET_DAL.updatePET(getApplicationContext(), myPet);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PET uhuy = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID)));
+		Log.i("POCKETTRAINER", uhuy.getTYPE() + " " + uhuy.getID());
+		
+	}
 	@Override
 	public void onAnimationEnd(Animation anim) {
 		// TODO Auto-generated method stub

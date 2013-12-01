@@ -67,7 +67,7 @@ public class TrainingResultActivity extends Activity implements
 	TextView totalExpTV;
 
 	Vibrator v;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -99,7 +99,8 @@ public class TrainingResultActivity extends Activity implements
 	}
 
 	private void processTraining() {
-		this.myTraining = TRAINING_DAL.getTRAINING_Single(getApplicationContext(), myTraining.getID());
+		this.myTraining = TRAINING_DAL.getTRAINING_Single(
+				getApplicationContext(), myTraining.getID());
 	}
 
 	private void processPet() {
@@ -144,7 +145,7 @@ public class TrainingResultActivity extends Activity implements
 
 		mSensorManager.registerListener(this, mAccelerometer,
 				SensorManager.SENSOR_DELAY_NORMAL);
-		
+
 		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
@@ -175,14 +176,15 @@ public class TrainingResultActivity extends Activity implements
 				String monsterList = listOfMonster();
 				monstersTV.setText(monsterList);
 			}
-			
+
 			myTraining.setEXPERIENCE(exp);
 			myTraining.setMONSTER_DEFEATED("" + monsterDefeated);
-			
+
 			updatePet(exp);
-			
+
 			try {
-				TRAINING_DAL.updateTRAINING(getApplicationContext(), myTraining);
+				TRAINING_DAL
+						.updateTRAINING(getApplicationContext(), myTraining);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -190,27 +192,27 @@ public class TrainingResultActivity extends Activity implements
 		}
 
 	}
-	
+
 	public void updatePet(int exp) {
 		int tempExp = 0;
 		int tempLevel = 0;
-		
-		int monsterExp  = myPet.getTOTAL_EXPERIENCE();
-		monsterExp += exp;		
-		
-		for(int i = 10 ; i > 0 ; i--){
-			if(monsterExp > eachLvExp[i]) {
-				tempLevel = i+1;
+
+		int monsterExp = myPet.getTOTAL_EXPERIENCE();
+		monsterExp += exp;
+
+		for (int i = 10; i > 0; i--) {
+			if (monsterExp > eachLvExp[i]) {
+				tempLevel = i + 1;
 				tempExp = monsterExp - eachLvExp[i];
 				break;
 			}
-			
+
 		}
-		
+
 		myPet.setTOTAL_EXPERIENCE(monsterExp);
 		myPet.setLEVEL("" + tempLevel);
 		myPet.setCURRENT_EXPERIENCE(tempExp);
-		
+
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
 		} catch (SQLException e) {
@@ -218,18 +220,19 @@ public class TrainingResultActivity extends Activity implements
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void createArrayOfExp() {
-		for(int i = 1 ; i < 11 ; i++){
-			if( i == 1 ){
+		for (int i = 1; i < 11; i++) {
+			if (i == 1) {
 				eachLvExp[i] = setupExperience("" + i);
 			} else {
 				eachLvExp[i] = eachLvExp[i] + setupExperience("" + i);
 			}
-			
+
 		}
-		
+
 	}
+
 	public int setupExperience(String level) {
 		double intLev = Double.parseDouble(level);
 		return (int) ((int) 1000 * Math.pow(2, intLev));
@@ -245,9 +248,9 @@ public class TrainingResultActivity extends Activity implements
 
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						 Toast.makeText(getApplicationContext(), "Setting",
-						 Toast.LENGTH_SHORT).show();
-						 return true;
+						Toast.makeText(getApplicationContext(), "Setting",
+								Toast.LENGTH_SHORT).show();
+						return true;
 					}
 				});
 
@@ -315,13 +318,34 @@ public class TrainingResultActivity extends Activity implements
 		}
 	}
 
+	public boolean isTimeToEvolve() {
+		int tempExp = myPet.getTOTAL_EXPERIENCE();
+		int tempMaxExp = eachLvExp[10];
+		if (tempExp >= tempMaxExp) {
+			return true;
+
+		}
+
+		return false;
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.continue_button:
-			Intent i = new Intent(getApplicationContext(), MainActivity.class);
+			if (isTimeToEvolve()) {
+				Intent i = new Intent(getApplicationContext(),
+						EvolutionActivity.class);
 
-			startActivity(i);
+				startActivity(i);
+
+			} else {
+
+				Intent i = new Intent(getApplicationContext(),
+						MainActivity.class);
+
+				startActivity(i);
+			}
 			break;
 
 		case R.id.notifDialog_ok:
@@ -455,7 +479,6 @@ public class TrainingResultActivity extends Activity implements
 
 		for (int i = 0; i < numberOfMonster; i++) {
 
-			
 			int monsterAppearance = (int) (Math.random() * 10 + 1);
 
 			if (monsterAppearance <= 6) {
@@ -518,11 +541,11 @@ public class TrainingResultActivity extends Activity implements
 		}
 
 		for (int i = 1; i < 11; i++) {
-			if(noMonster[i] != 0) {
-			myMonster = MONSTER_DAL.getTRAINING_Single(getApplicationContext(),
-					i);
-			listMonster = listMonster.concat(myMonster.getNAME() + " x"
-					+ noMonster[i] + " ");
+			if (noMonster[i] != 0) {
+				myMonster = MONSTER_DAL.getTRAINING_Single(
+						getApplicationContext(), i);
+				listMonster = listMonster.concat(myMonster.getNAME() + " x"
+						+ noMonster[i] + " ");
 
 			}
 		}
