@@ -239,9 +239,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		
 		MONSTER i = new MONSTER();
 		i.setCODE("09");
-		i.setNAME("Imp");
+		i.setNAME("Ogre");
 		i.setBASE_EXPERIENCE(900);
-		i.setIMAGE("monster_imp");
+		i.setIMAGE("monster_ogre");
 		listMonster.add(i);
 		
 		MONSTER j = new MONSTER();
