@@ -35,7 +35,7 @@
             android:name="com.pockettrainer.SplashScreenActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,42 +47,42 @@
             android:name="com.pockettrainer.WelcomeActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_welcome"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.pockettrainer.SelectEnvironmentActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_select_environment"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.pockettrainer.PetIdentityActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_pet_identity"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.pockettrainer.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.pockettrainer.MainDashboard"
             android:configChanges="orientation"
             android:label="@string/dashboard"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.pockettrainer.TrainingResultActivity"
             android:configChanges="orientation"
             android:label="@string/training_result"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -90,14 +90,14 @@
             android:configChanges="orientation"
             android:label="@string/train"
             android:launchMode="singleTop"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.pockettrainer.EvolutionActivity"
             android:configChanges="orientation"
             android:label="@string/train"
-            android:logo="@drawable/ic_launcher"
+            android:logo="@drawable/ic_bar"
             android:screenOrientation="portrait" >
         </activity>
 
@@ -105,6 +105,11 @@
             android:name="com.pockettrainer.helper.MyService"
             android:enabled="true" >
         </service>
+
+        <activity
+            android:name="com.example.pockettrainer.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

@@ -244,8 +244,8 @@ public class EvolutionActivity extends Activity implements AnimationListener,
 					txt.setText("Not enough! Shake more!");
 				} else if(shaked > 40) {
 					frame=4;
-					v.vibrate(500);
 					enableShake=false;
+					v.vibrate(500);
 				}
 			}
 
