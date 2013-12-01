@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:src="@drawable/logo_big" />
+        android:src="@drawable/logo_big_shadow" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Developed as a student project by \nMonster Team"
+        android:text="Developed as a student project by\nMonster Team"
         android:textSize="16sp" />
 
     <TextView
@@ -41,21 +41,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="\u2022 Farah Shafira Effendi \u2022"
+        android:text="Farah Shafira Effendi\n(farah.shafira@gmail.com)"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="\u2022 Puji Martadinata \u2022"
+        android:text="Puji Martadinata\n(sipuji.dinata@gmail.com)"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="\u2022 R Dhika Ahmad Aulia \u2022"
+        android:text="R Dhika Ahmad Aulia\n(dhika.ahmad.aulia@gmail.com)"
         android:textSize="16sp" />
 
 </LinearLayout>

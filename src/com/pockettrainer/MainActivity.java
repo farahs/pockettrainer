@@ -245,7 +245,7 @@ public class MainActivity extends Activity implements OnClickListener {
 						// Toast.LENGTH_SHORT).show();
 						// return true;
 						Intent intent = new Intent(MainActivity.this,
-								EvolutionActivity.class);
+								AboutActivity.class);
 						startActivity(intent);
 						return true;
 					}
