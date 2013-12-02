@@ -1,77 +1,82 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SelectEnvironmentActivity"
-    android:background="@color/white" >
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp" >
 
     <RelativeLayout
-        android:id="@+id/env_logo_holder"
         android:layout_width="match_parent"
-    	android:layout_height="170dp"
-    	android:layout_marginTop="80dp"
-        >
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".SelectEnvironmentActivity" >
 
-        <ImageView
-            android:id="@+id/env_logo"
+        <RelativeLayout
+            android:id="@+id/env_logo_holder"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="80dp" >
+
+            <ImageView
+                android:id="@+id/env_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:src="@drawable/env_logo_none" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/middle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/env_logo_holder"
+            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:src="@drawable/env_logo_none" />
+            android:orientation="vertical"
+            android:weightSum="100" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Your Environment: " />
+
+            <Spinner
+                android:id="@+id/select_environment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="50"
+                android:entries="@array/environment"
+                android:gravity="center"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:gravity="center"
+                android:text="This environment will determine your pet evolution. Choose wisely!" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/select_env_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/middle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rect_button_states"
+            android:paddingBottom="10dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingTop="10dp"
+            android:text="Continue"
+            android:textColor="@drawable/text_states_blue"
+            android:textSize="20sp" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/middle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/env_logo_holder"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:weightSum="100" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Your Environment: " />
-
-        <Spinner
-            android:id="@+id/select_environment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="50"
-            android:entries="@array/environment"
-            android:gravity="center"
-            android:textAlignment="center" />
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="20dp"
-            android:text="This environment will determine your pet evolution. Choose wisely!" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/select_env_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/middle"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/rect_button_states"
-        android:paddingBottom="10dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:paddingTop="10dp"
-        android:text="Continue"
-        android:textColor="@drawable/text_states_blue"
-        android:textSize="20sp" />
-
-</RelativeLayout>
+</ScrollView>

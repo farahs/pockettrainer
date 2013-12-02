@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -312,7 +311,7 @@ public class TrainingResultActivity extends Activity implements
 					.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
 
-			String message = "I've been running with my pet " + myPet.getNAME() + " for " + getDistance() + "! Train yours today at Pocket Trainer!" ;
+			String message = "I've been running with my pet " + myPet.getNAME() + " for " + getDistance() + "! Train yours today at #PocketTrainer!" ;
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
@@ -646,7 +645,7 @@ public class TrainingResultActivity extends Activity implements
 		int exp = 0;
 		for (MONSTER momon : monster) {
 			exp += ((momon.getBASE_EXPERIENCE() * level) / 2)
-					+ ((jarak + langkah) / 10);
+					+ ((jarak + langkah) / 20);
 		}
 
 		return exp;

@@ -631,7 +631,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			float y = event.values[1];
 			float z = event.values[2];
 			
-			if(z >= 0) {
+			if(z >= 1) {
 				hasGyro = true;
 			} else {
 				hasGyro = false;
