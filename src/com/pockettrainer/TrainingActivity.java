@@ -91,13 +91,15 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private Sensor mGyroscope;
-	private final float NOISE = (float) 2.0;
+	private final float NOISE = (float) 4.0;
 	int stepsCount;
-
+	boolean hasSteps;
+	boolean hasGyro;
+	
 	Notification.Builder builder;
 	NotificationManager notificationManager;
 	Notification notification;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,6 +113,8 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		try {
 			initializeMap();
 			running = false;
+			hasSteps = false;
+			hasGyro = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -422,7 +426,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onLocationChanged(Location location) {
 
 		Log.i("POCKETTRAINER", "locationchanged luar");
-		if (running) {
+		if (running && hasGyro && hasSteps) {
 			Log.i("POCKETTRAINER", "locationchanged dalam");
 			Log.i("POCKETTRAINER",
 					"" + calculateDistance(lastLocation, location));
@@ -617,6 +621,9 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
 					// Z shake
 					stepsCount = stepsCount + 1;
+					hasSteps = true;
+				} else {
+					hasSteps = false;
 				}
 			}
 		} else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
@@ -624,6 +631,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			float y = event.values[1];
 			float z = event.values[2];
 			
+			if(z >= 0) {
+				hasGyro = true;
+			} else {
+				hasGyro = false;
+			}
 //			Toast.makeText(getApplicationContext(), "haha", 100).show();
 			
 			Log.i("SENSOR", x + " " + y + " " + z);
