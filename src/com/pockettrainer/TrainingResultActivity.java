@@ -29,10 +29,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -67,6 +64,7 @@ public class TrainingResultActivity extends Activity implements
 	TextView monsterDefeatedTV;
 	TextView monstersTV;
 	TextView totalExpTV;
+	TextView petNameTV;
 
 	LinearLayout slime, frogger, gillian, papabear, observer, cyclops, ogre,
 			darkness, owl, golem;
@@ -135,6 +133,8 @@ public class TrainingResultActivity extends Activity implements
 		monsterDefeatedTV = (TextView) findViewById(R.id.training_result_monster_defeated);
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
+		petNameTV = (TextView) findViewById(R.id.training_result_pet_name_title);
+		
 		slime = (LinearLayout) findViewById(R.id.monster_slime);
 		frogger = (LinearLayout) findViewById(R.id.monster_frogger);
 		gillian = (LinearLayout) findViewById(R.id.monster_gillian);
@@ -202,12 +202,13 @@ public class TrainingResultActivity extends Activity implements
 			monsterDefeatedTV.setText("" + monsterDefeated);
 
 			if (myPet != null) {
+				String name = myPet.getNAME();
+				String upName = name.toUpperCase();
+				petNameTV.setText(upName);
 				int level = Integer.parseInt(myPet.getLEVEL());
 				exp = calculateExperience(myTraining.getDISTANCE(),
 						myTraining.getSTEPS(), level);
 				totalExpTV.setText("" + exp);
-
-				String monsterList = listOfMonster();
 			}
 
 			myTraining.setEXPERIENCE(exp);
@@ -281,10 +282,11 @@ public class TrainingResultActivity extends Activity implements
 		return (int) ((int) 1000 * Math.pow(1.7, intLev));
 	}
 
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.not_main, menu);
 
 		menu.findItem(R.id.action_settings).setOnMenuItemClickListener(
 				new OnMenuItemClickListener() {
@@ -299,7 +301,8 @@ public class TrainingResultActivity extends Activity implements
 
 		return true;
 	}
-
+	*/
+	
 	private final class ResponseListener implements DialogListener {
 		@Override
 		public void onComplete(Bundle values) {
@@ -579,8 +582,7 @@ public class TrainingResultActivity extends Activity implements
 		return monsterDefeated;
 	}
 
-	protected String listOfMonster() {
-		String listMonster = "";
+	protected void listOfMonster() {
 		MONSTER myMonster = new MONSTER();
 
 		for (MONSTER momon : monster) {
@@ -637,7 +639,6 @@ public class TrainingResultActivity extends Activity implements
 			}
 		}
 
-		return listMonster;
 	}
 
 	protected int calculateExperience(float jarak, float langkah, int level) {

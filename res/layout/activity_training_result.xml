@@ -124,7 +124,7 @@
             android:padding="15dp" >
 
             <TextView
-                android:id="@+id/training_result_pet_title"
+                android:id="@+id/training_result_pet_name_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_pet_title"
+                android:layout_below="@+id/training_result_pet_name_title"
                 android:layout_marginTop="15dp"
                 android:text="Monster Defeated"
                 android:textColor="@color/card_text"
@@ -386,7 +386,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_pet_title"
+                android:layout_below="@+id/training_result_pet_name_title"
                 android:layout_marginTop="15dp"
                 android:text="5"
                 android:textColor="@color/card_text_light"

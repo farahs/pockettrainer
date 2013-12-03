@@ -22,6 +22,7 @@ public class MyService extends Service {
 	int MINUS_RELATIONSHIP = 2;
 	int MINUS_HYGIENE = 4;
 	int MINUS_HUNGER = 6;
+	boolean b;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -48,6 +49,9 @@ public class MyService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
+		b = UserSession.getPetSleepSession(getApplicationContext())
+				.get(UserSession.SLEEP_FLAG);
+		
 		ThreadDemo td = new ThreadDemo();
 		td.start();
 
@@ -63,7 +67,7 @@ public class MyService extends Service {
 			super.run();
 
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(60 * 60 * 1000);
 
 				// HUNGER
 				if (HUNGER == 0) {
