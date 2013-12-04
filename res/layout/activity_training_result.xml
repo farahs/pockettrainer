@@ -427,7 +427,6 @@
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="5dp"
                 android:layout_weight="100"
                 android:background="@drawable/default_button_states"
                 android:text="Continue"
