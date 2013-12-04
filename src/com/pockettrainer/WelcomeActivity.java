@@ -1,8 +1,6 @@
 package com.pockettrainer;
 
 import com.example.pockettrainer.R;
-import com.example.pockettrainer.R.layout;
-import com.example.pockettrainer.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -11,7 +9,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -51,7 +48,7 @@ public class WelcomeActivity extends Activity implements OnClickListener, Animat
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.welcome, menu);
+		getMenuInflater().inflate(R.menu.not_main, menu);
 		return true;
 	}
 

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -27,6 +26,7 @@ public class SelectEnvironmentActivity extends Activity implements
 	Spinner selectEnv;
 	Animation pop;
 	ImageView env_logo;
+	int pos;
 	
 	PET myPET;
 
@@ -36,7 +36,7 @@ public class SelectEnvironmentActivity extends Activity implements
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_select_environment);
 		myPET = new PET();
-		
+		pos = 0;
 		setView();
 		setEvent();
 	}
@@ -56,14 +56,18 @@ public class SelectEnvironmentActivity extends Activity implements
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int position, long id) {
+				pos = position;
 				if(position != 0){
 					myPET.setENVIRONMENT("" + position);
-					if(position==1)
+					if(position==1) {
 						env_logo.setImageResource(R.drawable.env_logo_fire);
-					else if(position==2)
+					}						
+					else if(position==2) {
 						env_logo.setImageResource(R.drawable.env_logo_grass);
-					else if(position==3)
+					}
+					else if(position==3) {
 						env_logo.setImageResource(R.drawable.env_logo_water);
+					}
 					env_logo.startAnimation(pop);
 				} else {
 					env_logo.setImageResource(R.drawable.env_logo_none);
@@ -82,7 +86,7 @@ public class SelectEnvironmentActivity extends Activity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.select_environment, menu);
+		getMenuInflater().inflate(R.menu.not_main, menu);
 		return true;
 	}
 
@@ -90,15 +94,20 @@ public class SelectEnvironmentActivity extends Activity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.select_env_next:
-			Intent i = new Intent(getApplicationContext(),
-					PetIdentityActivity.class);
-			
-			Bundle bund = new Bundle();
-			bund.putParcelable("PET", myPET);
-			i.putExtras(bund);
-			
-			startActivity(i);
-			this.finish();
+			if(pos != 0) {
+				Intent i = new Intent(getApplicationContext(),
+						PetIdentityActivity.class);
+				
+				Bundle bund = new Bundle();
+				bund.putParcelable("PET", myPET);
+				i.putExtras(bund);
+				
+				startActivity(i);
+				this.finish();
+			}
+			else {
+				Toast.makeText(getApplicationContext(), "Anda belum memilih environment", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		default:
 			break;

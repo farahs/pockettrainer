@@ -110,7 +110,9 @@
 
         <activity
             android:name="com.pockettrainer.AboutActivity"
-            android:label="@string/title_activity_about" >
+            android:configChanges="orientation"
+            android:label="@string/title_activity_about"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

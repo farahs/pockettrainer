@@ -1,143 +1,150 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context=".PetIdentityActivity" >
+    android:paddingBottom="20dp"
+    android:background="@color/white" >
 
-    <LinearLayout
-        android:id="@+id/id"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:gravity="center"
-            android:paddingBottom="20dp" >
-
-            <ImageView
-                android:id="@+id/pet_env_iv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:src="@drawable/env_fire" />
-
-            <ImageView
-                android:id="@+id/egg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="40dp"
-                android:src="@drawable/egg_single" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/pet_environment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="text" />
+        android:background="@color/white"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        tools:context=".PetIdentityActivity" >
 
         <LinearLayout
+            android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical" >
+                android:layout_height="200dp"
+                android:gravity="center"
+                android:paddingBottom="20dp" >
 
-                <TextView
+                <ImageView
+                    android:id="@+id/pet_env_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/blue_dark"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/env_fire" />
+
+                <ImageView
+                    android:id="@+id/egg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Pet Birth Day"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:padding="40dp"
+                    android:src="@drawable/egg_single" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/pet_environment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="66dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@color/default_blue" >
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/pet_birth"
                         android:layout_width="match_parent"
-                        android:layout_height="78dp"
-                        android:layout_centerInParent="true"
-                        android:background="@null"
+                        android:layout_height="40dp"
+                        android:background="@color/blue_dark"
                         android:gravity="center"
-                        android:maxLines="1"
-                        android:textAlignment="center"
+                        android:text="Pet Birth Day"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="20sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/default_blue" >
+
+                        <TextView
+                            android:id="@+id/pet_birth"
+                            android:layout_width="match_parent"
+                            android:layout_height="78dp"
+                            android:layout_centerInParent="true"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_atas"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/blue_dark"
-                    android:gravity="center"
-                    android:text="Name Your Pet"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_atas"
                     android:layout_width="match_parent"
-                    android:layout_height="66dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@color/default_blue" >
+                    android:layout_height="100dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical" >
 
-                    <EditText
-                        android:id="@+id/name"
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="78dp"
-                        android:layout_centerInParent="true"
-                        android:background="@null"
+                        android:layout_height="40dp"
+                        android:background="@color/blue_dark"
                         android:gravity="center"
-                        android:hint="pet name"
-                        android:maxLines="1"
-                        android:textAlignment="center"
+                        android:text="Name Your Pet"
                         android:textColor="@color/white"
-                        android:textColorHint="#3DB6DE"
-                        android:textSize="18sp" />
+                        android:textSize="20sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/default_blue" >
+
+                        <EditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="78dp"
+                            android:layout_centerInParent="true"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:hint="pet name"
+                            android:maxLines="1"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textColorHint="#3DB6DE"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/id"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/rect_button_states"
-        android:paddingBottom="10dp"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:paddingTop="10dp"
-        android:text="Start!"
-        android:textColor="@drawable/text_states_blue"
-        android:textSize="20sp" />
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rect_button_states"
+            android:paddingBottom="10dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:paddingTop="10dp"
+            android:text="Start!"
+            android:textColor="@drawable/text_states_blue"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>

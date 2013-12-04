@@ -24,6 +24,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -40,10 +41,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -91,8 +89,16 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private Sensor mGyroscope;
-	private final float NOISE = (float) 2.0;
+	private final float NOISE = (float) 4.0;
 	int stepsCount;
+	boolean hasSteps;
+	boolean hasMovements;
+	boolean hasAccel;
+	boolean hasGyro;
+	boolean isNetworkOK;
+	boolean isGPSOK;
+	int counter;
+	int minXGyro, maxXGyro, minYGyro, maxYGyro;
 
 	Notification.Builder builder;
 	NotificationManager notificationManager;
@@ -110,7 +116,16 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 		try {
 			initializeMap();
+			isNetworkOK = isNetworkEnabled();
+			isGPSOK = isGPSEnabled();
 			running = false;
+			hasSteps = false;
+			hasMovements = false;
+			if (isGPSOK || isNetworkOK) {
+				setLocationAndCamera();
+			} else {
+				dialog.show();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -160,6 +175,9 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
+				if (isGPSOK || isNetworkOK) {
+					setLocationAndCamera();
+				}
 			}
 		});
 	}
@@ -167,33 +185,50 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	private void setupSensor() {
 		mInitialized = false;
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		mAccelerometer = mSensorManager
+				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+		if (mAccelerometer != null) {
+			hasAccel = true;
+		} else {
+			hasAccel = false;
+		}
+		Log.i("POCKETTRAINER", "" + hasAccel);
+
+		if (mGyroscope != null) {
+			hasGyro = true;
+		} else {
+			hasGyro = false;
+		}
+
+		minXGyro = 100000;
+		maxXGyro = 0;
+		minYGyro = 10000;
+		maxYGyro = 0;
+		Log.i("POCKETTRAINER", "" + hasGyro);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		menu.findItem(R.id.action_settings).setOnMenuItemClickListener(
-				new OnMenuItemClickListener() {
-
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-//						Intent x = new Intent(getApplicationContext(), TestGyroActivity.class);
-//						startActivity(x);
-						return true;
-					}
-				});
-
-		return super.onCreateOptionsMenu(menu);
-	}
+	/*
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+	 * menu; this adds items to the action bar if it is present.
+	 * getMenuInflater().inflate(R.menu.not_main, menu);
+	 * menu.findItem(R.id.action_settings).setOnMenuItemClickListener( new
+	 * OnMenuItemClickListener() {
+	 * 
+	 * @Override public boolean onMenuItemClick(MenuItem item) { // Intent x =
+	 * new Intent(getApplicationContext(), // TestGyroActivity.class); //
+	 * startActivity(x); return true; } });
+	 * 
+	 * return super.onCreateOptionsMenu(menu); }
+	 */
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.training_start:
 			if (readyToRun()) {
+				trackedPoint = new ArrayList<LatLng>();
 				running = true;
 				totalDistance = 0f;
 				startSensor();
@@ -203,13 +238,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				stopBtn.setVisibility(View.GONE);
 				startTime = SystemClock.uptimeMillis();
 				customHandler.postDelayed(updateTimerThread, 0);
-			} else {
-				dialog.show();
-
-				// Intent i = new Intent(getApplicationContext(),
-				// TrainingResultActivity.class);
-				//
-				// startActivity(i);
 			}
 			break;
 		case R.id.training_pause:
@@ -234,6 +262,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		case R.id.training_stop:
 			running = false;
 			stopTrain();
+			turnGPSOff();
 			trainingSummary();
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
@@ -305,7 +334,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				milliseconds = "00";
 			}
 
-			if (milliseconds.length() >= 2) {
+			if (milliseconds.length() >= 3) {
 				milliseconds = milliseconds.substring(
 						milliseconds.length() - 3, milliseconds.length() - 2);
 			}
@@ -339,25 +368,25 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			myMap.setMyLocationEnabled(true);
 
 			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			Criteria crit = new Criteria();
-			Location loc = locationManager.getLastKnownLocation(locationManager
-					.getBestProvider(crit, false));
-
-			CameraPosition camPos = new CameraPosition.Builder()
-					.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
-					.zoom(15.8f).build();
-			CameraUpdate camUpdate = CameraUpdateFactory
-					.newCameraPosition(camPos);
-
-			myMap.moveCamera(camUpdate);
 		}
 
 	}
 
+	private void setLocationAndCamera() {
+		Criteria crit = new Criteria();
+		Location loc = locationManager.getLastKnownLocation(locationManager
+				.getBestProvider(crit, false));
+
+		CameraPosition camPos = new CameraPosition.Builder()
+				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+				.zoom(15.8f).build();
+		CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
+
+		myMap.moveCamera(camUpdate);
+	}
+
 	private boolean readyToRun() {
 
-		boolean isNetworkOK = isNetworkEnabled();
-		boolean isGPSOK = isGPSEnabled();
 		speed = 0f;
 		point = 0;
 
@@ -392,18 +421,22 @@ public class TrainingActivity extends Activity implements OnClickListener,
 					totalDistance = 0f;
 					running = true;
 					stepsCount = 0;
+					counter = 0;
 					makeMarker(initialLocation, "START");
 					return true;
 				} else {
-					return false;
+					Toast.makeText(getApplicationContext(),
+							"You aren't ready to Train", Toast.LENGTH_SHORT)
+							.show();
 				}
-
-			} else {
-				return false;
 			}
 		} else {
+			Toast.makeText(getApplicationContext(),
+					"You don't have any connection", Toast.LENGTH_SHORT).show();
 			return false;
 		}
+
+		return false;
 
 	}
 
@@ -422,23 +455,51 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onLocationChanged(Location location) {
 
 		Log.i("POCKETTRAINER", "locationchanged luar");
-		if (running) {
-			Log.i("POCKETTRAINER", "locationchanged dalam");
-			Log.i("POCKETTRAINER",
-					"" + calculateDistance(lastLocation, location));
-			LatLng currentLocation = new LatLng(location.getLatitude(),
-					location.getLongitude());
-			trackedPoint.add(currentLocation);
-			Polyline route = myMap.addPolyline(new PolylineOptions()
-					.geodesic(true));
-			route.setPoints(trackedPoint);
-			point++;
+		Toast.makeText(getApplicationContext(), "loc change", Toast.LENGTH_SHORT).show();
+		if ((hasAccel == true) && (hasGyro == false)) {
+			Toast.makeText(getApplicationContext(), "accel true gyro false", Toast.LENGTH_SHORT).show();
+			if (running && counter == 4) {
 
-			totalDistance += calculateDistance(lastLocation, location);
-			lastLocation = location;
+				Log.i("POCKETTRAINER", "accel true, gyro false");
+				Toast.makeText(getApplicationContext(), "yeay", Toast.LENGTH_SHORT).show();
+				LatLng currentLocation = new LatLng(location.getLatitude(),
+						location.getLongitude());
+				trackedPoint.add(currentLocation);
+				Polyline route = myMap.addPolyline(new PolylineOptions()
+						.geodesic(true));
+				route.setPoints(trackedPoint);
 
-			if (location.hasSpeed()) {
-				calculateSpeed(location);
+				totalDistance += calculateDistance(lastLocation, location);
+				lastLocation = location;
+				counter = 0;
+			}
+		}
+
+		if ((hasAccel == true) && (hasGyro == true)) {
+
+			int XGyro = Math.abs(maxXGyro - minXGyro);
+			int YGyro = Math.abs(maxYGyro - minYGyro);
+			Toast.makeText(getApplicationContext(), "accel true gyro true " + counter, Toast.LENGTH_SHORT).show();
+			
+			if (running && counter >= 4 && ((XGyro > 1) || (YGyro > 1))) {
+
+				Log.i("POCKETTRAINER", "accel true, gyro true, hasMovements "
+						+ hasMovements);
+				Toast.makeText(getApplicationContext(), "yo", Toast.LENGTH_SHORT).show();
+				LatLng currentLocation = new LatLng(location.getLatitude(),
+						location.getLongitude());
+				trackedPoint.add(currentLocation);
+				Polyline route = myMap.addPolyline(new PolylineOptions()
+						.geodesic(true));
+				route.setPoints(trackedPoint);
+
+				totalDistance += calculateDistance(lastLocation, location);
+				lastLocation = location;
+				counter = 0;
+				minXGyro = 100000;
+				maxXGyro = 0;
+				minYGyro = 10000;
+				maxYGyro = 0;
 			}
 		}
 
@@ -452,24 +513,24 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		return c[0];
 	}
 
-	private float calculateSpeed(Location loc) {
+	/*
+	 * private float calculateSpeed(Location loc) {
+	 * 
+	 * float s = loc.getSpeed();
+	 * 
+	 * float avg = ((speed * (point -1)) + s) / point; return avg; }
+	 */
 
-		float s = loc.getSpeed();
+	private void processSpeed() {
 
-		float avg = ((speed * (point -1)) + s) / point;
-		return avg;
-	}
-	
-	private void processSpeed(){
-		
-		float seconds = this.timeInMilliseconds/1000;
+		float seconds = this.timeInMilliseconds / 1000;
 		float distances = this.totalDistance;
-		
+
 		float s = distances / seconds;
-		
+
 		this.speed = s;
 	}
-	
+
 	private void trainingSummary() {
 		Toast.makeText(
 				getApplicationContext(),
@@ -481,7 +542,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				.get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-		// myTraining.setDISTANCE(5000);
+		// myTraining.setDISTANCE(1386);
 		myTraining.setDISTANCE(totalDistance);
 		processSpeed();
 		myTraining.setSPEED(speed);
@@ -568,65 +629,118 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 
-		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-			double x = 0d, y = 0d, z = 0d;
-			double mLastX = 0d, mLastY = 0d, mLastZ = 0d;
-			double deltaX = 0d, deltaY = 0d, deltaZ = 0d;
-			final double alpha = 0.8;
+		if (hasAccel || hasGyro) {
+			if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-			x = event.values[0];
-			y = event.values[1];
-			z = event.values[2];
+				double x = 0d, y = 0d, z = 0d;
+				double mLastX = 0d, mLastY = 0d, mLastZ = 0d;
+				double deltaX = 0d, deltaY = 0d, deltaZ = 0d;
+				final double alpha = 0.8;
 
-			double[] gravity = { 0, 0, 0 };
+				x = event.values[0];
+				y = event.values[1];
+				z = event.values[2];
 
-			gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-			gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-			gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+				double[] gravity = { 0, 0, 0 };
 
-			x = event.values[0] - gravity[0];
-			y = event.values[1] - gravity[1];
-			z = event.values[2] - gravity[2];
+				gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+				gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+				gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
 
-			if (!mInitialized) {
-				mLastX = x;
-				mLastY = y;
-				mLastZ = z;
-				mInitialized = true;
-			} else {
-				deltaX = Math.abs(mLastX - x);
-				deltaY = Math.abs(mLastY - y);
-				deltaZ = Math.abs(mLastZ - z);
+				x = event.values[0] - gravity[0];
+				y = event.values[1] - gravity[1];
+				z = event.values[2] - gravity[2];
 
-				if (deltaX < NOISE) {
-					deltaX = 0f;
+				if (!mInitialized) {
+					mLastX = x;
+					mLastY = y;
+					mLastZ = z;
+					mInitialized = true;
+				} else {
+					deltaX = Math.abs(mLastX - x);
+					deltaY = Math.abs(mLastY - y);
+					deltaZ = Math.abs(mLastZ - z);
+
+					if (deltaX < NOISE) {
+						deltaX = 0f;
+					}
+
+					if (deltaY < NOISE) {
+						deltaY = 0f;
+					}
+
+					if (deltaZ < NOISE) {
+						deltaZ = 0f;
+					}
+
+					mLastX = x;
+					mLastY = y;
+					mLastZ = z;
+
+					if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
+						// Z shake
+						counter++;
+						Log.i("SENSOR", "hasSteps: " + hasSteps);
+					} else {
+						// hasSteps = false;
+//						Log.i("SENSOR", "hasSteps: " + hasSteps);
+					}
+				}
+			} else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+				float x = event.values[0];
+				float y = event.values[1];
+				// float z = event.values[2];
+
+				if ((int) x <= minXGyro) {
+					minXGyro = (int) x;
+				}
+				if ((int) x >= maxXGyro) {
+					maxXGyro = (int) x;
+				}
+				if ((int) y <= minYGyro) {
+					minYGyro = (int) y;
+				}
+				if ((int) y >= maxYGyro) {
+					maxYGyro = (int) y;
 				}
 
-				if (deltaY < NOISE) {
-					deltaY = 0f;
-				}
+//				Log.i("SENSOR", "hasMovements: " + hasMovements);
+				// Toast.makeText(getApplicationContext(), "haha", 100).show();
 
-				if (deltaZ < NOISE) {
-					deltaZ = 0f;
-				}
-
-				mLastX = x;
-				mLastY = y;
-				mLastZ = z;
-
-				if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
-					// Z shake
-					stepsCount = stepsCount + 1;
-				}
 			}
-		} else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-			float x = event.values[0];
-			float y = event.values[1];
-			float z = event.values[2];
-			
-//			Toast.makeText(getApplicationContext(), "haha", 100).show();
-			
-			Log.i("SENSOR", x + " " + y + " " + z);
+		}
+
+	}
+
+	public void turnGPSOn() {
+		Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+		intent.putExtra("enabled", true);
+		this.sendBroadcast(intent);
+
+		String provider = Settings.Secure.getString(getContentResolver(),
+				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		if (!provider.contains("gps")) { // if gps is disabled
+			final Intent poke = new Intent();
+			poke.setClassName("com.android.settings",
+					"com.android.settings.widget.SettingsAppWidgetProvider");
+			poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+			poke.setData(Uri.parse("3"));
+			this.sendBroadcast(poke);
+
+		}
+	}
+
+	// automatic turn off the gps
+	public void turnGPSOff() {
+		String provider = Settings.Secure.getString(getContentResolver(),
+				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		if (provider.contains("gps")) { // if gps is enabled
+			final Intent poke = new Intent();
+			poke.setClassName("com.android.settings",
+					"com.android.settings.widget.SettingsAppWidgetProvider");
+			poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+			poke.setData(Uri.parse("3"));
+			this.sendBroadcast(poke);
 		}
 	}
 
@@ -637,6 +751,24 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		Intent t = new Intent(getApplicationContext(), MainActivity.class);
 		startActivity(t);
 		this.finish();
+	}
+
+	String onResState = "awal";
+	int state = 0; // 0 saat baru pertama kali di akses 1 sudah pernah di akses
+					// tapi keluar dan masuk lagi
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (state == 1) {
+			isNetworkOK = isNetworkEnabled();
+			isGPSOK = isGPSEnabled();
+			if (isGPSOK || isNetworkOK) {
+				dialog.dismiss();
+				setLocationAndCamera();
+			}
+		}
+		state = 1;
 	}
 
 }

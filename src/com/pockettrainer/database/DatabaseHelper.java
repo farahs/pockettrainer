@@ -14,10 +14,8 @@ import com.pockettrainer.database.model.MONSTER;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.TRAINING;
 import com.pockettrainer.database.model.USER;
-import com.pockettrainer.helper.UserSession;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

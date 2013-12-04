@@ -1,15 +1,10 @@
 package com.pockettrainer;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.regex.Pattern;
 
 import com.example.pockettrainer.R;
-import com.example.pockettrainer.R.id;
-import com.example.pockettrainer.R.layout;
-import com.example.pockettrainer.R.menu;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.dal.USER_DAL;
 import com.pockettrainer.database.model.PET;
@@ -19,10 +14,8 @@ import com.pockettrainer.helper.UserSession;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -32,7 +25,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -120,7 +112,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.pet_identity, menu);
+		getMenuInflater().inflate(R.menu.not_main, menu);
 		return true;
 	}
 
@@ -139,7 +131,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 				startActivity(i);
 				this.finish();
 			} else {
-				Toast.makeText(getApplicationContext(), "ELSE",
+				Toast.makeText(getApplicationContext(), "Anda belum memasukkan nama pet",
 						Toast.LENGTH_SHORT).show();
 			}
 			break;
@@ -150,11 +142,12 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 	}
 
 	private boolean processData() {
-		if (petNameET.getText().toString() != null
-				&& petNameET.getText().toString() != "") {
-			this.myPet.setNAME(petNameET.getText().toString());
-		} else {
+		String a = petNameET.getText().toString();
+		
+		if (TextUtils.isEmpty(a) || Pattern.matches("( )+", a)) {
 			return false;
+		} else {
+			this.myPet.setNAME(a);
 		}
 
 		if (petBirthDateTV.getText().toString() != null
