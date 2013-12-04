@@ -89,7 +89,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private Sensor mGyroscope;
-	private final float NOISE = (float) 6.0;
+	private final float NOISE = (float) 4.0;
 	int stepsCount;
 	boolean hasSteps;
 	boolean hasMovements;
@@ -455,11 +455,13 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onLocationChanged(Location location) {
 
 		Log.i("POCKETTRAINER", "locationchanged luar");
+		Toast.makeText(getApplicationContext(), "loc change", Toast.LENGTH_SHORT).show();
 		if ((hasAccel == true) && (hasGyro == false)) {
-			if (running && counter == 8) {
+			Toast.makeText(getApplicationContext(), "accel true gyro false", Toast.LENGTH_SHORT).show();
+			if (running && counter == 4) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro false");
-
+				Toast.makeText(getApplicationContext(), "yeay", Toast.LENGTH_SHORT).show();
 				LatLng currentLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				trackedPoint.add(currentLocation);
@@ -477,10 +479,13 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 			int XGyro = Math.abs(maxXGyro - minXGyro);
 			int YGyro = Math.abs(maxYGyro - minYGyro);
-			if (running && counter == 8 && ((XGyro > 5) || (YGyro > 5))) {
+			Toast.makeText(getApplicationContext(), "accel true gyro true " + counter, Toast.LENGTH_SHORT).show();
+			
+			if (running && counter >= 4 && ((XGyro > 1) || (YGyro > 1))) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro true, hasMovements "
 						+ hasMovements);
+				Toast.makeText(getApplicationContext(), "yo", Toast.LENGTH_SHORT).show();
 				LatLng currentLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				trackedPoint.add(currentLocation);
@@ -678,7 +683,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 						Log.i("SENSOR", "hasSteps: " + hasSteps);
 					} else {
 						// hasSteps = false;
-						Log.i("SENSOR", "hasSteps: " + hasSteps);
+//						Log.i("SENSOR", "hasSteps: " + hasSteps);
 					}
 				}
 			} else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
@@ -699,7 +704,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 					maxYGyro = (int) y;
 				}
 
-				Log.i("SENSOR", "hasMovements: " + hasMovements);
+//				Log.i("SENSOR", "hasMovements: " + hasMovements);
 				// Toast.makeText(getApplicationContext(), "haha", 100).show();
 
 			}
