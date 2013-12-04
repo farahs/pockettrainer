@@ -48,7 +48,6 @@ public class TrainingResultActivity extends Activity implements
 	private boolean shared = false;
 	NotificationDialog notifDialog;
 	SocialAuthAdapter adapter;
-	Button share;
 	Button cont;
 	Button tweet;
 	Button cancel;
@@ -125,7 +124,6 @@ public class TrainingResultActivity extends Activity implements
 
 		tweet = (Button) notifDialog.findViewById(R.id.notifDialog_ok);
 		cancel = (Button) notifDialog.findViewById(R.id.notifDialog_cancel);
-		share = (Button) findViewById(R.id.share_button);
 		cont = (Button) findViewById(R.id.continue_button);
 
 		runningTimeTV = (TextView) findViewById(R.id.training_result_running_time);
@@ -653,7 +651,7 @@ public class TrainingResultActivity extends Activity implements
 				}
 				if (myMonster.getNAME().equals("Papabear")) {
 					papabear.setVisibility(View.VISIBLE);
-					papabearQty.setText("x" + "x" + noMonster[i]);
+					papabearQty.setText("x" + noMonster[i]);
 				}
 				if (myMonster.getNAME().equals("Observer")) {
 					observer.setVisibility(View.VISIBLE);
