@@ -24,6 +24,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -96,6 +97,8 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	boolean hasGyro;
 	boolean isNetworkOK;
 	boolean isGPSOK;
+	int counter;
+	int minXGyro, maxXGyro, minYGyro, maxYGyro;
 
 	Notification.Builder builder;
 	NotificationManager notificationManager;
@@ -198,30 +201,28 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		} else {
 			hasGyro = false;
 		}
+
+		minXGyro = 100000;
+		maxXGyro = 0;
+		minYGyro = 10000;
+		maxYGyro = 0;
 		Log.i("POCKETTRAINER", "" + hasGyro);
 	}
 
 	/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.not_main, menu);
-		menu.findItem(R.id.action_settings).setOnMenuItemClickListener(
-				new OnMenuItemClickListener() {
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+	 * menu; this adds items to the action bar if it is present.
+	 * getMenuInflater().inflate(R.menu.not_main, menu);
+	 * menu.findItem(R.id.action_settings).setOnMenuItemClickListener( new
+	 * OnMenuItemClickListener() {
+	 * 
+	 * @Override public boolean onMenuItemClick(MenuItem item) { // Intent x =
+	 * new Intent(getApplicationContext(), // TestGyroActivity.class); //
+	 * startActivity(x); return true; } });
+	 * 
+	 * return super.onCreateOptionsMenu(menu); }
+	 */
 
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-						// Intent x = new Intent(getApplicationContext(),
-						// TestGyroActivity.class);
-						// startActivity(x);
-						return true;
-					}
-				});
-
-		return super.onCreateOptionsMenu(menu);
-	}
-	*/
-	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -261,6 +262,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		case R.id.training_stop:
 			running = false;
 			stopTrain();
+			turnGPSOff();
 			trainingSummary();
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
@@ -419,6 +421,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 					totalDistance = 0f;
 					running = true;
 					stepsCount = 0;
+					counter = 0;
 					makeMarker(initialLocation, "START");
 					return true;
 				} else {
@@ -453,7 +456,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 		Log.i("POCKETTRAINER", "locationchanged luar");
 		if ((hasAccel == true) && (hasGyro == false)) {
-			if (running && hasSteps) {
+			if (running && counter == 8) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro false");
 
@@ -466,12 +469,15 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 				totalDistance += calculateDistance(lastLocation, location);
 				lastLocation = location;
+				counter = 0;
 			}
 		}
 
 		if ((hasAccel == true) && (hasGyro == true)) {
 
-			if (running && hasSteps || hasMovements) {
+			int XGyro = Math.abs(maxXGyro - minXGyro);
+			int YGyro = Math.abs(maxYGyro - minYGyro);
+			if (running && counter == 8 && ((XGyro > 5) || (YGyro > 5))) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro true, hasMovements "
 						+ hasMovements);
@@ -484,6 +490,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 				totalDistance += calculateDistance(lastLocation, location);
 				lastLocation = location;
+				counter = 0;
+				minXGyro = 100000;
+				maxXGyro = 0;
+				minYGyro = 10000;
+				maxYGyro = 0;
 			}
 		}
 
@@ -526,7 +537,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				.get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-//		myTraining.setDISTANCE(1386);
+		// myTraining.setDISTANCE(1386);
 		myTraining.setDISTANCE(totalDistance);
 		processSpeed();
 		myTraining.setSPEED(speed);
@@ -663,24 +674,31 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 					if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
 						// Z shake
-						stepsCount = stepsCount + 1;
-						hasSteps = true;
+						counter++;
 						Log.i("SENSOR", "hasSteps: " + hasSteps);
 					} else {
-						hasSteps = false;
+						// hasSteps = false;
 						Log.i("SENSOR", "hasSteps: " + hasSteps);
 					}
 				}
 			} else if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-//				float x = event.values[0];
-//				float y = event.values[1];
-				float z = event.values[2];
+				float x = event.values[0];
+				float y = event.values[1];
+				// float z = event.values[2];
 
-				if (z >= 1f) {
-					hasMovements = true;
-				} else {
-					hasMovements = false;
+				if ((int) x <= minXGyro) {
+					minXGyro = (int) x;
 				}
+				if ((int) x >= maxXGyro) {
+					maxXGyro = (int) x;
+				}
+				if ((int) y <= minYGyro) {
+					minYGyro = (int) y;
+				}
+				if ((int) y >= maxYGyro) {
+					maxYGyro = (int) y;
+				}
+
 				Log.i("SENSOR", "hasMovements: " + hasMovements);
 				// Toast.makeText(getApplicationContext(), "haha", 100).show();
 
@@ -689,28 +707,37 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 	}
 
-	/*
-	 * public void turnGPSOn() { Intent intent = new
-	 * Intent("android.location.GPS_ENABLED_CHANGE"); intent.putExtra("enabled",
-	 * true); this.sendBroadcast(intent);
-	 * 
-	 * String provider = Settings.Secure.getString(getContentResolver(),
-	 * Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-	 * if(!provider.contains("gps")){ //if gps is disabled final Intent poke =
-	 * new Intent(); poke.setClassName("com.android.settings",
-	 * "com.android.settings.widget.SettingsAppWidgetProvider");
-	 * poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-	 * poke.setData(Uri.parse("3")); this.sendBroadcast(poke);
-	 * 
-	 * } } // automatic turn off the gps public void turnGPSOff() { String
-	 * provider = Settings.Secure.getString(getContentResolver(),
-	 * Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-	 * if(provider.contains("gps")){ //if gps is enabled final Intent poke = new
-	 * Intent(); poke.setClassName("com.android.settings",
-	 * "com.android.settings.widget.SettingsAppWidgetProvider");
-	 * poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-	 * poke.setData(Uri.parse("3")); this.sendBroadcast(poke); } }
-	 */
+	public void turnGPSOn() {
+		Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+		intent.putExtra("enabled", true);
+		this.sendBroadcast(intent);
+
+		String provider = Settings.Secure.getString(getContentResolver(),
+				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		if (!provider.contains("gps")) { // if gps is disabled
+			final Intent poke = new Intent();
+			poke.setClassName("com.android.settings",
+					"com.android.settings.widget.SettingsAppWidgetProvider");
+			poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+			poke.setData(Uri.parse("3"));
+			this.sendBroadcast(poke);
+
+		}
+	}
+
+	// automatic turn off the gps
+	public void turnGPSOff() {
+		String provider = Settings.Secure.getString(getContentResolver(),
+				Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		if (provider.contains("gps")) { // if gps is enabled
+			final Intent poke = new Intent();
+			poke.setClassName("com.android.settings",
+					"com.android.settings.widget.SettingsAppWidgetProvider");
+			poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+			poke.setData(Uri.parse("3"));
+			this.sendBroadcast(poke);
+		}
+	}
 
 	@Override
 	public void onBackPressed() {
