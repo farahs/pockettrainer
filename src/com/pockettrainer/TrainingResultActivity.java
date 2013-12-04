@@ -706,7 +706,7 @@ public class TrainingResultActivity extends Activity implements
 
 		if(ms >= 1000) {
 			kms = ms / 1000f;
-			distanceTV.setText(String.format("%.3f km", kms));
+			distanceTV.setText(String.format("%.2f km", kms));
 		} else {
 			distanceTV.setText(String.format("%.2f m", ms));
 		}
@@ -723,8 +723,14 @@ public class TrainingResultActivity extends Activity implements
 
 		float ms, kms;
 		ms = myTraining.getDISTANCE();
-		kms = ms / 1000f;
-		String a = String.format("%.2f Km", kms);
+		String a = "";
+		
+		if(ms >= 1000) {
+			kms = ms / 1000f;
+			a = String.format("%.2f km", kms);
+		} else {
+			a = String.format("%.2f m", ms);
+		}
 
 		return a;
 	}
