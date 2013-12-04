@@ -11,404 +11,415 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/toShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/list_states"
-            android:padding="15dp" >
+            android:background="@color/grey"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/training_result_stats_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="STATS"
-                android:textColor="@color/default_blue"
-                android:textSize="40sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="15dp"
-                android:text="Running Time"
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="40dp"
-                android:text="Distance"
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="65dp"
-                android:text="Number of Steps"
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="90dp"
-                android:text="Speed"
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-            
-            <TextView
-                android:id="@+id/training_result_running_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="15dp"
-                android:text="16:43"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/training_result_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="40dp"
-                android:text="1,708 km"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/training_result_steps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="65dp"
-                android:text="213"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-            
-            <TextView
-                android:id="@+id/training_result_speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_stats_title"
-                android:layout_marginTop="90dp"
-                android:text="100 km/s"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/list_states"
-            android:padding="15dp" >
-
-            <TextView
-                android:id="@+id/training_result_pet_name_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="PET"
-                android:textColor="@color/default_blue"
-                android:textSize="40sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_pet_name_title"
-                android:layout_marginTop="15dp"
-                android:text="Monster Defeated"
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-
-            <com.pockettrainer.helper.FlowLayout
-                android:id="@+id/training_result_monsters"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/training_result_monster_defeated"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:id="@+id/monster_slime"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_slime_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_slime" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_frogger"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_frogger_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_frogger" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_gillian"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_gillian_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_gillian" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_papabear"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_papabear_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_papabear" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_observer"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_observer_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_observer" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_cyclops"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_cyclops_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_cyclops" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_ogre"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_ogre_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_ogre" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_darkness"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_darkness_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_darkness" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_owl"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_owl_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_owl" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/monster_golem"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/monster_golem_qty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="2"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/monster_golem" />
-                </LinearLayout>
-            </com.pockettrainer.helper.FlowLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/training_result_monsters"
-                android:layout_marginTop="5dp"
-                android:text="Total Exp."
-                android:textColor="@color/card_text"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/training_result_monster_defeated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_pet_name_title"
-                android:layout_marginTop="15dp"
-                android:text="5"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/training_result_total_exp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/training_result_monsters"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:text="311.203 pt"
-                android:textColor="@color/card_text_light"
-                android:textSize="20sp" />
-        </RelativeLayout>
+                android:background="@drawable/list_states"
+                android:padding="15dp" >
+
+                <TextView
+                    android:id="@+id/training_result_stats_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="STATS"
+                    android:textColor="@color/default_blue"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="15dp"
+                    android:text="Running Time"
+                    android:textColor="@color/card_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="40dp"
+                    android:text="Distance"
+                    android:textColor="@color/card_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="65dp"
+                    android:text="Number of Steps"
+                    android:textColor="@color/card_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="90dp"
+                    android:text="Speed"
+                    android:textColor="@color/card_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/training_result_running_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="15dp"
+                    android:text="16:43"
+                    android:textColor="@color/card_text_light"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/training_result_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="40dp"
+                    android:text="1,708 km"
+                    android:textColor="@color/card_text_light"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/training_result_steps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="65dp"
+                    android:text="213"
+                    android:textColor="@color/card_text_light"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/training_result_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/training_result_stats_title"
+                    android:layout_marginTop="90dp"
+                    android:text="100 km/s"
+                    android:textColor="@color/card_text_light"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/list_states"
+                android:padding="15dp" >
+
+                <TextView
+                    android:id="@+id/training_result_pet_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="PET"
+                    android:textColor="@color/default_blue"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/training_result_pet_title"
+                    android:layout_marginTop="15dp"
+                    android:text="Monster Defeated"
+                    android:textColor="@color/card_text"
+                    android:textSize="20sp" />
+
+                <com.pockettrainer.helper.FlowLayout
+                    android:id="@+id/training_result_monsters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/training_result_monster_defeated"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:id="@+id/monster_slime"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_slime_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_slime" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_frogger"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_frogger_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_frogger" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_gillian"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_gillian_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_gillian" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_papabear"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_papabear_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_papabear" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_observer"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_observer_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_observer" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_cyclops"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_cyclops_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_cyclops" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_ogre"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_ogre_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_ogre" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_darkness"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_darkness_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_darkness" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_owl"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_owl_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_owl" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monster_golem"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/monster_golem_qty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="2"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/monster_golem" />
+                    </LinearLayout>
+                </com.pockettrainer.helper.FlowLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/training_result_monsters"
+                    android:layout_marginTop="5dp"
+                    android:text="Total Exp."
+                    android:textColor="@color/card_text"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/training_result_monster_defeated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/training_result_pet_title"
+                    android:layout_marginTop="15dp"
+                    android:text="5"
+                    android:textColor="@color/card_text_light"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/training_result_total_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/training_result_monsters"
+                    android:layout_marginTop="10dp"
+                    android:text="311.203 pt"
+                    android:textColor="@color/card_text_light"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:weightSum="100" >
 
             <Button

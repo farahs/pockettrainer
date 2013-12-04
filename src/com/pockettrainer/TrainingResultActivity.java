@@ -24,6 +24,7 @@ import android.os.Vibrator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -57,6 +58,7 @@ public class TrainingResultActivity extends Activity implements
 	int[] noMonster = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	int[] eachLvExp = new int[11];
 
+	Bitmap bm;
 	TextView runningTimeTV;
 	TextView distanceTV;
 	TextView numOfStepsTV;
@@ -67,7 +69,7 @@ public class TrainingResultActivity extends Activity implements
 	TextView petNameTV;
 
 	LinearLayout slime, frogger, gillian, papabear, observer, cyclops, ogre,
-			darkness, owl, golem;
+			darkness, owl, golem, toShare;
 	TextView slimeQty, froggerQty, gillianQty, papabearQty, observerQty,
 			cyclopsQty, ogreQty, darknessQty, owlQty, golemQty;
 
@@ -191,13 +193,13 @@ public class TrainingResultActivity extends Activity implements
 
 			int exp = 0;
 			createArrayOfExp();
-			
+
 			setTime(myTraining.getDURATION());
 			setDistance(myTraining.getDISTANCE());
 			numOfStepsTV.setText("" + myTraining.getSTEPS());
-			
+
 			setSpeed(myTraining.getSPEED());
-			
+
 			int monsterDefeated = randomMonster(myTraining.getDISTANCE());
 			monsterDefeatedTV.setText("" + monsterDefeated);
 
@@ -234,7 +236,7 @@ public class TrainingResultActivity extends Activity implements
 
 		int monsterExp = myPet.getTOTAL_EXPERIENCE();
 		int type = Integer.parseInt(myPet.getTYPE());
-		
+
 		monsterExp += exp;
 
 		for (int i = 10; i > 0; i--) {
@@ -245,10 +247,10 @@ public class TrainingResultActivity extends Activity implements
 			}
 
 		}
-		
-		if((type == 2) && (monsterExp > eachLvExp[10])) {
-			monsterExp = eachLvExp[10]-1;
-			tempExp = setupExperience("10")-1;
+
+		if ((type == 2) && (monsterExp > eachLvExp[10])) {
+			monsterExp = eachLvExp[10] - 1;
+			tempExp = setupExperience("10") - 1;
 			tempLevel = 10;
 		}
 
@@ -259,8 +261,11 @@ public class TrainingResultActivity extends Activity implements
 
 		try {
 			PET_DAL.updatePET(getApplicationContext(), myPet);
-			PET uy = PET_DAL.getPET_Single(getApplicationContext(), myPet.getID());
-			Log.i("POCKETTRAINER", "id: " + uy.getID()+ " currexp: " + myPet.getCURRENT_EXPERIENCE());
+			PET uy = PET_DAL.getPET_Single(getApplicationContext(),
+					myPet.getID());
+			Log.i("POCKETTRAINER",
+					"id: " + uy.getID() + " currexp: "
+							+ myPet.getCURRENT_EXPERIENCE());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -315,11 +320,29 @@ public class TrainingResultActivity extends Activity implements
 					.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
 
-			String message = "I've been running with my pet " + myPet.getNAME() + " for " + getDistance() + "! Train yours today at #PocketTrainer!" ;
+			String message = "I've been running with my pet " + myPet.getNAME()
+					+ " for " + getDistance()
+					+ "! Train yours today at @pocket_trainer";
+
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
-			adapter.updateStatus(message, new MessageListener(), false);
+			// adapter.updateStatus(message, new MessageListener(), false);
+			try {
+				toShare = (LinearLayout) findViewById(R.id.toShare);
+				toShare.setDrawingCacheEnabled(true);
+				toShare.buildDrawingCache();
+				bm = toShare.getDrawingCache();
+				if (bm != null)
+					adapter.uploadImageAsync(message, "share.png", bm, 0,
+							new UploadImageListener());
+				else
+					Toast.makeText(TrainingResultActivity.this,
+							"Image not Uploaded", Toast.LENGTH_SHORT).show();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 
@@ -369,7 +392,7 @@ public class TrainingResultActivity extends Activity implements
 		int tempExp = myPet.getTOTAL_EXPERIENCE();
 		int tempMaxExp = eachLvExp[10];
 		int type = Integer.parseInt(myPet.getTYPE());
-		
+
 		if (tempExp >= tempMaxExp && type != 2) {
 			return true;
 
@@ -401,7 +424,6 @@ public class TrainingResultActivity extends Activity implements
 
 		case R.id.notifDialog_ok:
 			adapter.authorize(TrainingResultActivity.this, Provider.TWITTER);
-			notifDialog.dismiss();
 			break;
 
 		case R.id.notifDialog_cancel:
@@ -410,6 +432,29 @@ public class TrainingResultActivity extends Activity implements
 			break;
 		default:
 			break;
+		}
+	}
+
+	private final class UploadImageListener implements
+			SocialAuthListener<Integer> {
+
+		@Override
+		public void onExecute(String provider, Integer t) {
+			notifDialog.dismiss();
+			Integer status = t;
+			Log.d("Custom-UI", String.valueOf(status));
+			if (status.intValue() == 200 || status.intValue() == 201
+					|| status.intValue() == 204)
+				Toast.makeText(TrainingResultActivity.this, "Image Uploaded",
+						Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(TrainingResultActivity.this,
+						"Image not Uploaded", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
 		}
 	}
 
@@ -667,23 +712,23 @@ public class TrainingResultActivity extends Activity implements
 		}
 
 	}
-	
+
 	protected void setSpeed(float s) {
-		
+
 		float speed = s;
 		speedTV.setText(String.format("%.2f m/s", speed));
 	}
-	
+
 	protected String getDistance() {
-		
+
 		float ms, kms;
 		ms = myTraining.getDISTANCE();
 		kms = ms / 1000f;
 		String a = String.format("%.2f Km", kms);
-		
+
 		return a;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
