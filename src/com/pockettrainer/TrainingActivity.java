@@ -263,6 +263,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			running = false;
 			stopTrain();
 			turnGPSOff();
+			stopSensor();
 			trainingSummary();
 			Intent i = new Intent(getApplicationContext(),
 					TrainingResultActivity.class);
@@ -285,6 +286,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
+	private void stopSensor() {
+		mSensorManager.unregisterListener(this, mAccelerometer);
+		mSensorManager.unregisterListener(this, mGyroscope);
+	}
+	
 	private Runnable updateTimerThread = new Runnable() {
 
 		public void run() {
@@ -455,13 +461,13 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onLocationChanged(Location location) {
 
 		Log.i("POCKETTRAINER", "locationchanged luar");
-		Toast.makeText(getApplicationContext(), "loc change", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getApplicationContext(), "loc change", Toast.LENGTH_SHORT).show();
 		if ((hasAccel == true) && (hasGyro == false)) {
-			Toast.makeText(getApplicationContext(), "accel true gyro false", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(getApplicationContext(), "accel true gyro false", Toast.LENGTH_SHORT).show();
 			if (running && counter == 4) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro false");
-				Toast.makeText(getApplicationContext(), "yeay", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getApplicationContext(), "yeay", Toast.LENGTH_SHORT).show();
 				LatLng currentLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				trackedPoint.add(currentLocation);
@@ -479,13 +485,13 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 			int XGyro = Math.abs(maxXGyro - minXGyro);
 			int YGyro = Math.abs(maxYGyro - minYGyro);
-			Toast.makeText(getApplicationContext(), "accel true gyro true " + counter, Toast.LENGTH_SHORT).show();
+//			Toast.makeText(getApplicationContext(), "accel true gyro true " + counter, Toast.LENGTH_SHORT).show();
 			
 			if (running && counter >= 4 && ((XGyro > 1) || (YGyro > 1))) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro true, hasMovements "
 						+ hasMovements);
-				Toast.makeText(getApplicationContext(), "yo", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getApplicationContext(), "yo", Toast.LENGTH_SHORT).show();
 				LatLng currentLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				trackedPoint.add(currentLocation);
@@ -542,7 +548,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				.get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-		// myTraining.setDISTANCE(1386);
+//		 myTraining.setDISTANCE(1003f);
 		myTraining.setDISTANCE(totalDistance);
 		processSpeed();
 		myTraining.setSPEED(speed);

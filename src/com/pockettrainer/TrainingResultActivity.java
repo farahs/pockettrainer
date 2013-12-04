@@ -211,6 +211,7 @@ public class TrainingResultActivity extends Activity implements
 				totalExpTV.setText("" + exp);
 			}
 
+			listOfMonster();
 			myTraining.setEXPERIENCE(exp);
 			myTraining.setMONSTER_DEFEATED("" + monsterDefeated);
 
@@ -536,43 +537,43 @@ public class TrainingResultActivity extends Activity implements
 				int random = (int) (Math.random() * 100 + 1);
 
 				if (random <= 10) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 1);
 					monster.add(myMonster);
 				} else if (random <= 20 && random > 10) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 2);
 					monster.add(myMonster);
 				} else if (random <= 20 && random > 10) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 3);
 					monster.add(myMonster);
 				} else if (random <= 30 && random > 20) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 4);
 					monster.add(myMonster);
 				} else if (random <= 45 && random > 30) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 5);
 					monster.add(myMonster);
 				} else if (random <= 60 && random > 45) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 6);
 					monster.add(myMonster);
 				} else if (random <= 65 && random > 60) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 7);
 					monster.add(myMonster);
 				} else if (random <= 85 && random > 65) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 8);
 					monster.add(myMonster);
 				} else if (random <= 99 && random > 85) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 9);
 					monster.add(myMonster);
 				} else if (random == 100) {
-					myMonster = MONSTER_DAL.getTRAINING_Single(
+					myMonster = MONSTER_DAL.getMONSTER_Single(
 							getApplicationContext(), 10);
 					monster.add(myMonster);
 				}
@@ -591,7 +592,7 @@ public class TrainingResultActivity extends Activity implements
 
 		for (int i = 1; i < 11; i++) {
 			if (noMonster[i] != 0) {
-				myMonster = MONSTER_DAL.getTRAINING_Single(
+				myMonster = MONSTER_DAL.getMONSTER_Single(
 						getApplicationContext(), i);
 				if (myMonster.getNAME().equals("Slime")) {
 					slime.setVisibility(View.VISIBLE);
@@ -658,11 +659,11 @@ public class TrainingResultActivity extends Activity implements
 		float ms, kms;
 		ms = dist;
 
-		if(ms > 1000) {
+		if(ms >= 1000) {
 			kms = ms / 1000f;
-			distanceTV.setText(String.format("%.3f m", kms));
+			distanceTV.setText(String.format("%.3f km", kms));
 		} else {
-			distanceTV.setText(ms + " m");
+			distanceTV.setText(String.format("%.2f m", ms));
 		}
 
 	}

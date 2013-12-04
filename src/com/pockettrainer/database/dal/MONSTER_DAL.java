@@ -34,7 +34,7 @@ public class MONSTER_DAL {
 
 	}
 
-	public static MONSTER getTRAINING_Single(Context context, int id) {
+	public static MONSTER getMONSTER_Single(Context context, int id) {
 		
 		Dao<MONSTER, Integer> dao = getDAO(context);
 		MONSTER myMonster = new MONSTER();
