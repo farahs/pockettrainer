@@ -686,10 +686,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 					if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
 						// Z shake
 						counter++;
-						if(counter == 8){
+						if(counter == 4){
 							stepsCount+=1;
+							Log.i("SENSOR", "hasSteps: " + hasSteps);
 						}
-						Log.i("SENSOR", "hasSteps: " + hasSteps);
+						
 					} else {
 						// hasSteps = false;
 //						Log.i("SENSOR", "hasSteps: " + hasSteps);
