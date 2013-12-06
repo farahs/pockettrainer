@@ -415,19 +415,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_height="100dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"
+            android:orientation="vertical"
             android:weightSum="100" >
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="30"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
+                android:text="Shake your device to Share"
+                android:textColor="#999"/>
 
             <Button
                 android:id="@+id/continue_button"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="100"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="70"
                 android:background="@drawable/default_button_states"
                 android:text="Continue"
                 android:textColor="@color/white"
