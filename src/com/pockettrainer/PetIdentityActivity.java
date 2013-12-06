@@ -223,6 +223,12 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 		return false;
 	}
 
+	public void onBackPressed() {
+		Intent i = new Intent(getApplicationContext(), SelectEnvironmentActivity.class);
+		startActivity(i);
+		this.finish();
+	};
+	
 	@Override
 	public void onAnimationEnd(Animation animation) {
 		// TODO Auto-generated method stub

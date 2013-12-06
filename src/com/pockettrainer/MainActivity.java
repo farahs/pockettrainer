@@ -65,8 +65,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		myPet = new PET();
 		myUser = new USER();
 
-		Intent i = getIntent();
-
+		Intent i = null;
+		
+		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) { 
+			i = null;
+		} else {
+			i = getIntent();
+		}
+		
 		if (i != null) {
 			Bundle bund = i.getExtras();
 
@@ -279,7 +285,7 @@ public class MainActivity extends Activity implements OnClickListener {
 						TrainingActivity.class);
 				startActivity(i);
 				System.gc();
-				this.finish();
+//				this.finish();
 			} else {
 				Toast.makeText(
 						getApplicationContext(), "Your pet not ready to Train!", Toast.LENGTH_SHORT)
@@ -470,6 +476,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		this.myPet = myPet;
 	}
 	
-	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		finish();
+	}
 	
 }
