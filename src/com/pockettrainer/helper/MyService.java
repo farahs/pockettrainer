@@ -19,7 +19,7 @@ public class MyService extends Service {
 	int HYGIENE;
 	int RELATIONSHIP;
 	int MINUS_SLEEP = 3;
-	int MINUS_RELATIONSHIP = 2;
+	int MINUS_RELATIONSHIP = 5;
 	int MINUS_HYGIENE = 4;
 	int MINUS_HUNGER = 6;
 	boolean b;
@@ -67,8 +67,9 @@ public class MyService extends Service {
 			super.run();
 
 			try {
+//				Thread.sleep(1000);
 				Thread.sleep(60 * 60 * 1000);
-
+					
 				// HUNGER
 				if (HUNGER == 0) {
 					HUNGER = 0;

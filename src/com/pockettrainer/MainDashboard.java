@@ -89,6 +89,8 @@ public class MainDashboard extends SurfaceView implements
 	private int bLastTouchY;
 	private int brushX, brushY;
 	private int selEnv = 0;
+	private float f_Hygiene = 0f;
+	private float f_Rel = 0f;
 	private int incHygiene = 0;
 	private int incRel = 0;
 
@@ -272,7 +274,7 @@ public class MainDashboard extends SurfaceView implements
 				int love = MainActivity.getInstance().getLove();
 
 				Thread.sleep(1000);
-				MainActivity.getInstance().setEnergy(10);
+				MainActivity.getInstance().setEnergy(2);
 
 				Log.i("POCKETTRAINER", " " + hunger + " " + energy + " "
 						+ hygiene + " " + love);
@@ -376,22 +378,18 @@ public class MainDashboard extends SurfaceView implements
 
 			if (isTouched) {
 				isTouched = false;
-				int hunger = MainActivity.getInstance().getHunger();
-				int energy = MainActivity.getInstance().getEnergy();
-				int hygiene = MainActivity.getInstance().getHygiene();
-				int love = MainActivity.getInstance().getLove();
 
+				incRel = (int) f_Rel;
 				MainActivity.getInstance().setLove(incRel);
+				f_Rel = 0f;
 				incRel = 0;
 			}
 			if (isTouchBath) {
 				isTouchBath = false;
-				int hunger = MainActivity.getInstance().getHunger();
-				int energy = MainActivity.getInstance().getEnergy();
-				int hygiene = MainActivity.getInstance().getHygiene();
-				int love = MainActivity.getInstance().getLove();
 
+				incHygiene = (int) f_Hygiene;
 				MainActivity.getInstance().setHygiene(incHygiene);
+				f_Hygiene = 0f;
 				incHygiene = 0;
 			}
 			if (isTouchEat) {
@@ -473,10 +471,12 @@ public class MainDashboard extends SurfaceView implements
 				framesSkipped = 0; // resetting the frames skipped
 				if (isTouchBath && bathing) {
 					// nambah hygiene
-					incHygiene += 1;
+					f_Hygiene += 0.2f;
+//					incHygiene += 1;
 				} else if (isTouchBath && !bathing) {
 					// nambah relationship
-					incRel += 1;
+					f_Rel += 0.2f;
+//					incRel += 1;
 				}
 				update();
 				render(canvas);

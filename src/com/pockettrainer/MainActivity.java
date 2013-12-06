@@ -278,6 +278,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				Intent i = new Intent(getApplicationContext(),
 						TrainingActivity.class);
 				startActivity(i);
+				System.gc();
 				this.finish();
 			} else {
 				Toast.makeText(
