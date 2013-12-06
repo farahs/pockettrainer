@@ -250,10 +250,6 @@ public class SpriteAnimation {
 		this.y = y;
 	}
 
-	public boolean isFinish() {
-		return finish;
-	}
-
 	public void setLoop(boolean l) {
 		looped = l;
 	}
@@ -280,10 +276,6 @@ public class SpriteAnimation {
 				} else {
 					if (currentFrame >= frameNr) {
 						currentFrame = 0;
-						if (isEnd) {
-							isEnd = false;
-							goEnd();
-						}
 					}
 				}
 			} else if (repeat > 0) {

@@ -359,7 +359,7 @@ public class MainDashboard extends SurfaceView implements
 				}
 			} else {
 				if (isTouched)
-					sprite.setEnd();
+					sprite.goEnd();
 				isTouched = false;
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -395,8 +395,7 @@ public class MainDashboard extends SurfaceView implements
 			if (isTouchEat) {
 				isTouchEat = false;
 			}
-			
-			sprite.setEnd();
+			sprite.goEnd();
 		}
 		return true;
 	}
@@ -432,11 +431,12 @@ public class MainDashboard extends SurfaceView implements
 	}
 
 	public void pauseThread() {
-		customHandler.removeCallbacks(taskRunnable);
+//		customHandler.removeCallbacks(taskRunnable);
 	}
 
 	public void resumeThread() {
-		// customHandler.postDelayed(taskRunnable, 0);
+//		if(customHandler!=null)
+//			customHandler.postDelayed(taskRunnable, 0);
 	}
 
 	private void displayFps(Canvas canvas, String fps) {
