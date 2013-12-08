@@ -56,9 +56,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		System.gc();
 		dashboard = new MainDashboard(this);
-		// setContentView(dashboard);
+
 		setContentView(R.layout.activity_main);
 
 		mainActivity = this;
@@ -66,13 +67,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		myUser = new USER();
 
 		Intent i = null;
-		
-		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) { 
+
+		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
 			i = null;
 		} else {
 			i = getIntent();
 		}
-		
+
 		if (i != null) {
 			Bundle bund = i.getExtras();
 
@@ -154,15 +155,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		setupExperience(this.myPet.getLEVEL());
 
 		environment = Integer.parseInt(this.myPet.getENVIRONMENT());
-		
+
 		dashboard.setEnvironment(environment);
-		
-//		dashboard.setPet(Integer.parseInt(this.myPet.getTYPE()));
-		
+
+		// dashboard.setPet(Integer.parseInt(this.myPet.getTYPE()));
+
 		// setup current experience
 		setupBarExperience(myPet.getCURRENT_EXPERIENCE(), this.nowMaxExp);
 		Log.i("POCKETTRAINER", "maincurrexp: " + myPet.getCURRENT_EXPERIENCE());
-		
+
 		// setup bar indikator
 		hunger = myPet.getHUNGER_INDICATOR();
 		energy = myPet.getSLEEP_INDICATOR();
@@ -259,19 +260,14 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 
-		dashboard.resumeThread();
 		service = new Intent(MainActivity.this, MyService.class);
 		stopService(service);
-		
-		initializePet();
-		setupData();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		dashboard.pauseThread();
 		service = new Intent(MainActivity.this, MyService.class);
 		startService(service);
 	}
@@ -285,10 +281,10 @@ public class MainActivity extends Activity implements OnClickListener {
 						TrainingActivity.class);
 				startActivity(i);
 				System.gc();
-//				this.finish();
+				// this.finish();
 			} else {
-				Toast.makeText(
-						getApplicationContext(), "Your pet not ready to Train!", Toast.LENGTH_SHORT)
+				Toast.makeText(getApplicationContext(),
+						"Your pet not ready to Train!", Toast.LENGTH_SHORT)
 						.show();
 			}
 			break;
@@ -463,8 +459,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	protected void initializePet() {
-		String myPetID = UserSession.getPetSession(getApplicationContext()).get(UserSession.PET_ID);
-		this.myPet = PET_DAL.getPET_Single(getApplicationContext(), Integer.parseInt(myPetID));
+		String myPetID = UserSession.getPetSession(getApplicationContext())
+				.get(UserSession.PET_ID);
+		this.myPet = PET_DAL.getPET_Single(getApplicationContext(),
+				Integer.parseInt(myPetID));
 		Log.i("POCKETTRAINER", myPet.getTYPE());
 	}
 
@@ -475,11 +473,12 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void setMyPet(PET myPet) {
 		this.myPet = myPet;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		finish();
+//		finish();
+//		Log.i("POCKETTRAINER", "finish");
 	}
-	
+
 }
