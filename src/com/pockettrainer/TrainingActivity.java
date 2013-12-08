@@ -121,7 +121,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			running = false;
 			hasSteps = false;
 			hasMovements = false;
-			if (isGPSOK || isNetworkOK) {
+			if (isGPSOK && isNetworkOK) {
 				setLocationAndCamera();
 			} else {
 				dialog.show();
@@ -379,9 +379,17 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	}
 
 	private void setLocationAndCamera() {
-		Criteria crit = new Criteria();
-		Location loc = locationManager.getLastKnownLocation(locationManager
-				.getBestProvider(crit, false));
+		Location loc;
+		
+		try {
+			Criteria crit = new Criteria();
+			loc = locationManager.getLastKnownLocation(locationManager
+					.getBestProvider(crit, false));
+			Log.i("POCKETTRAINER", "location by gps");
+		} catch (Exception e) {
+			loc = myMap.getMyLocation();
+			Log.i("POCKETTRAINER", "location by map");
+		}
 
 		CameraPosition camPos = new CameraPosition.Builder()
 				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
@@ -401,7 +409,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 		if (networkInfo != null && networkInfo.isConnected()) {
 
-			if (isNetworkOK || isGPSOK) {
+			if (isNetworkOK && isGPSOK) {
 
 				if (isNetworkOK) {
 					locationManager.requestLocationUpdates(
@@ -773,7 +781,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		if (state == 1) {
 			isNetworkOK = isNetworkEnabled();
 			isGPSOK = isGPSEnabled();
-			if (isGPSOK || isNetworkOK) {
+			if (isGPSOK && isNetworkOK) {
 				dialog.dismiss();
 				setLocationAndCamera();
 			}
