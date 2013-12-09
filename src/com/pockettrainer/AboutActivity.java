@@ -14,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class AboutActivity extends FragmentActivity {
 
@@ -23,10 +25,16 @@ public class AboutActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		setContentView(R.layout.activity_about);
 		
 		this.viewPager = (ViewPager) findViewById(R.id.pager);
 		this.viewPager.setAdapter(new SectionPagerAdapter());
+		this.viewPager.setOffscreenPageLimit(0);
 		
 	}
 	

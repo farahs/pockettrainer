@@ -8,13 +8,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class AboutFragment5 extends Fragment {
+public class AboutFragment5 extends Fragment implements AnimationListener{
 
 	AboutActivity activity;
 	View rootView;
-
 	
+	ImageView obj1;
+	TextView txt1;
+	
+	Animation slideTop, slideBottom;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,7 +36,41 @@ public class AboutFragment5 extends Fragment {
 		
 		this.rootView = inflater.inflate(R.layout.fragment_about_5, container, false);
 		
+		obj1 = (ImageView) this.rootView.findViewById(R.id.obj1);
+		txt1 = (TextView) this.rootView.findViewById(R.id.txt1);
+		animate();
 		return this.rootView;
+	}
+	
+	public void animate() {
+		slideTop = AnimationUtils.loadAnimation(this.rootView.getContext(),
+				R.anim.fadein_top);
+		slideTop.setAnimationListener(this);
+		
+		slideBottom = AnimationUtils.loadAnimation(this.rootView.getContext(),
+				R.anim.fadein_bottom);
+		slideBottom.setAnimationListener(this);
+		
+		obj1.startAnimation(slideBottom);
+		txt1.startAnimation(slideTop);
+	}
+
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
