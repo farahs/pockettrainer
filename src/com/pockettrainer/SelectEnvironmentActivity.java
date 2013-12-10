@@ -19,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class SelectEnvironmentActivity extends Activity implements
 		OnClickListener {
 

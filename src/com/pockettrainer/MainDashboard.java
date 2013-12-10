@@ -36,8 +36,9 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 /**
- * @author impaler This is the main surface that handles the ontouch events and
- *         draws the image to the screen.
+ * @author Monster 2013 
+ * This is the main surface that handles the ontouch events and
+ * draws the image to the screen.
  */
 public class MainDashboard extends SurfaceView implements
 		SurfaceHolder.Callback {
@@ -208,7 +209,7 @@ public class MainDashboard extends SurfaceView implements
 			int hygiene = MainActivity.getInstance().getHygiene();
 			int love = MainActivity.getInstance().getLove();
 
-			MainActivity.getInstance().setHunger(10);
+			MainActivity.getInstance().setHunger(7);
 
 			MainActivity.setActHunger();
 		} else {

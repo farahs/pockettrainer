@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class NotificationDialog extends Dialog implements
 		android.view.View.OnClickListener {
 

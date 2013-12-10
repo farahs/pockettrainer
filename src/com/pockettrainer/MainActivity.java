@@ -27,6 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class MainActivity extends Activity implements OnClickListener {
 
 	static MainActivity mainActivity;
@@ -314,14 +319,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public boolean canDoTraining() {
 
-		if (Integer.parseInt(myPet.getMOOD()) <= 2) {
-			return false;
-		}
 		if (UserSession.getPetSleepSession(getApplicationContext()).get(
 				UserSession.SLEEP_FLAG)) {
 			return false;
 		}
-		if (energy < 30) {
+		
+		if (Integer.parseInt(myPet.getMOOD()) <= 2) {
+			return false;
+		}
+		
+		if (energy < 25) {
 			return false;
 		}
 

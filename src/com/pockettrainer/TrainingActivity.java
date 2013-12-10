@@ -47,9 +47,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class TrainingActivity extends Activity implements OnClickListener,
 		LocationListener, SensorEventListener {
 
+	final int START = 0;
+	final int RESUME = 1;
+	
 	TextView timerTV;
 	TextView timerMsTV;
 	Button startBtn;
@@ -67,11 +75,9 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	Location lastLocation;
 	Location initialLocation;
 	Location finalLocation;
+	Location onResumeLocation;
 	float speed;
-	int point;
 	float totalDistance;
-	float initFinalDistance;
-	float distanceTo;
 	boolean running;
 
 	private long secs, mins, hrs;
@@ -227,7 +233,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.training_start:
-			if (readyToRun()) {
+			if (readyToRun(this.START)) {
 				trackedPoint = new ArrayList<LatLng>();
 				running = true;
 				totalDistance = 0f;
@@ -251,13 +257,15 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			stopTrain();
 			break;
 		case R.id.training_resume:
-			startBtn.setVisibility(View.GONE);
-			pauseBtn.setVisibility(View.VISIBLE);
-			resumeBtn.setVisibility(View.GONE);
-			stopBtn.setVisibility(View.GONE);
-			startTime = SystemClock.uptimeMillis();
-			running = true;
-			customHandler.postDelayed(updateTimerThread, 0);
+			if (readyToRun(this.RESUME)) {
+				startBtn.setVisibility(View.GONE);
+				pauseBtn.setVisibility(View.VISIBLE);
+				resumeBtn.setVisibility(View.GONE);
+				stopBtn.setVisibility(View.GONE);
+				startTime = SystemClock.uptimeMillis();
+				running = true;
+				customHandler.postDelayed(updateTimerThread, 0);
+			}
 			break;
 		case R.id.training_stop:
 			running = false;
@@ -391,18 +399,19 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			Log.i("POCKETTRAINER", "location by map");
 		}
 
-		CameraPosition camPos = new CameraPosition.Builder()
-				.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
-				.zoom(15.8f).build();
-		CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
-
-		myMap.moveCamera(camUpdate);
+		if(loc != null) {
+			CameraPosition camPos = new CameraPosition.Builder()
+					.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+					.zoom(15.8f).build();
+			CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
+	
+			myMap.moveCamera(camUpdate);
+		} else {
+			Toast.makeText(getApplicationContext(), "Please wait! We are trying to get your location!", Toast.LENGTH_SHORT).show();
+		}
 	}
 
-	private boolean readyToRun() {
-
-		speed = 0f;
-		point = 0;
+	private boolean readyToRun(int CODE) {
 
 		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -421,28 +430,51 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				}
 
 				Criteria crit = new Criteria();
-				initialLocation = locationManager
-						.getLastKnownLocation(locationManager.getBestProvider(
-								crit, false));
-				lastLocation = locationManager
-						.getLastKnownLocation(locationManager.getBestProvider(
-								crit, false));
-				finalLocation = locationManager
-						.getLastKnownLocation(locationManager.getBestProvider(
-								crit, false));
-
-				if (initialLocation != null) {
-					totalDistance = 0f;
-					running = true;
-					stepsCount = 0;
-					counter = 0;
-					makeMarker(initialLocation, "START");
-					return true;
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"You aren't ready to Train", Toast.LENGTH_SHORT)
-							.show();
+				
+				if(CODE == this.START) {
+					
+					initialLocation = locationManager
+							.getLastKnownLocation(locationManager.getBestProvider(
+									crit, false));
+					lastLocation = locationManager
+							.getLastKnownLocation(locationManager.getBestProvider(
+									crit, false));
+					finalLocation = locationManager
+							.getLastKnownLocation(locationManager.getBestProvider(
+									crit, false));
+					
+					if (initialLocation != null) {
+						speed = 0f;
+						totalDistance = 0f;
+						running = true;
+						stepsCount = 0;
+						counter = 0;
+						makeMarker(initialLocation, "START");
+						return true;
+					} else {
+						Toast.makeText(getApplicationContext(),
+								"You aren't ready to Train", Toast.LENGTH_SHORT)
+								.show();
+						return false;
+					}
+					
 				}
+				
+				if(CODE == this.RESUME) {
+					onResumeLocation = locationManager
+							.getLastKnownLocation(locationManager.getBestProvider(
+									crit, false));
+					
+					if(onResumeLocation != null) {
+						return true;
+					} else {
+						Toast.makeText(getApplicationContext(),
+								"You aren't ready to resume your Training", Toast.LENGTH_SHORT)
+								.show();
+						return false;
+					}
+				}
+				
 			}
 		} else {
 			Toast.makeText(getApplicationContext(),
@@ -459,8 +491,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 		finalLocation = locationManager.getLastKnownLocation(locationManager
 				.getBestProvider(crit, false));
 		if (initialLocation != null && finalLocation != null) {
-			initFinalDistance = calculateDistance(initialLocation,
-					finalLocation);
 			makeMarker(finalLocation, "FINISH");
 		}
 	}
@@ -520,20 +550,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	}
 
 	private float calculateDistance(Location last, Location now) {
-		distanceTo += now.distanceTo(last);
 		float[] c = new float[1];
 		Location.distanceBetween(last.getLatitude(), last.getLongitude(),
 				now.getLatitude(), now.getLongitude(), c);
 		return c[0];
 	}
-
-	/*
-	 * private float calculateSpeed(Location loc) {
-	 * 
-	 * float s = loc.getSpeed();
-	 * 
-	 * float avg = ((speed * (point -1)) + s) / point; return avg; }
-	 */
 
 	private void processSpeed() {
 
@@ -546,11 +567,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	}
 
 	private void trainingSummary() {
-		Toast.makeText(
-				getApplicationContext(),
-				"speed: " + speed + " distance: " + totalDistance
-						+ " distanceto: " + distanceTo + " initFinalDistance: "
-						+ initFinalDistance, Toast.LENGTH_SHORT).show();
 
 		String userId = UserSession.getUserSession(getApplicationContext())
 				.get(UserSession.LOGIN_ID);
@@ -694,7 +710,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 					if ((deltaZ > deltaX) && (deltaZ > deltaY)) {
 						// Z shake
 						counter++;
-						if(counter == 4){
+						if(counter == 3){
 							stepsCount+=1;
 							Log.i("SENSOR", "hasSteps: " + hasSteps);
 						}
@@ -766,9 +782,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onBackPressed() {
 		super.onBackPressed();
 		destroyNotification();
-//		Intent t = new Intent(getApplicationContext(), MainActivity.class);
-//		startActivity(t);
-//		this.finish();
 	}
 
 	String onResState = "awal";

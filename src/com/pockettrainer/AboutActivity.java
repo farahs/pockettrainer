@@ -17,6 +17,11 @@ import android.support.v4.view.ViewPager;
 import android.view.Window;
 import android.view.WindowManager;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class AboutActivity extends FragmentActivity {
 
 	ViewPager viewPager;

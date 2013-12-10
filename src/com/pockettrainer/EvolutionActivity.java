@@ -29,6 +29,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class EvolutionActivity extends Activity implements AnimationListener,
 		OnClickListener, SensorEventListener {
 

@@ -15,6 +15,11 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class WelcomeActivity extends Activity implements OnClickListener, AnimationListener {
 
 	Button nextBtn;

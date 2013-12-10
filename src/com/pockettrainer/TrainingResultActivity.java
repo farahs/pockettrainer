@@ -37,6 +37,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class TrainingResultActivity extends Activity implements
 		OnClickListener, SensorEventListener {
 

@@ -21,6 +21,11 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class SplashScreenActivity extends Activity implements AnimationListener {
 
 	private static long SLEEP_TIME = 5;

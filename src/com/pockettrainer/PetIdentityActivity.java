@@ -30,6 +30,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class PetIdentityActivity extends Activity implements OnClickListener, AnimationListener {
 
 	USER myUser;

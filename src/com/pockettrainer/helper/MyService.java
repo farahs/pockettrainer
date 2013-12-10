@@ -10,6 +10,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * 
+ * @author Monster 2013
+ *
+ */
 public class MyService extends Service {
 
 	PET myPet;
@@ -68,7 +73,7 @@ public class MyService extends Service {
 
 			try {
 //				Thread.sleep(1000);
-				Thread.sleep(60 * 60 * 1000);
+				Thread.sleep(30 * 60 * 1000);
 					
 				// HUNGER
 				if (HUNGER == 0) {
