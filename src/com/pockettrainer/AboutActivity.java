@@ -51,12 +51,12 @@ public class AboutActivity extends FragmentActivity {
 		
 		public SectionPagerAdapter() {
 			super(AboutActivity.this.getSupportFragmentManager());
-			this.fragment1 = new AboutFragment1();
-			this.fragment2 = new AboutFragment2();
-			this.fragment3 = new AboutFragment3();
-			this.fragment4 = new AboutFragment4();
-			this.fragment5 = new AboutFragment5();
-			this.fragment6 = new AboutFragment6();
+			this.fragment1 = null;
+			this.fragment2 = null;
+			this.fragment3 = null;
+			this.fragment4 = null;
+			this.fragment5 = null;
+			this.fragment6 = null;
 		}
 
 
@@ -64,22 +64,22 @@ public class AboutActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				return this.fragment1;
-
+				return this.fragment1 = new AboutFragment1();
+				
 			case 1:
-				return this.fragment2;
+				return this.fragment2 = new AboutFragment2();
 				
 			case 2:
-				return this.fragment3;
+				return this.fragment3 = new AboutFragment3();
 				
 			case 3:
-				return this.fragment4;
+				return this.fragment4 = new AboutFragment4();
 
 			case 4:
-				return this.fragment5;
+				return this.fragment5  = new AboutFragment5();
 				
 			case 5:
-				return this.fragment6;
+				return this.fragment6 = new AboutFragment6();
 			default:
 				return null;
 

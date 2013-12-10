@@ -175,9 +175,9 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
-				if (isGPSOK || isNetworkOK) {
-					setLocationAndCamera();
-				}
+//				if (isGPSOK || isNetworkOK) {
+//					setLocationAndCamera();
+//				}
 			}
 		});
 	}
