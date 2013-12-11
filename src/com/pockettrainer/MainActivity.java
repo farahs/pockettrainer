@@ -289,7 +289,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				// this.finish();
 			} else {
 				Toast.makeText(getApplicationContext(),
-						"Your pet not ready to Train!", Toast.LENGTH_SHORT)
+						"Your pet is not ready to train", Toast.LENGTH_SHORT)
 						.show();
 			}
 			break;

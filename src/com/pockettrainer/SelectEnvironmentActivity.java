@@ -76,7 +76,7 @@ public class SelectEnvironmentActivity extends Activity implements
 					env_logo.startAnimation(pop);
 				} else {
 					env_logo.setImageResource(R.drawable.env_logo_none);
-					Toast.makeText(getApplicationContext(), "Anda belum memilih environment", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Please select your pet environment first", Toast.LENGTH_SHORT).show();
 				}
 			}
 
@@ -111,7 +111,7 @@ public class SelectEnvironmentActivity extends Activity implements
 				this.finish();
 			}
 			else {
-				Toast.makeText(getApplicationContext(), "Anda belum memilih environment", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Please select your pet environment first", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		default:

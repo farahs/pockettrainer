@@ -136,7 +136,7 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 				startActivity(i);
 				this.finish();
 			} else {
-				Toast.makeText(getApplicationContext(), "Anda belum memasukkan nama pet",
+				Toast.makeText(getApplicationContext(), "Please insert your pet name",
 						Toast.LENGTH_SHORT).show();
 			}
 			break;
@@ -178,8 +178,6 @@ public class PetIdentityActivity extends Activity implements OnClickListener, An
 
 	private boolean processUser() {
 
-		Toast.makeText(getApplicationContext(), "PROCESS USER MULAI",
-				Toast.LENGTH_SHORT).show();
 		try {
 			this.myUser.setTRAINING_HISTORY("");
 			USER_DAL.insertUSER(getApplicationContext(), this.myUser);

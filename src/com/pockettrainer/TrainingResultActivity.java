@@ -40,7 +40,7 @@ import android.widget.Toast;
 /**
  * 
  * @author Monster 2013
- *
+ * 
  */
 public class TrainingResultActivity extends Activity implements
 		OnClickListener, SensorEventListener {
@@ -54,6 +54,7 @@ public class TrainingResultActivity extends Activity implements
 	NotificationDialog notifDialog;
 	SocialAuthAdapter adapter;
 	Button cont;
+	Button share;
 	Button tweet;
 	Button cancel;
 	TRAINING myTraining;
@@ -71,6 +72,9 @@ public class TrainingResultActivity extends Activity implements
 	TextView monstersTV;
 	TextView totalExpTV;
 	TextView petNameTV;
+
+	TextView statusShare;
+	String statusSuccess = "Your training result was successfully posted to twitter";
 
 	LinearLayout slime, frogger, gillian, papabear, observer, cyclops, ogre,
 			darkness, owl, golem, toShare;
@@ -130,6 +134,9 @@ public class TrainingResultActivity extends Activity implements
 		tweet = (Button) notifDialog.findViewById(R.id.notifDialog_ok);
 		cancel = (Button) notifDialog.findViewById(R.id.notifDialog_cancel);
 		cont = (Button) findViewById(R.id.continue_button);
+		share = (Button) findViewById(R.id.share_button);
+
+		statusShare = (TextView) findViewById(R.id.share_text);
 
 		runningTimeTV = (TextView) findViewById(R.id.training_result_running_time);
 		distanceTV = (TextView) findViewById(R.id.training_result_distance);
@@ -139,7 +146,7 @@ public class TrainingResultActivity extends Activity implements
 		totalExpTV = (TextView) findViewById(R.id.training_result_total_exp);
 
 		petNameTV = (TextView) findViewById(R.id.training_result_pet_name_title);
-		
+
 		slime = (LinearLayout) findViewById(R.id.monster_slime);
 		frogger = (LinearLayout) findViewById(R.id.monster_frogger);
 		gillian = (LinearLayout) findViewById(R.id.monster_gillian);
@@ -166,8 +173,14 @@ public class TrainingResultActivity extends Activity implements
 
 	private void setEvent() {
 		cont.setOnClickListener(this);
+		share.setOnClickListener(this);
 		tweet.setOnClickListener(this);
 		cancel.setOnClickListener(this);
+		
+		tweet.setEnabled(true);
+		tweet.setClickable(true);
+		share.setEnabled(true);
+		share.setClickable(true);
 	}
 
 	private void setSensor() {
@@ -292,26 +305,20 @@ public class TrainingResultActivity extends Activity implements
 	}
 
 	/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.not_main, menu);
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+	 * menu; this adds items to the action bar if it is present.
+	 * getMenuInflater().inflate(R.menu.not_main, menu);
+	 * 
+	 * menu.findItem(R.id.action_settings).setOnMenuItemClickListener( new
+	 * OnMenuItemClickListener() {
+	 * 
+	 * @Override public boolean onMenuItemClick(MenuItem item) {
+	 * Toast.makeText(getApplicationContext(), "Setting",
+	 * Toast.LENGTH_SHORT).show(); return true; } });
+	 * 
+	 * return true; }
+	 */
 
-		menu.findItem(R.id.action_settings).setOnMenuItemClickListener(
-				new OnMenuItemClickListener() {
-
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-						Toast.makeText(getApplicationContext(), "Setting",
-								Toast.LENGTH_SHORT).show();
-						return true;
-					}
-				});
-
-		return true;
-	}
-	*/
-	
 	private final class ResponseListener implements DialogListener {
 		@Override
 		public void onComplete(Bundle values) {
@@ -326,7 +333,6 @@ public class TrainingResultActivity extends Activity implements
 			String message = "I've been running with my pet " + myPet.getNAME()
 					+ " for " + getDistance()
 					+ "! Train yours today at @pocket_trainer";
-
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
@@ -425,19 +431,35 @@ public class TrainingResultActivity extends Activity implements
 			}
 			break;
 
+		case R.id.share_button:
+			notifDialog.show();
+			break;
+			
 		case R.id.notifDialog_ok:
-			adapter.authorize(TrainingResultActivity.this, Provider.TWITTER);
+			shared = true;
+			authProgress();
 			break;
 
 		case R.id.notifDialog_cancel:
 			notifDialog.dismiss();
 			shared = false;
+			tweet.setEnabled(true);
+			tweet.setClickable(true);
 			break;
 		default:
 			break;
 		}
 	}
 
+	private void authProgress() {
+		
+		tweet.setEnabled(false);
+		tweet.setClickable(false);
+		Toast.makeText(getApplicationContext(), "Please wait...", Toast.LENGTH_SHORT).show();
+		adapter.authorize(TrainingResultActivity.this, Provider.TWITTER);
+		
+	}
+	
 	private final class UploadImageListener implements
 			SocialAuthListener<Integer> {
 
@@ -447,12 +469,17 @@ public class TrainingResultActivity extends Activity implements
 			Integer status = t;
 			Log.d("Custom-UI", String.valueOf(status));
 			if (status.intValue() == 200 || status.intValue() == 201
-					|| status.intValue() == 204)
-				Toast.makeText(TrainingResultActivity.this, "Image Uploaded",
+					|| status.intValue() == 204) 
+			{
+				disableShare();
+				Toast.makeText(TrainingResultActivity.this,
+						"Your training result image already uploaded",
 						Toast.LENGTH_SHORT).show();
+			}
 			else
 				Toast.makeText(TrainingResultActivity.this,
-						"Image not Uploaded", Toast.LENGTH_SHORT).show();
+						"Your training result image can't be uploaded",
+						Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -461,6 +488,14 @@ public class TrainingResultActivity extends Activity implements
 		}
 	}
 
+	private void disableShare() {
+		
+		share.setEnabled(false);
+		share.setClickable(false);
+		statusShare.setText(statusSuccess);
+		
+	}
+	
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
@@ -496,7 +531,6 @@ public class TrainingResultActivity extends Activity implements
 
 			if (deltaX > NOISE || deltaY > NOISE || deltaZ > NOISE) {
 				if (!shared) {
-					shared = true;
 					v.vibrate(500);
 					notifDialog.show();
 				}
@@ -707,7 +741,7 @@ public class TrainingResultActivity extends Activity implements
 		float ms, kms;
 		ms = dist;
 
-		if(ms >= 1000) {
+		if (ms >= 1000) {
 			kms = ms / 1000f;
 			distanceTV.setText(String.format("%.2f km", kms));
 		} else {
@@ -727,8 +761,8 @@ public class TrainingResultActivity extends Activity implements
 		float ms, kms;
 		ms = myTraining.getDISTANCE();
 		String a = "";
-		
-		if(ms >= 1000) {
+
+		if (ms >= 1000) {
 			kms = ms / 1000f;
 			a = String.format("%.2f km", kms);
 		} else {

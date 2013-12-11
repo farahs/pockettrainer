@@ -357,18 +357,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 			customHandler.postDelayed(this, REFRESH_RATE);
 
-			// if (secs % 5 == 0) {
-			// LatLng currentLocation = new
-			// LatLng(myMap.getMyLocation().getLatitude(),
-			// myMap.getMyLocation().getLongitude());
-			// trackedPoint.add(currentLocation);
-			//
-			// Polyline route = myMap.addPolyline(new
-			// PolylineOptions().geodesic(true));
-			// route.setPoints(trackedPoint);
-			//
-			//
-			// }
 		}
 
 	};
@@ -407,7 +395,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	
 			myMap.moveCamera(camUpdate);
 		} else {
-			Toast.makeText(getApplicationContext(), "Please wait! We are trying to get your location!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Please wait... We are trying to get your location", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -469,7 +457,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 						return true;
 					} else {
 						Toast.makeText(getApplicationContext(),
-								"You aren't ready to resume your Training", Toast.LENGTH_SHORT)
+								"You are not ready to resume your training", Toast.LENGTH_SHORT)
 								.show();
 						return false;
 					}
@@ -478,7 +466,7 @@ public class TrainingActivity extends Activity implements OnClickListener,
 			}
 		} else {
 			Toast.makeText(getApplicationContext(),
-					"You don't have any connection", Toast.LENGTH_SHORT).show();
+					"You don't have internet connection", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 
@@ -499,13 +487,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 	public void onLocationChanged(Location location) {
 
 		Log.i("POCKETTRAINER", "locationchanged luar");
-//		Toast.makeText(getApplicationContext(), "loc change", Toast.LENGTH_SHORT).show();
+
 		if ((hasAccel == true) && (hasGyro == false)) {
-//			Toast.makeText(getApplicationContext(), "accel true gyro false", Toast.LENGTH_SHORT).show();
 			if (running && counter == 4) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro false");
-//				Toast.makeText(getApplicationContext(), "yeay", Toast.LENGTH_SHORT).show();
 				LatLng currentLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				trackedPoint.add(currentLocation);
@@ -523,13 +509,11 @@ public class TrainingActivity extends Activity implements OnClickListener,
 
 			int XGyro = Math.abs(maxXGyro - minXGyro);
 			int YGyro = Math.abs(maxYGyro - minYGyro);
-//			Toast.makeText(getApplicationContext(), "accel true gyro true " + counter, Toast.LENGTH_SHORT).show();
 			
 			if (running && counter >= 4 && ((XGyro > 1) || (YGyro > 1))) {
 
 				Log.i("POCKETTRAINER", "accel true, gyro true, hasMovements "
 						+ hasMovements);
-//				Toast.makeText(getApplicationContext(), "yo", Toast.LENGTH_SHORT).show();
 				LatLng currentLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				trackedPoint.add(currentLocation);
@@ -572,7 +556,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				.get(UserSession.LOGIN_ID);
 		myTraining.setUSER_ID(Integer.parseInt(userId));
 		myTraining.setDURATION(timeInMilliseconds);
-//		 myTraining.setDISTANCE(1003f);
 		myTraining.setDISTANCE(totalDistance);
 		processSpeed();
 		myTraining.setSPEED(speed);
@@ -737,9 +720,6 @@ public class TrainingActivity extends Activity implements OnClickListener,
 				if ((int) y >= maxYGyro) {
 					maxYGyro = (int) y;
 				}
-
-//				Log.i("SENSOR", "hasMovements: " + hasMovements);
-				// Toast.makeText(getApplicationContext(), "haha", 100).show();
 
 			}
 		}
