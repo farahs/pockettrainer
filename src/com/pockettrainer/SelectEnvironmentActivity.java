@@ -1,6 +1,6 @@
 package com.pockettrainer;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.database.model.PET;
 
 import android.os.Bundle;

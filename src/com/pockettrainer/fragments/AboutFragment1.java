@@ -1,6 +1,6 @@
 package com.pockettrainer.fragments;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.AboutActivity;
 
 import android.os.Bundle;

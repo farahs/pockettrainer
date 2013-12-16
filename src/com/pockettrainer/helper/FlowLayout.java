@@ -1,6 +1,6 @@
 package com.pockettrainer.helper;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;

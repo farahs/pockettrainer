@@ -10,7 +10,7 @@ import org.brickred.socialauth.android.SocialAuthError;
 import org.brickred.socialauth.android.SocialAuthListener;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.database.dal.MONSTER_DAL;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.dal.TRAINING_DAL;
@@ -74,7 +74,7 @@ public class TrainingResultActivity extends Activity implements
 	TextView petNameTV;
 
 	TextView statusShare;
-	String statusSuccess = "Your training result was successfully posted to twitter";
+	String statusSuccess = "Successfully posted to twitter";
 
 	LinearLayout slime, frogger, gillian, papabear, observer, cyclops, ogre,
 			darkness, owl, golem, toShare;

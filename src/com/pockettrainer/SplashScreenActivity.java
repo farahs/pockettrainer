@@ -2,7 +2,7 @@ package com.pockettrainer;
 
 import java.sql.SQLException;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.dal.USER_DAL;
 import com.pockettrainer.database.model.PET;

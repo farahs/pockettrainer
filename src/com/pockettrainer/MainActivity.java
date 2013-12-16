@@ -3,7 +3,7 @@ package com.pockettrainer;
 import java.sql.SQLException;
 import java.util.Date;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.database.dal.PET_DAL;
 import com.pockettrainer.database.model.PET;
 import com.pockettrainer.database.model.USER;

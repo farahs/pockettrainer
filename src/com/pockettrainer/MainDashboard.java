@@ -6,7 +6,7 @@ package com.pockettrainer;
 
 import java.text.DecimalFormat;
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.animation.DragAnimation;
 import com.pockettrainer.animation.SpriteAnimation;
 import com.pockettrainer.database.dal.PET_DAL;

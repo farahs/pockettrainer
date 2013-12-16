@@ -1,7 +1,7 @@
 package com.pockettrainer;
 
 
-import com.example.pockettrainer.R;
+import com.monster.pockettrainer.R;
 import com.pockettrainer.fragments.AboutFragment1;
 import com.pockettrainer.fragments.AboutFragment2;
 import com.pockettrainer.fragments.AboutFragment3;
